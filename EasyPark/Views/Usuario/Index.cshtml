@@ -1,0 +1,23 @@
+﻿<!-- Views/Product/Index.cshtml -->
+@model IEnumerable<EasyPark.Models.Usuario.Usuarios>
+
+<h2>Lista de Usuários</h2>
+
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Cpf</th>
+        <th>Nome Instituição</th>
+        <th>Detalhes do usuário</th>
+        <th></th>
+    </tr>
+    @foreach (var usuario in Model)
+    {
+        <tr>
+            <td>@usuario.Nome</td>
+            <td>@usuario.Cpf</td>
+            <td>@usuario.NomeInstituicao</td>
+            <td>@Html.ActionLink("Ir para detalhes:", "Details", new { id = usuario.Id })</td>
+        </tr>
+    }
+</table>

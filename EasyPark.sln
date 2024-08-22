@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyPark", "EasyPark\EasyPark.csproj", "{9B7CB775-FB53-4F75-BF82-415A9304AB09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1- Apresentação", "1- Apresentação", "{3D31A777-CD79-4697-AB20-22A9C4268848}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2- Serviços", "2- Serviços", "{52557889-D815-44C9-B618-DA473484D873}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3- Domínio", "3- Domínio", "{C8A6CC94-09AD-4550-8E1E-100D82280425}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4- Infra", "4- Infra", "{62F9C2AA-ED4E-4DAE-95F8-4CBEFBEA51FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B7CB775-FB53-4F75-BF82-415A9304AB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7CB775-FB53-4F75-BF82-415A9304AB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7CB775-FB53-4F75-BF82-415A9304AB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7CB775-FB53-4F75-BF82-415A9304AB09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9B7CB775-FB53-4F75-BF82-415A9304AB09} = {3D31A777-CD79-4697-AB20-22A9C4268848}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {931827B8-B3A1-4AA4-B7FB-9A961D48262D}
+	EndGlobalSection
+EndGlobal
