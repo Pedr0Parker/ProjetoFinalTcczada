@@ -1,8 +1,8 @@
-﻿using EasyPark.Models.Repositorios;
-using EasyPark.Models.Usuario;
+﻿using EasyPark.Models.Entidades.Usuario;
+using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyPark.Controllers
+namespace EasyPark.Controllers.Usuario
 {
     public class UsuarioController : Controller
     {
@@ -16,7 +16,7 @@ namespace EasyPark.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(long id)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace EasyPark.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(long id)
         {
             if (ModelState.IsValid)
             {

@@ -2,7 +2,7 @@ using EasyPark.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace EasyPark.Controllers
+namespace EasyPark.Controllers.Home
 {
     public class HomeController : Controller
     {

@@ -1,4 +1,4 @@
-﻿using EasyPark.Models.Usuario;
+﻿using EasyPark.Models.Entidades.Usuario;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +26,7 @@ namespace EasyPark.Models.Repositorios
             return usuarios;
         }
 
-        public Usuarios GetUsuarioById(int id)
+        public Usuarios GetUsuarioById(long id)
         {
             return usuarios.FirstOrDefault(p => p.Id == id);
         }
@@ -48,7 +48,7 @@ namespace EasyPark.Models.Repositorios
             }
         }
 
-        public void DeleteUsuario(int id)
+        public void DeleteUsuario(long id)
         {
             var usuario = GetUsuarioById(id);
             if (usuario != null)
