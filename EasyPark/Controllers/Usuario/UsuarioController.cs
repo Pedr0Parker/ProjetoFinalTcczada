@@ -52,6 +52,12 @@ namespace EasyPark.Controllers.Usuario
             return View(usuario);
         }
 
+        public ActionResult EsqueciSenha()
+        {
+            return View();
+        }
+
+
         [HttpPut]
         public ActionResult Update(Usuarios usuario)
         {
