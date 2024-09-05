@@ -1,23 +1,30 @@
-﻿<!-- Views/Product/Index.cshtml -->
-@model IEnumerable<Usuarios>
+﻿<!-- Views/Usuario/Index.cshtml -->
+@model IEnumerable<EasyPark.Models.Entidades.Usuario.Usuarios>
 
 <h2>Lista de Usuários</h2>
 
-<table>
-    <tr>
-        <th>Nome</th>
-        <th>Cpf</th>
-        <th>Nome Instituição</th>
-        <th>Detalhes do usuário</th>
-        <th></th>
-    </tr>
-    @foreach (var usuario in Model)
-    {
+<table class="table">
+    <thead>
         <tr>
-            <td>@usuario.Nome</td>
-            <td>@usuario.Cpf</td>
-            <td>@usuario.NomeInstituicao</td>
-            <td>@Html.ActionLink("Ir para detalhes:", "Details", new { id = usuario.Id })</td>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Nome da Instituição</th>
+            <th>Detalhes</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Nome</td>
+                <td>@usuario.Cpf</td>
+                <td>@usuario.NomeInstituicao</td>
+                <td>@Html.ActionLink("Ver detalhes", "Details", new { id = usuario.Id })</td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+<div>
+    @Html.ActionLink("Cadastrar Novo Usuário", "Create")
+</div>

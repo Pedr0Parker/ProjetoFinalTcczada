@@ -1,5 +1,4 @@
 ﻿using EasyPark.Models.Entidades.Usuario;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace EasyPark.Models.Repositorios
