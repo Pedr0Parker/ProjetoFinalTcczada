@@ -1,6 +1,10 @@
-﻿using EasyPark.Models.Entidades.Empresa;
-using EasyPark.Models.Entidades.Estacionamento;
+﻿using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Usuario;
+using Dapper;
+using System.Data;
+using System.Data.SqlClient;
+using EasyPark.Models.Entidades.Funcionario;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -8,7 +12,14 @@ namespace EasyPark.Models.Repositorios
     {
         private List<Estacionamentos> estacionamentos;
 
-        public EstacionamentoRepositorio()
+		private readonly IConfiguration _configuration;
+
+		public EstacionamentoRepositorio(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
+		public EstacionamentoRepositorio()
         {
             estacionamentos = new List<Estacionamentos>
             {
@@ -50,20 +61,28 @@ namespace EasyPark.Models.Repositorios
             return estacionamentos.FirstOrDefault(p => p.Nome == nome);
         }
 
-        #endregion
+		#endregion
 
-        // To Do: Verificar métodos implementados no diagrama de classe
-        // Quais funcionalidades? Como implementar?
+		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario)
+		{
+			var sql = "SELECT * FROM funcionarios f WHERE f.cpf = @cpfFuncionario";
 
-        public IEnumerable<Usuarios> VerificaUsuarios(Usuarios usuarios)
+			using (IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+			{
+				var funcionario = connection.Query<Funcionarios>(sql, new { cpfFuncionario }).AsList();
+				return funcionario;
+			}
+		}
+
+
+		public void AplicaDesconto()
         {
-            var teste = new List<Usuarios>();
-            return teste;
+
         }
 
-        public void AplicaDesconto()
-        {
+		public void RegistrarVisitante()
+		{
 
-        }
-    }
+		}
+	}
 }

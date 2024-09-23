@@ -4,41 +4,38 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Estacionamento
 {
-    public class EstacionamentoController
-    {
-        private EstacionamentoRepositorio repositorio = new EstacionamentoRepositorio();
+	[ApiController]
+	[Route("api/[controller]")]
+	public class EstacionamentoController : ControllerBase
+	{
+		private EstacionamentoRepositorio repositorio = new EstacionamentoRepositorio();
 
-        #region Métodos Get
+		#region Métodos Get
 
-        //[HttpGet]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+		[HttpGet]
+		public IActionResult Index()
+		{
+			var estacionamentos = repositorio.GetAllEstacionamentos();
+			return Ok(estacionamentos);
+		}
 
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    var estacionamentos = repositorio.GetAllEstacionamentos();
-        //    return View(estacionamentos);
-        //}
+		#endregion
 
-        // To Do: verificar se haverá tela de busca de estacionamento por filtros
+		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
 
-        #endregion
+		// To Do: Verificar métodos implementados no diagrama de classe
 
-        // To Do: Verificar métodos implementados no diagrama de classe
+		[HttpGet]
+		[Route("verifica-funcionario/cpf/{cpf}")]
+		public IActionResult VerificarUsuarios(string cpf)
+		{
+			var busca = repositorio.VerificaFuncionarios(cpf);
+			return Ok(busca);
+		}
 
-        //public ActionResult VerificarUsuarios(Usuarios usuarios)
-        //{
-        //    var busca = repositorio.VerificaUsuarios(usuarios);
-
-        //    return View(busca);
-        //}
-
-        //public ActionResult AplicarDesconto()
-        //{
-        //    return View();
-        //}
-    }
+		//public IActionResult AplicarDesconto()
+		//{
+		//    return Ok("Desconto aplicado com sucesso!"); // Retorna sucesso ao aplicar desconto
+		//}
+	}
 }

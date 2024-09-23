@@ -8,6 +8,7 @@ namespace EasyPark.Models.Entidades.VisitaEstacionamento
         public long Id { get; set; }
         public DateTime HoraChegada { get; set; }
         public DateTime HoraSaida { get; set; }
+        public int Status { get; set; }
         public Estacionamentos IdEstacionamento { get; set; }
         public Funcionarios IdFuncionario { get; set; }
     }

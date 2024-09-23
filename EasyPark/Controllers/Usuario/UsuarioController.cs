@@ -4,82 +4,72 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Usuario
 {
-    public class UsuarioController : Controller
-    {
-        private UsuarioRepositorio repositorio = new UsuarioRepositorio();
+	[ApiController]
+	[Route("api/[controller]")]
+	public class UsuarioController : ControllerBase
+	{
+		private UsuarioRepositorio repositorio = new UsuarioRepositorio();
 
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var usuarios = repositorio.GetAllUsuarios();
-            return View(usuarios);
-        }
+		[HttpGet]
+		public IActionResult Index()
+		{
+			var usuarios = repositorio.GetAllUsuarios();
+			return Ok(usuarios);
+		}
 
-        [HttpGet]
-        public ActionResult Details(long id)
-        {
-            try
-            {
-                var usuario = repositorio.GetUsuarioById(id);
-                if (usuario == null)
-                {
-                    throw new Exception();
-                }
+		[HttpGet("{id}")]
+		public IActionResult Details(long id)
+		{
+			try
+			{
+				var usuario = repositorio.GetUsuarioById(id);
+				if (usuario == null)
+				{
+					return NotFound("Usuário não localizado!");
+				}
 
-                return View(usuario);
-            }
-            catch
-            {
-                return View("Error", model: "Usuário não localizado!");
-            }
-        }
+				return Ok(usuario);
+			}
+			catch
+			{
+				return BadRequest("Erro ao localizar usuário!");
+			}
+		}
 
-        [HttpGet]
-        public ActionResult Create()
-        {
-            return View();
-        }
+		[HttpPost]
+		public IActionResult Create(Usuarios usuario)
+		{
+			if (ModelState.IsValid)
+			{
+				repositorio.AddUsuario(usuario);
+				return Ok("Usuário criado com sucesso!");
+			}
 
-        [HttpPost]
-        public ActionResult Create(Usuarios usuario)
-        {
-            if (ModelState.IsValid)
-            {
-                repositorio.AddUsuario(usuario);
-                return RedirectToAction("Index");
-            }
+			return BadRequest("Dados inválidos!");
+		}
 
-            return View(usuario);
-        }
+		[HttpPut]
+		public IActionResult Update(Usuarios usuario)
+		{
+			if (ModelState.IsValid)
+			{
+				repositorio.UpdateUsuario(usuario);
+				return Ok("Usuário atualizado com sucesso!");
+			}
 
-        public ActionResult EsqueciSenha()
-        {
-            return View();
-        }
+			return BadRequest("Dados inválidos!");
+		}
 
+		[HttpDelete("{id}")]
+		public IActionResult Delete(long id)
+		{
+			if (ModelState.IsValid)
+			{
+				repositorio.DeleteUsuario(id);
+				return Ok("Usuário deletado com sucesso!");
+			}
 
-        [HttpPut]
-        public ActionResult Update(Usuarios usuario)
-        {
-            if (ModelState.IsValid)
-            {
-                repositorio.UpdateUsuario(usuario);
-                return RedirectToAction("Index");
-            }
-
-            return View(usuario);
-        }
-
-        [HttpDelete]
-        public ActionResult Delete(long id)
-        {
-            if (ModelState.IsValid)
-            {
-                repositorio.DeleteUsuario(id);
-                return RedirectToAction("Index");
-            }
-
-            return View(id);
-        }
-    }
+			return BadRequest("Erro ao deletar usuário!");
+		}
+	}
 }
