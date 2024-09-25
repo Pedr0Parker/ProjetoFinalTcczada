@@ -1,5 +1,9 @@
-﻿using EasyPark.Models.Entidades.Empresa;
-using Microsoft.AspNetCore.Mvc;
+﻿using Dapper;
+using DapperExtensions;
+using EasyPark.Models.Entidades.Empresa;
+using EasyPark.Models.Entidades.Estacionamento;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -7,45 +11,52 @@ namespace EasyPark.Models.Repositorios
     {
         private List<Empresas> empresas;
 
-        public EmpresaRepositorio()
+		private readonly IConfiguration _configuration;
+
+		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+
+		public EmpresaRepositorio(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
+		#region Métodos Get
+
+		public IEnumerable<Empresas> GetAllEmpresas()
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM empresas e;";
+				var empresas = connection.Query<Empresas>(sql).AsList();
+
+				return empresas;
+			}
+		}
+
+		public Empresas GetEmpresaById(long id)
         {
-            empresas = new List<Empresas>
-            {
-                new Empresas { Id = 1, Login = "abc@gmail.com", Senha = "123456", Nome = "EmpresaX", NomeFantasia = "X",
-                NomeDono = "Paulo", Cnpj = "11111111111111", ValorAssinatura = 100, Endereco = "Av. Paraná, 10", Contato = "(99)99999-9999", DataCadastro = DateTime.Now },
-            };
-        }
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM empresas e WHERE e.id = @id;";
+				var empresaId = connection.QuerySingleOrDefault<Empresas>(sql, new { id });
 
-        #region Métodos Get
+				return empresaId;
+			}
+		}
 
-        /// <summary>
-        /// Realiza a busca de todas as empresas cadastradas no banco de dados
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Empresas> GetAllEmpresas()
-        {
-            return empresas;
-        }
-
-        /// <summary>
-        /// Realiza a busca da empresa via Id cadastrado no banco de dados
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Empresas GetEmpresaById(long id)
-        {
-            return empresas.FirstOrDefault(p => p.Id == id);
-        }
-
-        /// <summary>
-        /// Realiza a busca da empresa via Nome cadastrado no banco de dados
-        /// </summary>
-        /// <param name="nome"></param>
-        /// <returns></returns>
         public Empresas GetEmpresaByNome(string nome)
         {
-            return empresas.FirstOrDefault(p => p.Nome == nome);
-        }
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM empresas e WHERE e.nome = @nome;";
+				var empresaNome = connection.QuerySingleOrDefault<Empresas>(sql, new { nome });
+
+				return empresaNome;
+			}
+		}
 
         #endregion
 
@@ -59,27 +70,30 @@ namespace EasyPark.Models.Repositorios
             empresas.Add(empresa);
         }
 
-        /// <summary>
-        /// Atualiza uma empresa de acordo com o seu Id
-        /// </summary>
-        /// <param name="empresa"></param>
         public void UpdateEmpresa(Empresas empresa)
         {
-            var existingEmpresa = GetEmpresaById(empresa.Id);
-            if (existingEmpresa != null)
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                // To Do: Implementar update para os parâmetros da empresa
+				var existingEmpresa = GetEmpresaById(empresa.Id);
+				connection.Open();
+				if (existingEmpresa != null)
+				{
+					existingEmpresa.Login = empresa.Login;
+					existingEmpresa.Senha = empresa.Senha;
+					existingEmpresa.Nome = empresa.Nome;
+					existingEmpresa.NomeFantasia = empresa.NomeFantasia;
+					existingEmpresa.NomeDono = empresa.NomeDono;
+					existingEmpresa.Cnpj = empresa.Cnpj;
+					existingEmpresa.ValorAssinatura = empresa.ValorAssinatura;
+					existingEmpresa.Endereco = empresa.Endereco;
+					existingEmpresa.Contato = empresa.Contato;
+					existingEmpresa.DataCadastro = empresa.DataCadastro;
+				}
 
-                //existingEmpresa.Nome = usuario.Nome;
-                //existingEmpresa.Cpf = usuario.Cpf;
-                //existingEmpresa.NomeInstituicao = usuario.NomeInstituicao;
-            }
-        }
+				connection.UpdateAsync(existingEmpresa);
+			}
+		}
 
-        /// <summary>
-        /// Deleta a empresa desejada de acordo com seu Id
-        /// </summary>
-        /// <param name="id"></param>
         public void DeleteEmpresa(long id)
         {
             var empresa = GetEmpresaById(id);

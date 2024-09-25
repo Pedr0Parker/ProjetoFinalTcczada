@@ -1,22 +1,78 @@
-﻿using EasyPark.Models.Entidades.Usuario;
-using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Estacionamento
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("estacionamento")]
 	public class EstacionamentoController : ControllerBase
 	{
-		private EstacionamentoRepositorio repositorio = new EstacionamentoRepositorio();
+		private readonly EstacionamentoRepositorio repositorio;
+
+		public EstacionamentoController(IConfiguration configuration)
+		{
+			repositorio = new EstacionamentoRepositorio(configuration);
+		}
 
 		#region Métodos Get
 
+		/// <summary>
+		/// Realiza a busca de todos os estacionamentos cadastrados no banco de dados
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
-		public IActionResult Index()
+		[Route("buscar-estacionamentos")]
+		public IActionResult BuscarEstacionamentos()
 		{
 			var estacionamentos = repositorio.GetAllEstacionamentos();
+			if (estacionamentos is null) return BadRequest("Houve um erro ao buscar os estacionamentos.");
+
 			return Ok(estacionamentos);
+		}
+
+		/// <summary>
+		/// Realiza a busca do estacionamento via Id cadastrado no banco de dados
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-estacionamento/id/{id}")]
+		public IActionResult BuscasEstacionamentoViaId(int id)
+		{
+			var idEstacionamento = repositorio.GetEstacionamentoById(id);
+			if (idEstacionamento is null) return NotFound($"Estacionamento de Id {id} não cadastrado no sistema.");
+
+			return Ok(idEstacionamento);
+		}
+
+		/// <summary>
+		/// Realiza a busca do estacionamento via Nome cadastrado no banco de dados
+		/// </summary>
+		/// <param name="nome"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-estacionamento/nome/{nome}")]
+		public IActionResult BuscasEstacionamentoViaNome(string nome)
+		{
+			var nomeEstacionamento = repositorio.GetEstacionamentoByNome(nome);
+			if (nomeEstacionamento is null) return NotFound($"Estacionamento de nome {nome} não cadastrado no sistema.");
+
+			return Ok(nomeEstacionamento);
+		}
+
+		/// <summary>
+		/// Realiza a busca do funcionário que realizou o check-in no estacionamento, via CPF cadastrado no banco de dados
+		/// </summary>
+		/// <param name="cpf"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("verifica-funcionario/cpf/{cpf}")]
+		public IActionResult VerificarFuncionarios(string cpf)
+		{
+			var buscaFuncionarioCpf = repositorio.VerificaFuncionarios(cpf);
+			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {cpf} não cadastrado no sistema.");
+
+			return Ok(buscaFuncionarioCpf);
 		}
 
 		#endregion
@@ -24,14 +80,6 @@ namespace EasyPark.Controllers.Estacionamento
 		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
 
 		// To Do: Verificar métodos implementados no diagrama de classe
-
-		[HttpGet]
-		[Route("verifica-funcionario/cpf/{cpf}")]
-		public IActionResult VerificarUsuarios(string cpf)
-		{
-			var busca = repositorio.VerificaFuncionarios(cpf);
-			return Ok(busca);
-		}
 
 		//public IActionResult AplicarDesconto()
 		//{

@@ -1,54 +1,74 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
-using EasyPark.Models.Entidades.Usuario;
+using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Repositorios;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Empresa
 {
-    public class EmpresaController
+	[ApiController]
+	[Route("empresas")]
+	public class EmpresaController : ControllerBase
     {
-        private EmpresaRepositorio repositorio = new EmpresaRepositorio();
+		private readonly EmpresaRepositorio repositorio;
 
-        #region Métodos Get
+		public EmpresaController(IConfiguration configuration)
+		{
+			repositorio = new EmpresaRepositorio(configuration);
+		}
 
-        //[HttpGet]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+		#region Métodos Get
 
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    var empresas = repositorio.GetAllEmpresas();
-        //    return View(empresas);
-        //}
+		/// <summary>
+		/// Realiza a busca de todas as empresas cadastradas no banco de dados
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-empresas")]
+		public IActionResult BuscarEmpresas()
+        {
+            var empresas = repositorio.GetAllEmpresas();
+			if (empresas is null) return BadRequest("Houve um erro ao buscar as empresas.");
 
-        //[HttpGet]
-        //public ActionResult Details(int id)
-        //{
-        //    try
-        //    {
-        //        var empresa = repositorio.GetEmpresaById(id);
-        //        if (empresa == null)
-        //        {
-        //            throw new Exception();
-        //        }
+			return Ok(empresas);
+        }
 
-        //        return View(empresa);
-        //    }
-        //    catch
-        //    {
-        //        return View("Error", model: "Empresa não localizada!");
-        //    }
-        //}
+		/// <summary>
+		/// Realiza a busca da empresa via Id cadastrado no banco de dados
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-empresa/id/{id}")]
+		public IActionResult BuscarEmpresaViaId(int id)
+        {
+			var idEmpresa = repositorio.GetEmpresaById(id);
+			if (idEmpresa is null) return NotFound($"Empresa de Id {id} não cadastrado no sistema.");
+
+			return Ok(idEmpresa);
+		}
+
+		/// <summary>
+		/// Realiza a busca da empresa via Nome cadastrado no banco de dados
+		/// </summary>
+		/// <param name="nome"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-empresa/nome/{nome}")]
+		public IActionResult BuscarEmpresaViaNome(string nome)
+		{
+			var nomeEmpresa = repositorio.GetEmpresaByNome(nome);
+			if (nomeEmpresa is null) return NotFound($"Empresa de nome {nome} não cadastrada no sistema.");
+
+			return Ok(nomeEmpresa);
+		}
 
         #endregion
 
         #region Métodos Post
 
         //[HttpPost]
-        //public ActionResult Create(Empresas empresa)
+        //public IActionResult Create(Empresas empresa)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -60,43 +80,56 @@ namespace EasyPark.Controllers.Empresa
         //}
 
         //[HttpPost]
-        //public ActionResult CadastrarFuncionario(Funcionario funcionario)
+        //public IActionResult CadastrarFuncionario(Funcionario funcionario)
         //{
-            
+
         //}
 
-        #endregion
+		#endregion
 
-        #region Métodos Put
+		#region Métodos Put
 
-        //[HttpPut]
-        //public ActionResult Update(Empresas empresa)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.UpdateEmpresa(empresa);
-        //        return RedirectToAction("Index");
-        //    }
+		/// <summary>
+		/// Atualiza uma empresa de acordo com o seu Id
+		/// </summary>
+		/// <param name="empresa"></param>
+		[HttpPut]
+        public IActionResult Update(Empresas empresa)
+        {
+			try
+			{
+				repositorio.UpdateEmpresa(empresa);
+				return Ok("Empresa atualizada com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao atualizar empresa.");
+				throw;
+			}
+        }
 
-        //    return View(empresa);
-        //}
+		#endregion
 
-        #endregion
+		#region Métodos Delete
 
-        #region Métodos Delete
+		/// <summary>
+		/// Deleta a empresa desejada de acordo com seu Id
+		/// </summary>
+		/// <param name="id"></param>
+		[HttpDelete]
+		public IActionResult Delete(long id)
+		{
+			try
+			{
+				repositorio.DeleteEmpresa(id);
+				return Ok("Empresa excluída com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao deletar empresa.");
+			}
+		}
 
-        //[HttpDelete]
-        //public ActionResult Delete(long id)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.DeleteEmpresa(id);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(id);
-        //}
-
-        #endregion
-    }
+		#endregion
+	}
 }
