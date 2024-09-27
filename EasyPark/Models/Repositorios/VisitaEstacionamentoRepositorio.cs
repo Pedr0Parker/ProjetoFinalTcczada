@@ -1,5 +1,7 @@
-﻿using EasyPark.Models.Entidades.Funcionario;
+﻿using Dapper;
+using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
+using MySql.Data.MySqlClient;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -7,28 +9,51 @@ namespace EasyPark.Models.Repositorios
     {
         private List<VisitasEstacionamento> visitasEstacionamento;
 
-        /// <summary>
-        /// Realiza a busca da visita ao estacionamento via Id cadastrado no banco de dados
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public VisitasEstacionamento GetVisitaById(long id)
+		private readonly IConfiguration _configuration;
+
+		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+
+		public VisitaEstacionamentoRepositorio(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
+		public IEnumerable<VisitasEstacionamento> GetAllVisitas(Estacionamentos estacionamento)
+		{
+			var idEstacionamento = GetEstacionamentoById(estacionamento.Id);
+
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM visitaestacionamento v WHERE v.id_estacionamento = @idEstacionamento;";
+				var visitas = connection.Query<VisitasEstacionamento>(sql).AsList();
+
+				return visitas;
+			}
+		}
+
+		public VisitasEstacionamento GetVisitaById(long id)
         {
-            return visitasEstacionamento.FirstOrDefault(p => p.Id == id);
-        }
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM visitaestacionamento v WHERE v.id = @id;";
+				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sql, new { id });
 
-        /// <summary>
-        /// Realiza a busca de todas as visitas cadastradas no banco de dados
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<VisitasEstacionamento> GetAllVisitas()
-        {
-            return visitasEstacionamento;
-        }
+				return visitasId;
+			}
+		}
 
-        //public IEnumerable<VisitasEstacionamento> CadastraVisita(long idFuncionario, )
-        //{
+		private Estacionamentos GetEstacionamentoById(long id)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM estacionamentos e WHERE e.id = @id;";
+				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sql, new { id });
 
-        //}
-    }
+				return estacionamentoId;
+			}
+		}
+	}
 }

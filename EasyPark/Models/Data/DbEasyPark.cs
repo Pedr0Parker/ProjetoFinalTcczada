@@ -1,6 +1,4 @@
-﻿using EasyPark.Models.Entidades.Usuario;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EasyPark.Models.Data
 {
@@ -13,11 +11,9 @@ namespace EasyPark.Models.Data
 
 		public IConfiguration Configuration { get; }
 
-		public DbSet<Usuarios> Usuarios { get; set; }
-
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+			optionsBuilder.UseNpgsql(Configuration.GetConnectionString("EasyParkConnection"));
 		}
 	}
 }

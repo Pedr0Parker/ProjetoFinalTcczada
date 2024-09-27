@@ -2,6 +2,7 @@
 using DapperExtensions;
 using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
+using EasyPark.Models.Entidades.Funcionario;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 
@@ -19,8 +20,6 @@ namespace EasyPark.Models.Repositorios
 		{
 			_configuration = configuration;
 		}
-
-		#region Métodos Get
 
 		public IEnumerable<Empresas> GetAllEmpresas()
 		{
@@ -58,55 +57,27 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-        #endregion
-
-        /// <summary>
-        /// Adiciona uma nova empresa
-        /// </summary>
-        /// <param name="empresa"></param>
-        public void AddEmpresa(Empresas empresa)
-        {
-            empresa.Id = empresas.Max(p => p.Id) + 1;
-            empresas.Add(empresa);
-        }
-
-        public void UpdateEmpresa(Empresas empresa)
-        {
+		public void CadastraFuncionario(Funcionarios funcionario)
+		{
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-				var existingEmpresa = GetEmpresaById(empresa.Id);
+			{
 				connection.Open();
-				if (existingEmpresa != null)
-				{
-					existingEmpresa.Login = empresa.Login;
-					existingEmpresa.Senha = empresa.Senha;
-					existingEmpresa.Nome = empresa.Nome;
-					existingEmpresa.NomeFantasia = empresa.NomeFantasia;
-					existingEmpresa.NomeDono = empresa.NomeDono;
-					existingEmpresa.Cnpj = empresa.Cnpj;
-					existingEmpresa.ValorAssinatura = empresa.ValorAssinatura;
-					existingEmpresa.Endereco = empresa.Endereco;
-					existingEmpresa.Contato = empresa.Contato;
-					existingEmpresa.DataCadastro = empresa.DataCadastro;
-				}
+				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, valor_plano, contato, email, data_cadastro, id_plano) VALUES (@id, @login, @senha, @nome, @cpf, @valorPlano, @contato, @email, @dataCadastro, @idPlano);";
 
-				connection.UpdateAsync(existingEmpresa);
+				connection.Execute(sql, new
+				{
+					id = funcionario.Id,
+					login = funcionario.Login,
+					senha = funcionario.Senha,
+					nome = funcionario.Nome,
+					cpf = funcionario.CpfCnpj,
+					valorPlano = funcionario.ValorPlano,
+					contato = funcionario.Contato,
+					email = funcionario.Email,
+					dataCadastro = funcionario.DataCadastro,
+					idPlano = funcionario.IdPlano
+				});
 			}
 		}
-
-        public void DeleteEmpresa(long id)
-        {
-            var empresa = GetEmpresaById(id);
-            if (empresa != null)
-            {
-                empresas.Remove(empresa);
-            }
-        }
-
-        // To Do: Verificar método de cadastro de funcionários da empresa
-        public void CadastraFuncionario()
-        {
-
-        }
-    }
+	}
 }

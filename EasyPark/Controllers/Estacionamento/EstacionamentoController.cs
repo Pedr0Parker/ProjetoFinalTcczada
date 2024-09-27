@@ -1,4 +1,5 @@
-﻿using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.Entidades.VisitaEstacionamento;
+using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Estacionamento
@@ -77,9 +78,28 @@ namespace EasyPark.Controllers.Estacionamento
 
 		#endregion
 
-		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
+		#region Métodos Post
+		/// <summary>
+		/// Realiza o cadastro de uma visita feita no estacionamento
+		/// </summary>
+		/// <param name="visitaEstacionamento"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("cadastra-visita-estacionamento")]
+		public IActionResult CadastrarVisitaEstacionamento(VisitasEstacionamento visitaEstacionamento)
+		{
+			var estacionamento = visitaEstacionamento.IdEstacionamento;
+			var funcionario = visitaEstacionamento.IdFuncionario;
+			var status = visitaEstacionamento.Status;
 
-		// To Do: Verificar métodos implementados no diagrama de classe
+			repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+
+			return Ok("Visita estacionamento cadastrada com sucesso.");
+		}
+
+		#endregion
+
+		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
 
 		//public IActionResult AplicarDesconto()
 		//{

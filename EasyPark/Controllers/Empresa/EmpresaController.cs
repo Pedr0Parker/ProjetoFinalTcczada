@@ -1,5 +1,6 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
+using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyPark.Controllers.Empresa
 {
 	[ApiController]
-	[Route("empresas")]
+	[Route("empresa")]
 	public class EmpresaController : ControllerBase
-    {
+	{
 		private readonly EmpresaRepositorio repositorio;
 
 		public EmpresaController(IConfiguration configuration)
@@ -26,12 +27,12 @@ namespace EasyPark.Controllers.Empresa
 		[HttpGet]
 		[Route("buscar-empresas")]
 		public IActionResult BuscarEmpresas()
-        {
-            var empresas = repositorio.GetAllEmpresas();
+		{
+			var empresas = repositorio.GetAllEmpresas();
 			if (empresas is null) return BadRequest("Houve um erro ao buscar as empresas.");
 
 			return Ok(empresas);
-        }
+		}
 
 		/// <summary>
 		/// Realiza a busca da empresa via Id cadastrado no banco de dados
@@ -41,7 +42,7 @@ namespace EasyPark.Controllers.Empresa
 		[HttpGet]
 		[Route("buscar-empresa/id/{id}")]
 		public IActionResult BuscarEmpresaViaId(int id)
-        {
+		{
 			var idEmpresa = repositorio.GetEmpresaById(id);
 			if (idEmpresa is null) return NotFound($"Empresa de Id {id} não cadastrado no sistema.");
 
@@ -63,70 +64,28 @@ namespace EasyPark.Controllers.Empresa
 			return Ok(nomeEmpresa);
 		}
 
-        #endregion
-
-        #region Métodos Post
-
-        //[HttpPost]
-        //public IActionResult Create(Empresas empresa)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.AddEmpresa(empresa);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(empresa);
-        //}
-
-        //[HttpPost]
-        //public IActionResult CadastrarFuncionario(Funcionario funcionario)
-        //{
-
-        //}
-
 		#endregion
 
-		#region Métodos Put
+		#region Métodos Post
 
 		/// <summary>
-		/// Atualiza uma empresa de acordo com o seu Id
+		/// Realiza o cadastro do funcionário pela empresa
 		/// </summary>
-		/// <param name="empresa"></param>
-		[HttpPut]
-        public IActionResult Update(Empresas empresa)
-        {
-			try
-			{
-				repositorio.UpdateEmpresa(empresa);
-				return Ok("Empresa atualizada com sucesso!");
-			}
-			catch
-			{
-				return BadRequest("Erro ao atualizar empresa.");
-				throw;
-			}
-        }
-
-		#endregion
-
-		#region Métodos Delete
-
-		/// <summary>
-		/// Deleta a empresa desejada de acordo com seu Id
-		/// </summary>
-		/// <param name="id"></param>
-		[HttpDelete]
-		public IActionResult Delete(long id)
+		/// <param name="funcionario"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("cadastrar-funcionario")]
+		public IActionResult CadastrarFuncionario(Funcionarios funcionario)
 		{
 			try
 			{
-				repositorio.DeleteEmpresa(id);
-				return Ok("Empresa excluída com sucesso!");
+				repositorio.CadastraFuncionario(funcionario);
+				return Ok($"Cadastro do funcionário {funcionario.Nome} realizado com sucesso!");
 			}
 			catch
 			{
-				return BadRequest("Erro ao deletar empresa.");
+				return BadRequest("Erro ao cadastrar um funcionário da empresa.");
+				throw;
 			}
 		}
 

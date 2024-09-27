@@ -23,11 +23,11 @@ namespace EasyPark
 
 			// Certifique-se de que a configuração está sendo passada
 			services.AddDbContext<DbEasyPark>(options =>
-				options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseNpgsql(Configuration.GetConnectionString("EasyParkConnection")));
 
 			// Configurando o DbContext com PostgreSQL
 			//services.AddDbContext<DbEasyPark>(options =>
-			//	options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+			//	options.UseNpgsql(Configuration.GetConnectionString("EasyParkConnection")));
 
 			// Configuração do Swagger
 			services.AddSwaggerGen(c =>
