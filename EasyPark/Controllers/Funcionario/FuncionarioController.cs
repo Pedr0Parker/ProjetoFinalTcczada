@@ -1,4 +1,6 @@
-﻿using EasyPark.Models.Entidades.Funcionario;
+﻿using EasyPark.Models.Entidades.CadastroDependente;
+using EasyPark.Models.Entidades.Dependente;
+using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +41,7 @@ namespace EasyPark.Controllers.Funcionario
 		/// <returns></returns>
 		[HttpGet]
 		[Route("buscar-funcionario/id/{id}")]
-		public IActionResult BuscasEstacionamentoViaId(int id)
+		public IActionResult BuscasFuncionarioViaId(int id)
 		{
 			var idFuncionario = repositorio.GetFuncionarioById(id);
 			if (idFuncionario is null) return NotFound($"Funcionário de Id {id} não cadastrado no sistema.");
@@ -68,6 +70,31 @@ namespace EasyPark.Controllers.Funcionario
 			catch
 			{
 				return BadRequest("Erro ao cadastrar uma empresa.");
+				throw;
+			}
+		}
+
+		/// <summary>
+		/// Realiza o cadastro dos dependentes do funcionário
+		/// </summary>
+		/// <param name="funcionario"></param>
+		/// <param name="dependente"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("cadastrar-dependente")]
+		public IActionResult CadastrarDependente(CadastrarDependenteRequest request)
+		{
+			try
+			{
+				var funcionario = request.Funcionario;
+				var dependente = request.Dependente;
+
+				repositorio.CadastraDependente(funcionario, dependente);
+				return Ok("Dependente cadastrado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao cadastrar dependente.");
 				throw;
 			}
 		}

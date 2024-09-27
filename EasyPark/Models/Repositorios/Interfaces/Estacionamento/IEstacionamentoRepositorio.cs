@@ -1,5 +1,6 @@
 ﻿using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 
 namespace EasyPark.Models.Repositorios.Interfaces.Estacionamento
 {
@@ -14,6 +15,8 @@ namespace EasyPark.Models.Repositorios.Interfaces.Estacionamento
 		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario);
 
 		public void RegistraVisitaEstacionamento(Estacionamentos estacionamento, Funcionarios funcionario, int status);
+
+		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento);
 
 	}
 }

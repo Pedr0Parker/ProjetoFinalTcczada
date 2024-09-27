@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using EasyPark.Models.Entidades.Dependente;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
@@ -106,7 +107,7 @@ namespace EasyPark.Models.Repositorios
 					using (MySqlConnection connection = new MySqlConnection(connectionString))
 					{
 						connection.Open();
-						var sql = "UPDATE visitaestacionamento SET status = 0 WHERE id_funcionario = @idFuncionario AND id_estacionamento = @idEstacionamento;";
+						var sql = "UPDATE visitas_estacionamento SET status = 0 WHERE id_funcionario = @idFuncionario AND id_estacionamento = @idEstacionamento;";
 						connection.Execute(sql, new
 						{
 							idFuncionario = visita.IdFuncionario,
@@ -119,7 +120,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO visitaestacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario);";
+				var sql = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario);";
 
 				connection.Execute(sql, new
 				{
@@ -133,9 +134,101 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void AplicaDesconto()
+		public void CriarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario)
 		{
+			using (MySqlConnection conexao = new MySqlConnection(connectionString))
+			{
+				conexao.Open();
+				var sql = "SELECT * FROM dependentes WHERE cpf = @cpfDependente;";
+				var dependente = conexao.QuerySingleOrDefault<Dependentes>(sql, new { cpfDependente });
 
+				if (dependente != null)
+				{
+					// Verifica se o dependente está vinculado a um funcionário
+					if (dependente.IdFuncionario != null)
+					{
+						// Cria uma nova visita para o dependente
+						VisitasEstacionamento visita = new VisitasEstacionamento();
+						visita.IdEstacionamento = new Estacionamentos { Id = idEstacionamento };
+						visita.IdFuncionario = new Funcionarios { Id = idFuncionario };
+						visita.IdDependente = dependente;
+						visita.Status = status;
+
+						if (status == 0) // Não chegou
+						{
+							visita.HoraChegada = DateTime.MinValue;
+							visita.HoraSaida = DateTime.MaxValue;
+						}
+						else if (status == 1) // Chegada
+						{
+							visita.HoraChegada = DateTime.Now;
+							visita.HoraSaida = DateTime.MaxValue;
+						}
+						else if (status == 2) // Saída
+						{
+							visita.HoraSaida = DateTime.Now;
+						}
+
+						using (MySqlConnection conexao2 = new MySqlConnection(connectionString))
+						{
+							conexao2.Open();
+							var sql2 = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_dependente) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idDependente);";
+							conexao2.Execute(sql2, new
+							{
+								horaChegada = visita.HoraChegada,
+								horaSaida = visita.HoraSaida,
+								status = visita.Status,
+								idEstacionamento = idEstacionamento,
+								idFuncionario = dependente.IdFuncionario,
+								idDependente = dependente.Id
+							});
+						}
+					}
+					else
+					{
+						throw new Exception($"Dependente {dependente.Nome} não está vinculado a um funcionário.");
+					}
+				}
+				else
+				{
+					throw new Exception("Dependente não encontrado.");
+				}
+			}
+		}
+
+		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
+		{
+			// Calcula a duração da visita
+			TimeSpan duracaoVisita = visita.HoraSaida - visita.HoraChegada;
+			decimal valorTarifa = CalculaValorTarifa(duracaoVisita, taxaHorariaEstacionamento);
+
+			// Verifica se o funcionário ou dependente é elegível para um desconto
+			if ((visita.IdFuncionario != null || visita.IdDependente != null) && visita.Status == 2) // Saída
+			{
+				// Aplica o desconto configurado pelo estacionamento
+				decimal valorDesconto = valorTarifa * percentualDescontoEstacionamento;
+
+				// Atualiza o valor da tarifa com o desconto
+				valorTarifa -= valorDesconto;
+			}
+
+			using (MySqlConnection conexao = new MySqlConnection(connectionString))
+			{
+				conexao.Open();
+				var sql = "UPDATE visitas_estacionamento SET valor_pago = @valorPago WHERE id = @idVisita;";
+				conexao.Execute(sql, new
+				{
+					valorPago = valorTarifa,
+					idVisita = visita.Id
+				});
+			}
+		}
+
+		private decimal CalculaValorTarifa(TimeSpan duracaoVisita, decimal taxaHorariaEstacionamento)
+		{
+			decimal valorTarifa = taxaHorariaEstacionamento * (decimal)duracaoVisita.TotalHours;
+
+			return valorTarifa;
 		}
 	}
 }

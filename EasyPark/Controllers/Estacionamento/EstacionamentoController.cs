@@ -79,6 +79,7 @@ namespace EasyPark.Controllers.Estacionamento
 		#endregion
 
 		#region Métodos Post
+
 		/// <summary>
 		/// Realiza o cadastro de uma visita feita no estacionamento
 		/// </summary>
@@ -95,6 +96,49 @@ namespace EasyPark.Controllers.Estacionamento
 			repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
 
 			return Ok("Visita estacionamento cadastrada com sucesso.");
+		}
+
+		/// <summary>
+		/// Realiza o cadastro de visita do dependente
+		/// </summary>
+		/// <param name="cpfDependente"></param>
+		/// <param name="idEstacionamento"></param>
+		/// <param name="status"></param>
+		/// <param name="idFuncionario"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("cadastrar-visita-dependente")]
+		public IActionResult CadastrarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario)
+		{
+			try
+			{
+				repositorio.CriarVisitaDependente(cpfDependente, idEstacionamento, status, idFuncionario);
+				return Ok("Cadastro de visita realizado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao cadastrar visita.");
+				throw;
+			}
+		}
+
+		/// <summary>
+		/// Realiza a aplicação de desconto caso o estacionamento aprovar
+		/// </summary>
+		/// <param name="visitaEstacionamento"></param>
+		/// <param name="percentualDescontoEstacionamento"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("aplicar-desconto")]
+		public IActionResult AplicarDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
+		{
+			if (taxaHorariaEstacionamento <= 0)
+			{
+				return BadRequest("Taxa horária inválida. Deve ser um valor maior que zero.");
+			}
+
+			repositorio.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
+			return Ok("Desconto aplicado com sucesso!");
 		}
 
 		#endregion

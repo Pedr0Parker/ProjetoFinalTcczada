@@ -25,7 +25,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM visitaestacionamento v WHERE v.id_estacionamento = @idEstacionamento;";
+				var sql = "SELECT * FROM visitas_estacionamento v WHERE v.id_estacionamento = @idEstacionamento;";
 				var visitas = connection.Query<VisitasEstacionamento>(sql).AsList();
 
 				return visitas;
@@ -37,7 +37,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM visitaestacionamento v WHERE v.id = @id;";
+				var sql = "SELECT * FROM visitas_estacionamento v WHERE v.id = @id;";
 				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sql, new { id });
 
 				return visitasId;

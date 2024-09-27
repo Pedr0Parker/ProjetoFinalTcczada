@@ -12,5 +12,7 @@ namespace EasyPark.Models.Repositorios.Interfaces.Funcionario
 		public void CadastraVeiculo(Veiculos veiculo);
 
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha);
+
+		public void CriarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario);
 	}
 }

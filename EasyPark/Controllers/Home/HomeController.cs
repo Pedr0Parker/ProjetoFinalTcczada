@@ -1,24 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyPark.Controllers.Home
+namespace EasyPark.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+	[ApiController]
+	[Route("home")]
+	public class HomeController : ControllerBase
+	{
+		[HttpGet]
+		public IActionResult Index()
+		{
+			return Ok("Bem-vindo à API do EasyPark");
+		}
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		[HttpGet]
+		[Route("para-empresas")]
+		public IActionResult ParaEmpresas()
+		{
+			return Ok("Redirecionando para a tela de empresas...");
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		[HttpGet]
+		[Route("para-estacionamentos")]
+		public IActionResult ParaEstacionamentos()
+		{
+			return Ok("Redirecionando para a tela de estacionamentos...");
+		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-    }
+		[HttpGet]
+		[Route("login")]
+		public IActionResult Login()
+		{
+			return Ok("Redirecionando para a tela de login...");
+		}
+	}
 }

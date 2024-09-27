@@ -1,14 +1,13 @@
 ﻿using Dapper;
 using DapperExtensions;
+using EasyPark.Models.Entidades.Dependente;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
-using EasyPark.Models.Entidades.Plano;
 using EasyPark.Models.Entidades.Veiculo;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 using MySql.Data.MySqlClient;
-using System.Numerics;
 using System.Text;
 using XSystem.Security.Cryptography;
-using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -68,6 +67,37 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void CadastraDependente(Funcionarios funcionario, Dependentes dependente)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT COUNT(*) FROM dependentes WHERE id_funcionario = @idFuncionario;";
+				var countDependentes = connection.QuerySingleOrDefault<int>(sql, new { idFuncionario = funcionario.Id });
+
+				if (countDependentes >= 4)
+				{
+					throw new Exception("Funcionário já possui 4 dependentes cadastrados.");
+				}
+			}
+
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "INSERT INTO dependentes (login, senha, nome, cpf, contato, email, id_funcionario) VALUES (@login, @senha, @nome, @cpf, @contato, @email, @idFuncionario);";
+				connection.Execute(sql, new
+				{
+					login = dependente.Login,
+					senha = dependente.Senha,
+					nome = dependente.Nome,
+					cpf = dependente.Cpf,
+					contato = dependente.Contato,
+					email = dependente.Email,
+					idFuncionario = funcionario.Id
+				});
+			}
+		}
+
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)
 		{
 			var existingFuncionario = GetFuncionarioById(funcionario.Id);
@@ -111,25 +141,9 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void CriarVisita(Funcionarios funcionario)
-        {
-            // Implementar método de Criar Visitas -> para dependentes
-        }
-
 		public void PagarPlano(Funcionarios funcionario)
 		{
-			if (funcionario.IdPlano == null)
-			{
-				throw new InvalidOperationException("Funcionário não tem plano cadastrado");
-			}
-
-			decimal valorPlano = funcionario.ValorPlano;
-
-			// Processar o pagamento do plano
-			// Isso pode envolver atualizar a conta do funcionário, enviar uma notificação de pagamento, etc.
-			// Para simplicidade, vamos supor que temos uma classe PaymentProcessor que lida com o pagamento
-			//PaymentProcessor paymentProcessor = new PaymentProcessor();
-			//paymentProcessor.ProcessPayment(valorPlano, funcionario.Contato); // Atenção: você pode precisar ajustar isso para usar o campo correto para a conta bancária
+			
 		}
 	}
 }

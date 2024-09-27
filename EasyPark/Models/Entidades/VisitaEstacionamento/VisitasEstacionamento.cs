@@ -1,4 +1,5 @@
-﻿using EasyPark.Models.Entidades.Estacionamento;
+﻿using EasyPark.Models.Entidades.Dependente;
+using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
 
 namespace EasyPark.Models.Entidades.VisitaEstacionamento
@@ -11,5 +12,6 @@ namespace EasyPark.Models.Entidades.VisitaEstacionamento
         public int Status { get; set; }
         public Estacionamentos IdEstacionamento { get; set; }
         public Funcionarios IdFuncionario { get; set; }
+        public Dependentes IdDependente { get; set; }
     }
 }
