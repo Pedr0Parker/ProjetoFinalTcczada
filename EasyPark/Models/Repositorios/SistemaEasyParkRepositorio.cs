@@ -4,6 +4,7 @@ using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Plano;
 using EasyPark.Models.Entidades.SistemaEasyPark;
+using EasyPark.Models.Entidades.Usuario;
 using MySql.Data.MySqlClient;
 
 namespace EasyPark.Models.Repositorios
@@ -81,6 +82,25 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void CadastraUsuario(Usuarios usuario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "INSERT INTO ep_usuarios (id, nome, login, senha, cpf_cnpj, nome_instituicao) VALUES (@id, @nome, @login, @senha, @cpfCnpj, @nomeInstituicao);";
+
+				connection.Execute(sql, new
+				{
+					id = usuario.Id,
+					nome = usuario.Nome,
+					login = usuario.Login,
+					senha = usuario.Senha,
+					cpfCnpj = usuario.CpfCnpj,
+					nomeInstituicao = usuario.NomeInstituicao
+				});
+			}
+		}
+
 		public void UpdatePlano(Planos plano)
 		{
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -140,6 +160,24 @@ namespace EasyPark.Models.Repositorios
 				}
 
 				connection.UpdateAsync(existingEstacionamento);
+			}
+		}
+
+		public void UpdateUsuario(Usuarios usuario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				var existingUsuario = GetUsuarioById(usuario.Id);
+				if (existingUsuario != null)
+				{
+					existingUsuario.Nome = usuario.Nome;
+					existingUsuario.Login = usuario.Login;
+					existingUsuario.Senha = usuario.Senha;
+					existingUsuario.CpfCnpj = usuario.CpfCnpj;
+					existingUsuario.NomeInstituicao = usuario.NomeInstituicao;
+				}
+
+				connection.UpdateAsync(existingUsuario);
 			}
 		}
 
@@ -203,6 +241,26 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void DeleteUsuario(long id)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "DELETE FROM ep_usuarios WHERE id = @id;";
+
+				int rowsAffected = connection.Execute(sql, new { id });
+
+				if (rowsAffected == 0)
+				{
+					Console.WriteLine("Erro!");
+				}
+				else
+				{
+					Console.WriteLine("Sucesso!");
+				}
+			}
+		}
+
 		private Planos GetPlanoById(long id)
 		{
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -236,6 +294,18 @@ namespace EasyPark.Models.Repositorios
 				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sql, new { id });
 
 				return estacionamentoId;
+			}
+		}
+
+		private Usuarios GetUsuarioById(long id)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM ep_usuarios u WHERE u.id = @id;";
+				var usuarioId = connection.QuerySingleOrDefault<Usuarios>(sql, new { id });
+
+				return usuarioId;
 			}
 		}
 	}

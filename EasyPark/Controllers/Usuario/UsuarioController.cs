@@ -1,75 +1,50 @@
-﻿using EasyPark.Models.Entidades.Usuario;
-using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Usuario
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("usuario")]
 	public class UsuarioController : ControllerBase
 	{
-		private UsuarioRepositorio repositorio = new UsuarioRepositorio();
+		private readonly UsuarioRepositorio repositorio;
 
+		public UsuarioController(IConfiguration configuration)
+		{
+			repositorio = new UsuarioRepositorio(configuration);
+		}
+
+		#region Métodos Get
+
+		/// <summary>
+		/// Realiza a busca de todos os usuários cadastrados no banco de dados
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
-		public IActionResult Index()
+		[Route("buscar-usuarios")]
+		public IActionResult BuscarUsuarios()
 		{
 			var usuarios = repositorio.GetAllUsuarios();
+			if (usuarios is null) return BadRequest("Houve um erro ao buscar os usuarios.");
+
 			return Ok(usuarios);
 		}
 
-		[HttpGet("{id}")]
-		public IActionResult Details(long id)
+		/// <summary>
+		/// Realiza a busca do usuário via Id cadastrado no banco de dados
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-usuario/id/{id}")]
+		public IActionResult BuscarUsuarioViaId(int id)
 		{
-			try
-			{
-				var usuario = repositorio.GetUsuarioById(id);
-				if (usuario == null)
-				{
-					return NotFound("Usuário não localizado!");
-				}
+			var idUsuario = repositorio.GetUsuarioById(id);
+			if (idUsuario is null) return NotFound($"Usuario de Id {id} não cadastrado no sistema.");
 
-				return Ok(usuario);
-			}
-			catch
-			{
-				return BadRequest("Erro ao localizar usuário!");
-			}
+			return Ok(idUsuario);
 		}
 
-		[HttpPost]
-		public IActionResult Create(Usuarios usuario)
-		{
-			if (ModelState.IsValid)
-			{
-				repositorio.AddUsuario(usuario);
-				return Ok("Usuário criado com sucesso!");
-			}
-
-			return BadRequest("Dados inválidos!");
-		}
-
-		[HttpPut]
-		public IActionResult Update(Usuarios usuario)
-		{
-			if (ModelState.IsValid)
-			{
-				repositorio.UpdateUsuario(usuario);
-				return Ok("Usuário atualizado com sucesso!");
-			}
-
-			return BadRequest("Dados inválidos!");
-		}
-
-		[HttpDelete("{id}")]
-		public IActionResult Delete(long id)
-		{
-			if (ModelState.IsValid)
-			{
-				repositorio.DeleteUsuario(id);
-				return Ok("Usuário deletado com sucesso!");
-			}
-
-			return BadRequest("Erro ao deletar usuário!");
-		}
+		#endregion
 	}
 }

@@ -1,59 +1,46 @@
-﻿using EasyPark.Models.Entidades.Usuario;
-using System.Linq;
+﻿using Dapper;
+using DapperExtensions;
+using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.Usuario;
+using MySql.Data.MySqlClient;
 
 namespace EasyPark.Models.Repositorios
 {
     public class UsuarioRepositorio
     {
-        private List<Usuarios> usuarios;
+		private List<Usuarios> empresas;
 
-        public UsuarioRepositorio()
-        {
-            usuarios = new List<Usuarios>
-            {
-                new Usuarios { Id = 1, Nome = "Gabriel", Cpf = "11111111111", NomeInstituicao = "IRTrade" },
-                new Usuarios { Id = 2, Nome = "Pedro", Cpf = "22222222222", NomeInstituicao = "IRTrade" },
-                new Usuarios { Id = 3, Nome = "Rodrigo", Cpf = "33333333333", NomeInstituicao = "IRTrade" },
-                new Usuarios { Id = 4, Nome = "Vinicius", Cpf = "44444444444", NomeInstituicao = "IRTrade" },
-                new Usuarios { Id = 5, Nome = "FedShow", Cpf = "55555555555", NomeInstituicao = "FedsonLandia" },
-                new Usuarios { Id = 6, Nome = "Vitor Henrique", Cpf = "66666666666", NomeInstituicao = "TCS" }
-            };
-        }
+		private readonly IConfiguration _configuration;
 
-        public IEnumerable<Usuarios> GetAllUsuarios()
-        {
-            return usuarios;
-        }
+		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
 
-        public Usuarios GetUsuarioById(long id)
-        {
-            return usuarios.FirstOrDefault(p => p.Id == id);
-        }
+		public UsuarioRepositorio(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
 
-        public void AddUsuario(Usuarios usuario)
-        {
-            usuario.Id = usuarios.Max(p => p.Id) + 1;
-            usuarios.Add(usuario);
-        }
+		public IEnumerable<Usuarios> GetAllUsuarios()
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM ep_usuarios u;";
+				var empresas = connection.Query<Usuarios>(sql).AsList();
 
-        public void UpdateUsuario(Usuarios usuario)
-        {
-            var existingUsuario = GetUsuarioById(usuario.Id);
-            if (existingUsuario != null)
-            {
-                existingUsuario.Nome = usuario.Nome;
-                existingUsuario.Cpf = usuario.Cpf;
-                existingUsuario.NomeInstituicao = usuario.NomeInstituicao;
-            }
-        }
+				return empresas;
+			}
+		}
 
-        public void DeleteUsuario(long id)
-        {
-            var usuario = GetUsuarioById(id);
-            if (usuario != null)
-            {
-                usuarios.Remove(usuario);
-            }
-        }
+		public Usuarios GetUsuarioById(long id)
+		{
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT * FROM ep_usuarios u WHERE u.id = @id;";
+				var usuarioId = connection.QuerySingleOrDefault<Usuarios>(sql, new { id });
+
+				return usuarioId;
+			}
+		}
     }
 }

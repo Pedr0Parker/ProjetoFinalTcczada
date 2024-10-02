@@ -1,6 +1,7 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Plano;
+using EasyPark.Models.Entidades.Usuario;
 using EasyPark.Models.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
@@ -206,6 +207,72 @@ namespace EasyPark.Controllers.SistemaEasyPark
 			catch
 			{
 				return BadRequest("Erro ao deletar estacionamento.");
+			}
+		}
+
+		#endregion
+
+		#region Usuário
+
+		/// <summary>
+		/// Realiza o cadastro de um novo usuario
+		/// </summary>
+		/// <param name="usuario"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("cadastrar-usuario")]
+		public IActionResult CadastrarUsuario(Usuarios usuario)
+		{
+			try
+			{
+				repositorio.CadastraUsuario(usuario);
+				return Ok($"Cadastro do usuario {usuario.Nome} realizado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao cadastrar um usuario.");
+				throw;
+			}
+		}
+
+		/// <summary>
+		/// Atualiza um usuário de acordo com o seu Id
+		/// </summary>
+		/// <param name="usuario"></param>
+		/// <returns></returns>
+		[HttpPut]
+		[Route("atualizar-usuario")]
+		public IActionResult AtualizarUsuario(Usuarios usuario)
+		{
+			try
+			{
+				repositorio.UpdateUsuario(usuario);
+				return Ok("Usuário atualizado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao atualizar usuário.");
+				throw;
+			}
+		}
+
+		/// <summary>
+		/// Deleta o usuário desejado de acordo com seu Id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpDelete]
+		[Route("excluir-usuario")]
+		public IActionResult ExcluirUsuario(long id)
+		{
+			try
+			{
+				repositorio.DeleteUsuario(id);
+				return Ok("Usuário excluído com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao deletar usuário.");
 			}
 		}
 
