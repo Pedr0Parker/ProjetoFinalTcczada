@@ -1,35 +1,30 @@
 ﻿using Dapper;
-using DapperExtensions;
-using EasyPark.Models.Entidades.Dependente;
-using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
-using EasyPark.Models.Entidades.VisitaEstacionamento;
+using EasyPark.Models.Entidades.Dependente;
 using MySql.Data.MySqlClient;
+using DapperExtensions;
 using System.Text;
 using XSystem.Security.Cryptography;
 
 namespace EasyPark.Models.Repositorios
 {
-    public class FuncionarioRepositorio
-    {
-		private List<Funcionarios> estacionamentos;
-
-		private readonly IConfiguration _configuration;
-
-		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+	public class FuncionarioRepositorio
+	{
+		private readonly string _connectionString;
+		private readonly string sql;
 
 		public FuncionarioRepositorio(IConfiguration configuration)
 		{
-			_configuration = configuration;
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+			sql = "SELECT * FROM funcionarios f";
 		}
 
 		public IEnumerable<Funcionarios> GetAllFuncionarios()
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM funcionarios f;";
 				var funcionarios = connection.Query<Funcionarios>(sql).AsList();
 
 				return funcionarios;
@@ -37,12 +32,12 @@ namespace EasyPark.Models.Repositorios
 		}
 
 		public Funcionarios GetFuncionarioById(long id)
-        {
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM funcionarios f WHERE f.id = @id;";
-				var funcionarioId = connection.QuerySingleOrDefault<Funcionarios>(sql, new { id });
+				var sqlId = $"{sql} WHERE f.id = @id";
+				var funcionarioId = connection.QuerySingleOrDefault<Funcionarios>(sqlId, new { id });
 
 				return funcionarioId;
 			}
@@ -50,7 +45,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO veiculos (id, placa, modelo, cor, marca, id_funcionario) VALUES (@id, @placa, @modelo, @cor, @marca, @idFuncionario);";
@@ -69,7 +64,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CadastraDependente(Funcionarios funcionario, Dependentes dependente)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT COUNT(*) FROM dependentes WHERE id_funcionario = @idFuncionario;";
@@ -81,7 +76,7 @@ namespace EasyPark.Models.Repositorios
 				}
 			}
 
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO dependentes (login, senha, nome, cpf, contato, email, id_funcionario) VALUES (@login, @senha, @nome, @cpf, @contato, @email, @idFuncionario);";
@@ -107,7 +102,7 @@ namespace EasyPark.Models.Repositorios
 				{
 					existingFuncionario.Senha = HashSenha(novaSenha);
 
-					using (MySqlConnection connection = new MySqlConnection(connectionString))
+					using (MySqlConnection connection = new MySqlConnection(_connectionString))
 					{
 						connection.Open();
 						existingFuncionario.Senha = funcionario.Senha;
@@ -141,9 +136,10 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		// Verificar como será realizado o pagamento do Plano
 		public void PagarPlano(Funcionarios funcionario)
 		{
-			
+
 		}
 	}
 }

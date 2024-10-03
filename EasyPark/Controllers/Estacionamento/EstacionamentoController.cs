@@ -1,5 +1,5 @@
 ﻿using EasyPark.Models.Entidades.VisitaEstacionamento;
-using EasyPark.Models.Repositorios;
+using EasyPark.Models.RegrasNegocio.Estacionamento;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Estacionamento
@@ -8,11 +8,11 @@ namespace EasyPark.Controllers.Estacionamento
 	[Route("estacionamento")]
 	public class EstacionamentoController : ControllerBase
 	{
-		private readonly EstacionamentoRepositorio repositorio;
+		private readonly EstacionamentoBusinessRule _businessRule;
 
-		public EstacionamentoController(IConfiguration configuration)
+		public EstacionamentoController(EstacionamentoBusinessRule businessRule)
 		{
-			repositorio = new EstacionamentoRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -25,7 +25,7 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("buscar-estacionamentos")]
 		public IActionResult BuscarEstacionamentos()
 		{
-			var estacionamentos = repositorio.GetAllEstacionamentos();
+			var estacionamentos = _businessRule.GetAllEstacionamentos();
 			if (estacionamentos is null) return BadRequest("Houve um erro ao buscar os estacionamentos.");
 
 			return Ok(estacionamentos);
@@ -40,7 +40,7 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("buscar-estacionamento/id/{id}")]
 		public IActionResult BuscasEstacionamentoViaId(int id)
 		{
-			var idEstacionamento = repositorio.GetEstacionamentoById(id);
+			var idEstacionamento = _businessRule.GetEstacionamentoById(id);
 			if (idEstacionamento is null) return NotFound($"Estacionamento de Id {id} não cadastrado no sistema.");
 
 			return Ok(idEstacionamento);
@@ -55,7 +55,7 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("buscar-estacionamento/nome/{nome}")]
 		public IActionResult BuscasEstacionamentoViaNome(string nome)
 		{
-			var nomeEstacionamento = repositorio.GetEstacionamentoByNome(nome);
+			var nomeEstacionamento = _businessRule.GetEstacionamentoByNome(nome);
 			if (nomeEstacionamento is null) return NotFound($"Estacionamento de nome {nome} não cadastrado no sistema.");
 
 			return Ok(nomeEstacionamento);
@@ -70,7 +70,7 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("verifica-funcionario/cpf/{cpf}")]
 		public IActionResult VerificarFuncionarios(string cpf)
 		{
-			var buscaFuncionarioCpf = repositorio.VerificaFuncionarios(cpf);
+			var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(cpf);
 			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {cpf} não cadastrado no sistema.");
 
 			return Ok(buscaFuncionarioCpf);
@@ -93,7 +93,7 @@ namespace EasyPark.Controllers.Estacionamento
 			var funcionario = visitaEstacionamento.IdFuncionario;
 			var status = visitaEstacionamento.Status;
 
-			repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+			_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
 
 			return Ok("Visita estacionamento cadastrada com sucesso.");
 		}
@@ -112,7 +112,7 @@ namespace EasyPark.Controllers.Estacionamento
 		{
 			try
 			{
-				repositorio.CriarVisitaDependente(cpfDependente, idEstacionamento, status, idFuncionario);
+				_businessRule.CriarVisitaDependente(cpfDependente, idEstacionamento, status, idFuncionario);
 				return Ok("Cadastro de visita realizado com sucesso!");
 			}
 			catch
@@ -137,7 +137,7 @@ namespace EasyPark.Controllers.Estacionamento
 				return BadRequest("Taxa horária inválida. Deve ser um valor maior que zero.");
 			}
 
-			repositorio.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
+			_businessRule.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
 			return Ok("Desconto aplicado com sucesso!");
 		}
 

@@ -8,36 +8,33 @@ namespace EasyPark.Models.Repositorios
 {
     public class UsuarioRepositorio
     {
-		private List<Usuarios> empresas;
-
-		private readonly IConfiguration _configuration;
-
-		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+		private readonly string _connectionString;
+		private readonly string sql;
 
 		public UsuarioRepositorio(IConfiguration configuration)
 		{
-			_configuration = configuration;
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+			sql = "SELECT * FROM ep_usuarios u";
 		}
 
 		public IEnumerable<Usuarios> GetAllUsuarios()
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM ep_usuarios u;";
-				var empresas = connection.Query<Usuarios>(sql).AsList();
+				var usuarios = connection.Query<Usuarios>(sql).AsList();
 
-				return empresas;
+				return usuarios;
 			}
 		}
 
 		public Usuarios GetUsuarioById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM ep_usuarios u WHERE u.id = @id;";
-				var usuarioId = connection.QuerySingleOrDefault<Usuarios>(sql, new { id });
+				var sqlId = $"{sql} WHERE u.id = @id";
+				var usuarioId = connection.QuerySingleOrDefault<Usuarios>(sqlId, new { id });
 
 				return usuarioId;
 			}

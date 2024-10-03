@@ -1,4 +1,4 @@
-﻿using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.RegrasNegocio.Dependente;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Dependente
@@ -7,11 +7,11 @@ namespace EasyPark.Controllers.Dependente
 	[Route("dependente")]
 	public class DependenteController : ControllerBase
 	{
-		private readonly DependenteRepositorio repositorio;
+		private readonly DependenteBusinessRule _businessRule;
 
-		public DependenteController(IConfiguration configuration)
+		public DependenteController(DependenteBusinessRule businessRule)
 		{
-			repositorio = new DependenteRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -24,7 +24,7 @@ namespace EasyPark.Controllers.Dependente
 		[Route("buscar-dependentes")]
 		public IActionResult BuscarDependentes()
 		{
-			var dependentes = repositorio.GetAllDependentes();
+			var dependentes = _businessRule.GetAllDependentes();
 			if (dependentes is null) return BadRequest("Houve um erro ao buscar os dependentes.");
 
 			return Ok(dependentes);
@@ -39,7 +39,7 @@ namespace EasyPark.Controllers.Dependente
 		[Route("buscar-dependente/id/{id}")]
 		public IActionResult BuscarDependenteViaId(int id)
 		{
-			var idDependente = repositorio.GetDependenteById(id);
+			var idDependente = _businessRule.GetDependenteById(id);
 			if (idDependente is null) return NotFound($"Dependente de Id {id} não cadastrado no sistema.");
 
 			return Ok(idDependente);

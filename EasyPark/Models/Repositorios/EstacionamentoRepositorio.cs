@@ -9,25 +9,22 @@ namespace EasyPark.Models.Repositorios
 {
 	public class EstacionamentoRepositorio
 	{
-		private List<Estacionamentos> estacionamentos;
-
-		private readonly IConfiguration _configuration;
-
-		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+		private readonly string _connectionString;
+		private readonly string sql;
 
 		public EstacionamentoRepositorio(IConfiguration configuration)
 		{
-			_configuration = configuration;
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+			sql = "SELECT * FROM estacionamentos e";
 		}
 
 		// To Do: implementar posteriormente, uma possível busca por filtro
 
 		public IEnumerable<Estacionamentos> GetAllEstacionamentos()
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM estacionamentos e;";
 				var estacionamentos = connection.Query<Estacionamentos>(sql).AsList();
 
 				return estacionamentos;
@@ -36,11 +33,11 @@ namespace EasyPark.Models.Repositorios
 
 		public Estacionamentos GetEstacionamentoById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM estacionamentos e WHERE e.id = @id;";
-				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sql, new { id });
+				var sqlId = $"{sql} WHERE e.id = @id";
+				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sqlId, new { id });
 
 				return estacionamentoId;
 			}
@@ -48,11 +45,11 @@ namespace EasyPark.Models.Repositorios
 
 		public Estacionamentos GetEstacionamentoByNome(string nome)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM estacionamentos e WHERE e.nome = @nome;";
-				var estacionamentoNome = connection.QuerySingleOrDefault<Estacionamentos>(sql, new { nome });
+				var sqlNome = $"{sql} WHERE e.nome = @nome";
+				var estacionamentoNome = connection.QuerySingleOrDefault<Estacionamentos>(sqlNome, new { nome });
 
 				return estacionamentoNome;
 			}
@@ -60,7 +57,7 @@ namespace EasyPark.Models.Repositorios
 
 		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM funcionarios f WHERE f.cpf = @cpfFuncionario;";
@@ -104,7 +101,7 @@ namespace EasyPark.Models.Repositorios
 				// Agende uma tarefa para trocar o status para 0 após 5 minutos
 				Task.Delay(TimeSpan.FromMinutes(5)).ContinueWith(t =>
 				{
-					using (MySqlConnection connection = new MySqlConnection(connectionString))
+					using (MySqlConnection connection = new MySqlConnection(_connectionString))
 					{
 						connection.Open();
 						var sql = "UPDATE visitas_estacionamento SET status = 0 WHERE id_funcionario = @idFuncionario AND id_estacionamento = @idEstacionamento;";
@@ -117,7 +114,7 @@ namespace EasyPark.Models.Repositorios
 				});
 			}
 
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario);";
@@ -136,7 +133,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CriarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario)
 		{
-			using (MySqlConnection conexao = new MySqlConnection(connectionString))
+			using (MySqlConnection conexao = new MySqlConnection(_connectionString))
 			{
 				conexao.Open();
 				var sql = "SELECT * FROM dependentes WHERE cpf = @cpfDependente;";
@@ -169,7 +166,7 @@ namespace EasyPark.Models.Repositorios
 							visita.HoraSaida = DateTime.Now;
 						}
 
-						using (MySqlConnection conexao2 = new MySqlConnection(connectionString))
+						using (MySqlConnection conexao2 = new MySqlConnection(_connectionString))
 						{
 							conexao2.Open();
 							var sql2 = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_dependente) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idDependente);";
@@ -212,7 +209,7 @@ namespace EasyPark.Models.Repositorios
 				valorTarifa -= valorDesconto;
 			}
 
-			using (MySqlConnection conexao = new MySqlConnection(connectionString))
+			using (MySqlConnection conexao = new MySqlConnection(_connectionString))
 			{
 				conexao.Open();
 				var sql = "UPDATE visitas_estacionamento SET valor_pago = @valorPago WHERE id = @idVisita;";

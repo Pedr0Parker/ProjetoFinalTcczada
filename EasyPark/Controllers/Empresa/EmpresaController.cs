@@ -1,8 +1,5 @@
-﻿using EasyPark.Models.Entidades.Empresa;
-using EasyPark.Models.Entidades.Estacionamento;
-using EasyPark.Models.Entidades.Funcionario;
-using EasyPark.Models.Repositorios;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.RegrasNegocio.Empresa;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Empresa
@@ -11,11 +8,11 @@ namespace EasyPark.Controllers.Empresa
 	[Route("empresa")]
 	public class EmpresaController : ControllerBase
 	{
-		private readonly EmpresaRepositorio repositorio;
+		private readonly EmpresaBusinessRule _businessRule;
 
-		public EmpresaController(IConfiguration configuration)
+		public EmpresaController(EmpresaBusinessRule businessRule)
 		{
-			repositorio = new EmpresaRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -28,7 +25,7 @@ namespace EasyPark.Controllers.Empresa
 		[Route("buscar-empresas")]
 		public IActionResult BuscarEmpresas()
 		{
-			var empresas = repositorio.GetAllEmpresas();
+			var empresas = _businessRule.GetAllEmpresas();
 			if (empresas is null) return BadRequest("Houve um erro ao buscar as empresas.");
 
 			return Ok(empresas);
@@ -43,7 +40,7 @@ namespace EasyPark.Controllers.Empresa
 		[Route("buscar-empresa/id/{id}")]
 		public IActionResult BuscarEmpresaViaId(int id)
 		{
-			var idEmpresa = repositorio.GetEmpresaById(id);
+			var idEmpresa = _businessRule.GetEmpresaById(id);
 			if (idEmpresa is null) return NotFound($"Empresa de Id {id} não cadastrado no sistema.");
 
 			return Ok(idEmpresa);
@@ -58,7 +55,7 @@ namespace EasyPark.Controllers.Empresa
 		[Route("buscar-empresa/nome/{nome}")]
 		public IActionResult BuscarEmpresaViaNome(string nome)
 		{
-			var nomeEmpresa = repositorio.GetEmpresaByNome(nome);
+			var nomeEmpresa = _businessRule.GetEmpresaByNome(nome);
 			if (nomeEmpresa is null) return NotFound($"Empresa de nome {nome} não cadastrada no sistema.");
 
 			return Ok(nomeEmpresa);
@@ -79,7 +76,7 @@ namespace EasyPark.Controllers.Empresa
 		{
 			try
 			{
-				repositorio.CadastraFuncionario(funcionario);
+				_businessRule.CadastraFuncionario(funcionario);
 				return Ok($"Cadastro do funcionário {funcionario.Nome} realizado com sucesso!");
 			}
 			catch

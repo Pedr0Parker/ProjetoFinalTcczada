@@ -7,26 +7,24 @@ namespace EasyPark.Models.Repositorios
 {
     public class VisitaEstacionamentoRepositorio
     {
-        private List<VisitasEstacionamento> visitasEstacionamento;
-
-		private readonly IConfiguration _configuration;
-
-		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+		private readonly string _connectionString;
+		private readonly string sql;
 
 		public VisitaEstacionamentoRepositorio(IConfiguration configuration)
 		{
-			_configuration = configuration;
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+			sql = "SELECT * FROM visitas_estacionamento v";
 		}
 
 		public IEnumerable<VisitasEstacionamento> GetAllVisitas(Estacionamentos estacionamento)
 		{
 			var idEstacionamento = GetEstacionamentoById(estacionamento.Id);
 
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM visitas_estacionamento v WHERE v.id_estacionamento = @idEstacionamento;";
-				var visitas = connection.Query<VisitasEstacionamento>(sql).AsList();
+				var sqlVisitas = $"{sql} WHERE v.id_estacionamento = @idEstacionamento";
+				var visitas = connection.Query<VisitasEstacionamento>(sqlVisitas, new { idEstacionamento = estacionamento.Id }).AsList();
 
 				return visitas;
 			}
@@ -34,11 +32,11 @@ namespace EasyPark.Models.Repositorios
 
 		public VisitasEstacionamento GetVisitaById(long id)
         {
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM visitas_estacionamento v WHERE v.id = @id;";
-				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sql, new { id });
+				var sqlId = $"{sql} WHERE v.id = @id";
+				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sqlId, new { id });
 
 				return visitasId;
 			}
@@ -46,7 +44,7 @@ namespace EasyPark.Models.Repositorios
 
 		private Estacionamentos GetEstacionamentoById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM estacionamentos e WHERE e.id = @id;";

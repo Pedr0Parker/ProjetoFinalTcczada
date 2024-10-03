@@ -1,8 +1,7 @@
 ﻿using EasyPark.Models.Entidades.CadastroDependente;
-using EasyPark.Models.Entidades.Dependente;
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
-using EasyPark.Models.Repositorios;
+using EasyPark.Models.RegrasNegocio.Funcionario;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Funcionario
@@ -11,11 +10,11 @@ namespace EasyPark.Controllers.Funcionario
 	[Route("funcionario")]
 	public class FuncionarioController : ControllerBase
     {
-		private readonly FuncionarioRepositorio repositorio;
+		private readonly FuncionarioBusinessRule _businessRule;
 
-		public FuncionarioController(IConfiguration configuration)
+		public FuncionarioController(FuncionarioBusinessRule businessRule)
 		{
-			repositorio = new FuncionarioRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -28,7 +27,7 @@ namespace EasyPark.Controllers.Funcionario
 		[Route("buscar-funcionarios")]
 		public IActionResult BuscarFuncionarios()
 		{
-			var funcionarios = repositorio.GetAllFuncionarios();
+			var funcionarios = _businessRule.GetAllFuncionarios();
 			if (funcionarios is null) return BadRequest("Houve um erro ao buscar os funcionários.");
 
 			return Ok(funcionarios);
@@ -43,7 +42,7 @@ namespace EasyPark.Controllers.Funcionario
 		[Route("buscar-funcionario/id/{id}")]
 		public IActionResult BuscasFuncionarioViaId(int id)
 		{
-			var idFuncionario = repositorio.GetFuncionarioById(id);
+			var idFuncionario = _businessRule.GetFuncionarioById(id);
 			if (idFuncionario is null) return NotFound($"Funcionário de Id {id} não cadastrado no sistema.");
 
 			return Ok(idFuncionario);
@@ -64,7 +63,7 @@ namespace EasyPark.Controllers.Funcionario
 		{
 			try
 			{
-				repositorio.CadastraVeiculo(veiculo);
+				_businessRule.CadastraVeiculo(veiculo);
 				return Ok("Cadastro de veículo realizado com sucesso!");
 			}
 			catch
@@ -89,7 +88,7 @@ namespace EasyPark.Controllers.Funcionario
 				var funcionario = request.Funcionario;
 				var dependente = request.Dependente;
 
-				repositorio.CadastraDependente(funcionario, dependente);
+				_businessRule.CadastraDependente(funcionario, dependente);
 				return Ok("Dependente cadastrado com sucesso!");
 			}
 			catch
@@ -115,7 +114,7 @@ namespace EasyPark.Controllers.Funcionario
 		{
 			try
 			{
-				repositorio.UpdateSenhaFuncionario(funcionario, novaSenha);
+				_businessRule.UpdateSenhaFuncionario(funcionario, novaSenha);
 				return Ok("Plano atualizado com sucesso!");
 			}
 			catch

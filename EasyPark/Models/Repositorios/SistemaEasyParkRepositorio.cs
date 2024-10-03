@@ -3,7 +3,6 @@ using DapperExtensions;
 using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Plano;
-using EasyPark.Models.Entidades.SistemaEasyPark;
 using EasyPark.Models.Entidades.Usuario;
 using MySql.Data.MySqlClient;
 
@@ -11,18 +10,16 @@ namespace EasyPark.Models.Repositorios
 {
 	public class SistemaEasyParkRepositorio
 	{
-		private readonly IConfiguration _configuration;
-
-		string connectionString = "Server=localhost;Database=easypark;Uid=root;";
+		private readonly string _connectionString;
 
 		public SistemaEasyParkRepositorio(IConfiguration configuration)
 		{
-			_configuration = configuration;
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
 		}
 
 		public void CadastraPlano(Planos plano)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO planos (id, tipo, nome, status) VALUES (@id, @tipoPlano, @nomePlano, @statusPlano);";
@@ -39,7 +36,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CadastraEmpresa(Empresas empresa)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO empresas (id, login, senha, nome, nome_usual, nome_dono, cnpj, valor_assinatura, endereco, contato, data_cadastro) VALUES (@id, @login, @senha, @nome, @nomeFantasia, @nomeDono, @cnpj, @valorAssinatura, @endereco, @contato, @dataCadastro);";
@@ -63,7 +60,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CadastraEstacionamento(Estacionamentos estacionamento)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO estacionamentos (id, login, senha, nome, cnpj, endereco, contato, data_cadastro) VALUES (@id, @login, @senha, @nome, @cnpj, @endereco, @contato, @dataCadastro);";
@@ -84,7 +81,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void CadastraUsuario(Usuarios usuario)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "INSERT INTO ep_usuarios (id, nome, login, senha, cpf_cnpj, nome_instituicao) VALUES (@id, @nome, @login, @senha, @cpfCnpj, @nomeInstituicao);";
@@ -103,7 +100,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void UpdatePlano(Planos plano)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				var existingPlano = GetPlanoById(plano.Id);
 				connection.Open();
@@ -120,7 +117,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void UpdateEmpresa(Empresas empresa)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				var existingEmpresa = GetEmpresaById(empresa.Id);
 				connection.Open();
@@ -144,7 +141,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void UpdateEstacionamento(Estacionamentos estacionamento)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				var existingEstacionamento = GetEstacionamentoById(estacionamento.Id);
 				connection.Open();
@@ -165,7 +162,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void UpdateUsuario(Usuarios usuario)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				var existingUsuario = GetUsuarioById(usuario.Id);
 				if (existingUsuario != null)
@@ -183,7 +180,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void DeletePlano(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "DELETE FROM planos WHERE id = @id;";
@@ -203,7 +200,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void DeleteEmpresa(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "DELETE FROM empresas WHERE id = @id;";
@@ -223,7 +220,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void DeleteEstacionamento(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "DELETE FROM estacionamentos WHERE id = @id;";
@@ -243,7 +240,7 @@ namespace EasyPark.Models.Repositorios
 
 		public void DeleteUsuario(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "DELETE FROM ep_usuarios WHERE id = @id;";
@@ -263,7 +260,7 @@ namespace EasyPark.Models.Repositorios
 
 		private Planos GetPlanoById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM planos p WHERE p.id = @id;";
@@ -275,7 +272,7 @@ namespace EasyPark.Models.Repositorios
 
 		private Empresas GetEmpresaById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM empresas e WHERE e.id = @id;";
@@ -287,7 +284,7 @@ namespace EasyPark.Models.Repositorios
 
 		private Estacionamentos GetEstacionamentoById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM estacionamentos e WHERE e.id = @id;";
@@ -299,7 +296,7 @@ namespace EasyPark.Models.Repositorios
 
 		private Usuarios GetUsuarioById(long id)
 		{
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sql = "SELECT * FROM ep_usuarios u WHERE u.id = @id;";

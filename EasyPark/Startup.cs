@@ -2,6 +2,22 @@
 using Microsoft.OpenApi.Models;
 using EasyPark.Models.Data;
 using EasyPark.Models.Repositorios;
+using EasyPark.Controllers.Plano;
+using EasyPark.Models.RegrasNegocio.Plano;
+using EasyPark.Controllers.Usuario;
+using EasyPark.Models.RegrasNegocio.Usuario;
+using EasyPark.Controllers.VisitaEstacionamento;
+using EasyPark.Models.RegrasNegocio.VisitaEstacionamento;
+using EasyPark.Controllers.Dependente;
+using EasyPark.Models.RegrasNegocio.Dependente;
+using EasyPark.Controllers.Funcionario;
+using EasyPark.Models.RegrasNegocio.Funcionario;
+using EasyPark.Models.RegrasNegocio.Empresa;
+using EasyPark.Controllers.Empresa;
+using EasyPark.Controllers.Estacionamento;
+using EasyPark.Models.RegrasNegocio.Estacionamento;
+using EasyPark.Models.RegrasNegocio.SistemaEasyPark;
+using EasyPark.Controllers.SistemaEasyPark;
 
 namespace EasyPark
 {
@@ -16,6 +32,38 @@ namespace EasyPark
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddTransient<DependenteRepositorio>();
+			services.AddTransient<DependenteBusinessRule>();
+			services.AddTransient<DependenteController>();
+
+			services.AddTransient<EmpresaRepositorio>();
+			services.AddTransient<EmpresaBusinessRule>();
+			services.AddTransient<EmpresaController>();
+
+			services.AddTransient<EstacionamentoRepositorio>();
+			services.AddTransient<EstacionamentoBusinessRule>();
+			services.AddTransient<EstacionamentoController>();
+
+			services.AddTransient<FuncionarioRepositorio>();
+			services.AddTransient<FuncionarioBusinessRule>();
+			services.AddTransient<FuncionarioController>();
+
+			services.AddTransient<PlanoRepositorio>();
+			services.AddTransient<PlanoBusinessRule>();
+			services.AddTransient<PlanoController>();
+
+			services.AddTransient<SistemaEasyParkRepositorio>();
+			services.AddTransient<SistemaEasyParkBusinessRule>();
+			services.AddTransient<SistemaEasyParkController>();
+
+			services.AddTransient<UsuarioRepositorio>();
+			services.AddTransient<UsuarioBusinessRule>();
+			services.AddTransient<UsuarioController>();
+
+			services.AddTransient<VisitaEstacionamentoRepositorio>();
+			services.AddTransient<VisitaEstacionamentoBusinessRule>();
+			services.AddTransient<VisitaEstacionamentoController>();
+
 			services.AddControllers();
 
 			// Registre o repositório como um serviço
@@ -23,7 +71,7 @@ namespace EasyPark
 
 			// Certifique-se de que a configuração está sendo passada
 			services.AddDbContext<DbEasyPark>(options =>
-				options.UseNpgsql(Configuration.GetConnectionString("EasyParkConnection")));
+				options.UseNpgsql(Configuration.GetConnectionString("DbEasyParkConnection")));
 
 			// Configurando o DbContext com PostgreSQL
 			//services.AddDbContext<DbEasyPark>(options =>

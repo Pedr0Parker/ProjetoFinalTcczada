@@ -2,7 +2,7 @@
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Plano;
 using EasyPark.Models.Entidades.Usuario;
-using EasyPark.Models.Repositorios;
+using EasyPark.Models.RegrasNegocio.SistemaEasyPark;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.SistemaEasyPark
@@ -11,11 +11,11 @@ namespace EasyPark.Controllers.SistemaEasyPark
 	[Route("easyPark")]
 	public class SistemaEasyParkController : ControllerBase
 	{
-		private readonly SistemaEasyParkRepositorio repositorio;
+		private readonly SistemaEasyParkBusinessRule _businessRule;
 
-		public SistemaEasyParkController(IConfiguration configuration)
+		public SistemaEasyParkController(SistemaEasyParkBusinessRule businessRule)
 		{
-			repositorio = new SistemaEasyParkRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Planos
@@ -31,7 +31,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.CadastraPlano(plano);
+				_businessRule.CadastraPlano(plano);
 				return Ok($"Cadastro do Plano {plano.NomePlano} realizado com sucesso!");
 			}
 			catch
@@ -52,7 +52,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.UpdatePlano(plano);
+				_businessRule.UpdatePlano(plano);
 				return Ok("Plano atualizado com sucesso!");
 			}
 			catch
@@ -72,7 +72,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.DeletePlano(id);
+				_businessRule.DeletePlano(id);
 				return Ok("Plano excluído com sucesso!");
 			}
 			catch
@@ -95,7 +95,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.CadastraEmpresa(empresa);
+				_businessRule.CadastraEmpresa(empresa);
 				return Ok($"Cadastro da empresa {empresa.Nome} realizado com sucesso!");
 			}
 			catch
@@ -115,7 +115,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.UpdateEmpresa(empresa);
+				_businessRule.UpdateEmpresa(empresa);
 				return Ok("Empresa atualizada com sucesso!");
 			}
 			catch
@@ -135,7 +135,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.DeleteEmpresa(id);
+				_businessRule.DeleteEmpresa(id);
 				return Ok("Empresa excluída com sucesso!");
 			}
 			catch
@@ -159,7 +159,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.CadastraEstacionamento(estacionamento);
+				_businessRule.CadastraEstacionamento(estacionamento);
 				return Ok($"Cadastro do estacionamento {estacionamento.Nome} realizado com sucesso!");
 			}
 			catch
@@ -180,7 +180,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.UpdateEstacionamento(estacionamento);
+				_businessRule.UpdateEstacionamento(estacionamento);
 				return Ok("Estacionamento atualizado com sucesso!");
 			}
 			catch
@@ -201,7 +201,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.DeleteEstacionamento(id);
+				_businessRule.DeleteEstacionamento(id);
 				return Ok("Estacionamento excluído com sucesso!");
 			}
 			catch
@@ -225,7 +225,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.CadastraUsuario(usuario);
+				_businessRule.CadastraUsuario(usuario);
 				return Ok($"Cadastro do usuario {usuario.Nome} realizado com sucesso!");
 			}
 			catch
@@ -246,7 +246,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.UpdateUsuario(usuario);
+				_businessRule.UpdateUsuario(usuario);
 				return Ok("Usuário atualizado com sucesso!");
 			}
 			catch
@@ -267,7 +267,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		{
 			try
 			{
-				repositorio.DeleteUsuario(id);
+				_businessRule.DeleteUsuario(id);
 				return Ok("Usuário excluído com sucesso!");
 			}
 			catch

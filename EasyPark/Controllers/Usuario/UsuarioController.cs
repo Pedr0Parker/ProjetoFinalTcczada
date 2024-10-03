@@ -1,4 +1,4 @@
-﻿using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.RegrasNegocio.Usuario;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Usuario
@@ -7,11 +7,11 @@ namespace EasyPark.Controllers.Usuario
 	[Route("usuario")]
 	public class UsuarioController : ControllerBase
 	{
-		private readonly UsuarioRepositorio repositorio;
+		private readonly UsuarioBusinessRule _businessRule;
 
-		public UsuarioController(IConfiguration configuration)
+		public UsuarioController(UsuarioBusinessRule businessRule)
 		{
-			repositorio = new UsuarioRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -24,7 +24,7 @@ namespace EasyPark.Controllers.Usuario
 		[Route("buscar-usuarios")]
 		public IActionResult BuscarUsuarios()
 		{
-			var usuarios = repositorio.GetAllUsuarios();
+			var usuarios = _businessRule.GetAllUsuarios();
 			if (usuarios is null) return BadRequest("Houve um erro ao buscar os usuarios.");
 
 			return Ok(usuarios);
@@ -39,7 +39,7 @@ namespace EasyPark.Controllers.Usuario
 		[Route("buscar-usuario/id/{id}")]
 		public IActionResult BuscarUsuarioViaId(int id)
 		{
-			var idUsuario = repositorio.GetUsuarioById(id);
+			var idUsuario = _businessRule.GetUsuarioById(id);
 			if (idUsuario is null) return NotFound($"Usuario de Id {id} não cadastrado no sistema.");
 
 			return Ok(idUsuario);

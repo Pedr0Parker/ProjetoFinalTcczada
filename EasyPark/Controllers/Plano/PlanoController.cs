@@ -1,4 +1,4 @@
-﻿using EasyPark.Models.Repositorios;
+﻿using EasyPark.Models.RegrasNegocio.Plano;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Plano
@@ -7,11 +7,11 @@ namespace EasyPark.Controllers.Plano
 	[Route("plano")]
 	public class PlanoController : ControllerBase
 	{
-		private readonly PlanoRepositorio repositorio;
+		private readonly PlanoBusinessRule _businessRule;
 
-		public PlanoController(IConfiguration configuration)
+		public PlanoController(PlanoBusinessRule businessRule)
 		{
-			repositorio = new PlanoRepositorio(configuration);
+			_businessRule = businessRule;
 		}
 
 		#region Métodos Get
@@ -24,7 +24,7 @@ namespace EasyPark.Controllers.Plano
 		[Route("buscar-planos")]
 		public IActionResult BuscarPlanos()
 		{
-			var planos = repositorio.GetAllPlanos();
+			var planos = _businessRule.GetAllPlanos();
 			if (planos is null) return BadRequest("Houve um erro ao buscar os planos.");
 
 			return Ok(planos);
@@ -39,7 +39,7 @@ namespace EasyPark.Controllers.Plano
 		[Route("buscar-plano/id/{id}")]
 		public IActionResult BuscarPlanoViaId(int id)
 		{
-			var idPlano = repositorio.GetPlanoById(id);
+			var idPlano = _businessRule.GetPlanoById(id);
 			if (idPlano is null) return NotFound($"Plano de Id {id} não cadastrado no sistema.");
 
 			return Ok(idPlano);
