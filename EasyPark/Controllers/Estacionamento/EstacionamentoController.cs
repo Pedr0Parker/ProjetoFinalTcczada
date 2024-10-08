@@ -89,13 +89,21 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("cadastra-visita-estacionamento")]
 		public IActionResult CadastrarVisitaEstacionamento(VisitasEstacionamento visitaEstacionamento)
 		{
-			var estacionamento = visitaEstacionamento.IdEstacionamento;
-			var funcionario = visitaEstacionamento.IdFuncionario;
-			var status = visitaEstacionamento.Status;
+			try
+			{
+				var estacionamento = visitaEstacionamento.IdEstacionamento;
+				var funcionario = visitaEstacionamento.IdFuncionario;
+				var status = visitaEstacionamento.Status;
 
-			_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+				_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
 
-			return Ok("Visita estacionamento cadastrada com sucesso.");
+				return Ok("Visita estacionamento cadastrada com sucesso.");
+			}
+			catch
+			{
+				return BadRequest("Erro ao cadastrar visita.");
+				throw;
+			}
 		}
 
 		/// <summary>
@@ -108,12 +116,16 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <returns></returns>
 		[HttpPost]
 		[Route("cadastrar-visita-dependente")]
-		public IActionResult CadastrarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario)
+		public IActionResult CadastrarVisitaDependente(string cpfDependente, VisitasEstacionamento visitaEstacionamento)
 		{
 			try
 			{
-				_businessRule.CriarVisitaDependente(cpfDependente, idEstacionamento, status, idFuncionario);
-				return Ok("Cadastro de visita realizado com sucesso!");
+				var estacionamento = visitaEstacionamento.IdEstacionamento;
+				var funcionario = visitaEstacionamento.IdFuncionario;
+				var status = visitaEstacionamento.Status;
+
+				_businessRule.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
+				return Ok("Visita estacionamento cadastrada com sucesso.");
 			}
 			catch
 			{
@@ -132,22 +144,25 @@ namespace EasyPark.Controllers.Estacionamento
 		[Route("aplicar-desconto")]
 		public IActionResult AplicarDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{
-			if (taxaHorariaEstacionamento <= 0)
+			try
 			{
-				return BadRequest("Taxa horária inválida. Deve ser um valor maior que zero.");
-			}
+				if (taxaHorariaEstacionamento <= 0)
+				{
+					return BadRequest("Taxa horária inválida. Deve ser um valor maior que zero.");
+				}
 
-			_businessRule.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
-			return Ok("Desconto aplicado com sucesso!");
+				_businessRule.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
+				return Ok("Desconto aplicado com sucesso!");
+			}
+			catch (Exception)
+			{
+				return BadRequest("Erro ao aplicar desconto.");
+				throw;
+			}
 		}
 
 		#endregion
 
 		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
-
-		//public IActionResult AplicarDesconto()
-		//{
-		//    return Ok("Desconto aplicado com sucesso!"); // Retorna sucesso ao aplicar desconto
-		//}
 	}
 }

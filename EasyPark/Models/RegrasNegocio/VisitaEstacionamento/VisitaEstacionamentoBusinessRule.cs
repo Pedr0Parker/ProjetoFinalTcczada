@@ -20,7 +20,13 @@ namespace EasyPark.Models.RegrasNegocio.VisitaEstacionamento
 
 		public VisitasEstacionamento GetVisitaById(long id)
 		{
-			return _repositorio.GetVisitaById(id);
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(id));
+			}
+
+			var visita = _repositorio.GetVisitaById(id);
+			return visita;
 		}
 	}
 }

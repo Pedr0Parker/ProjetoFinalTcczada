@@ -19,7 +19,13 @@ namespace EasyPark.Models.RegrasNegocio.Dependente
 
 		public Dependentes GetDependenteById(long id)
 		{
-			return _repositorio.GetDependenteById(id);
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(id));
+			}
+
+			var dependente = _repositorio.GetDependenteById(id);
+			return dependente;
 		}
 	}
 }

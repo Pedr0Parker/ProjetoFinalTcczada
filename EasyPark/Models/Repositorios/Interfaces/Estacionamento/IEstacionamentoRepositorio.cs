@@ -16,6 +16,8 @@ namespace EasyPark.Models.Repositorios.Interfaces.Estacionamento
 
 		public void RegistraVisitaEstacionamento(Estacionamentos estacionamento, Funcionarios funcionario, int status);
 
+		public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario);
+
 		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento);
 
 	}

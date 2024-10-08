@@ -258,7 +258,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		private Planos GetPlanoById(long id)
+		public Planos GetPlanoById(long id)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
@@ -270,7 +270,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		private Empresas GetEmpresaById(long id)
+		public Empresas GetEmpresaById(long id)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
@@ -282,7 +282,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		private Estacionamentos GetEstacionamentoById(long id)
+		public Estacionamentos GetEstacionamentoById(long id)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
@@ -294,7 +294,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		private Usuarios GetUsuarioById(long id)
+		public Usuarios GetUsuarioById(long id)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{

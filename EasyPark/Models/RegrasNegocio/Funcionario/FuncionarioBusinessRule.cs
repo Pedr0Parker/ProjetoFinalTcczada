@@ -21,21 +21,82 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 
 		public Funcionarios GetFuncionarioById(long id)
 		{
-			return _repositorio.GetFuncionarioById(id);
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(id));
+			}
+
+			var funcionario = _repositorio.GetFuncionarioById(id);
+			return funcionario;
 		}
 
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
+			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
+
+			var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
+			if (funcionario == null)
+			{
+				throw new InvalidOperationException("Funcionário não encontrado");
+			}
+
+			if (veiculo == null)
+			{
+				throw new ArgumentNullException(nameof(veiculo), "Veículo inválido");
+			}
+
+			if (string.IsNullOrEmpty(veiculo.Placa))
+			{
+				throw new ArgumentException("Placa do veículo é obrigatória", nameof(veiculo));
+			}
+
 			_repositorio.CadastraVeiculo(veiculo);
 		}
 
 		public void CadastraDependente(Funcionarios funcionario, Dependentes dependente)
 		{
+			if (funcionario == null)
+			{
+				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
+			}
+
+			if (dependente == null)
+			{
+				throw new ArgumentNullException(nameof(dependente), "Dependente inválido");
+			}
+
+			var funcionarioExistente = _repositorio.GetFuncionarioById(funcionario.Id);
+			if (funcionarioExistente == null)
+			{
+				throw new InvalidOperationException("Funcionário não encontrado");
+			}
+
+			if (string.IsNullOrEmpty(dependente.Nome))
+			{
+				throw new ArgumentException("Nome do dependente é obrigatório", nameof(dependente));
+			}
+
 			_repositorio.CadastraDependente(funcionario, dependente);
 		}
 
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)
 		{
+			if (funcionario == null)
+			{
+				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
+			}
+
+			var funcionarioExistente = _repositorio.GetFuncionarioById(funcionario.Id);
+			if (funcionarioExistente == null)
+			{
+				throw new InvalidOperationException("Funcionário não encontrado");
+			}
+
+			if (string.IsNullOrEmpty(novaSenha))
+			{
+				throw new ArgumentException("Nova senha é obrigatória", nameof(novaSenha));
+			}
+
 			_repositorio.UpdateSenhaFuncionario(funcionario, novaSenha);
 		}
 	}

@@ -19,7 +19,13 @@ namespace EasyPark.Models.RegrasNegocio.Usuario
 
 		public Usuarios GetUsuarioById(long id)
 		{
-			return _repositorio.GetUsuarioById(id);
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(id));
+			}
+
+			var usuario = _repositorio.GetUsuarioById(id);
+			return usuario;
 		}
 	}
 }

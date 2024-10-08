@@ -19,7 +19,13 @@ namespace EasyPark.Models.RegrasNegocio.Plano
 
 		public Planos GetPlanoById(long id)
 		{
-			return _repositorio.GetPlanoById(id);
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(id));
+			}
+
+			var plano = _repositorio.GetPlanoById(id);
+			return plano;
 		}
 	}
 }

@@ -131,7 +131,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void CriarVisitaDependente(string cpfDependente, long idEstacionamento, int status, long idFuncionario)
+		public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
 		{
 			using (MySqlConnection conexao = new MySqlConnection(_connectionString))
 			{
@@ -146,8 +146,8 @@ namespace EasyPark.Models.Repositorios
 					{
 						// Cria uma nova visita para o dependente
 						VisitasEstacionamento visita = new VisitasEstacionamento();
-						visita.IdEstacionamento = new Estacionamentos { Id = idEstacionamento };
-						visita.IdFuncionario = new Funcionarios { Id = idFuncionario };
+						visita.IdEstacionamento = new Estacionamentos { Id = estacionamento.Id };
+						visita.IdFuncionario = new Funcionarios { Id = funcionario.Id };
 						visita.IdDependente = dependente;
 						visita.Status = status;
 
@@ -175,7 +175,7 @@ namespace EasyPark.Models.Repositorios
 								horaChegada = visita.HoraChegada,
 								horaSaida = visita.HoraSaida,
 								status = visita.Status,
-								idEstacionamento = idEstacionamento,
+								idEstacionamento = estacionamento.Id,
 								idFuncionario = dependente.IdFuncionario,
 								idDependente = dependente.Id
 							});
