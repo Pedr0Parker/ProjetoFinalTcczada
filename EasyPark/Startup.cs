@@ -64,6 +64,14 @@ namespace EasyPark
 			services.AddTransient<VisitaEstacionamentoBusinessRule>();
 			services.AddTransient<VisitaEstacionamentoController>();
 
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowSpecificOrigin",
+					builder => builder.WithOrigins("http://127.0.0.1:5500")
+									  .AllowAnyHeader()
+									  .AllowAnyMethod());
+			});
+
 			services.AddControllers();
 
 			// Registre o repositório como um serviço
@@ -109,6 +117,10 @@ namespace EasyPark
 
 			app.UseHttpsRedirection();
 			app.UseRouting();
+
+			// Ativando o CORS
+			app.UseCors("AllowSpecificOrigin");
+
 			app.UseAuthorization();
 
 			// Mapear as rotas para os controllers
@@ -116,6 +128,17 @@ namespace EasyPark
 			{
 				endpoints.MapControllers();
 			});
+
+			//app.UseHttpsRedirection();
+			//app.UseRouting();
+
+			//app.UseAuthorization();
+
+			//// Mapear as rotas para os controllers
+			//app.UseEndpoints(endpoints =>
+			//{
+			//	endpoints.MapControllers();
+			//});
 		}
 	}
 }

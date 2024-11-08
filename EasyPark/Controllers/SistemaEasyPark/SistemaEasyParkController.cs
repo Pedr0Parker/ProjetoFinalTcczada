@@ -89,8 +89,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		/// Realiza o cadastro de uma nova empresa
 		/// </summary>
 		/// <param name="empresa"></param>
-		[HttpPost]
-		[Route("cadastrar-empresa")]
+		[HttpPost("cadastrar-empresa")]
 		public IActionResult CadastrarEmpresa(Empresas empresa)
 		{
 			try
