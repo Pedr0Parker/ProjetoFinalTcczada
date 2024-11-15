@@ -30,15 +30,20 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			return funcionario;
 		}
 
+		//public Funcionarios GetFuncionarioByEmail(string email)
+		//{
+
+		//}
+
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
-			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
+			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
+			//var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
 
-			var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
-			if (funcionario == null)
-			{
-				throw new InvalidOperationException("Funcionário não encontrado");
-			}
+			//if (funcionario == null)
+			//{
+			//	throw new InvalidOperationException("Funcionário não encontrado");
+			//}
 
 			if (veiculo == null)
 			{

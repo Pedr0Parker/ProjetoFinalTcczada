@@ -57,8 +57,7 @@ namespace EasyPark.Controllers.Funcionario
 		/// </summary>
 		/// <param name="veiculo"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastrar-veiculo-funcionario")]
+		[HttpPost("cadastrar-veiculo-funcionario")]
 		public IActionResult CadastrarVeiculoFuncionario(Veiculos veiculo)
 		{
 			try
@@ -68,7 +67,7 @@ namespace EasyPark.Controllers.Funcionario
 			}
 			catch
 			{
-				return BadRequest("Erro ao cadastrar uma empresa.");
+				return BadRequest("Erro ao cadastrar o veículo do funcionário.");
 				throw;
 			}
 		}

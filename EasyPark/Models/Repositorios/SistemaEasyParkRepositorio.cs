@@ -22,14 +22,14 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO planos (id, tipo, nome, status) VALUES (@id, @tipoPlano, @nomePlano, @statusPlano);";
+				var sql = "INSERT INTO planos (id, nome, status, valor) VALUES (@id, @nomePlano, @statusPlano, @valorPlano);";
 
 				connection.Execute(sql, new
 				{
 					id = plano.Id,
-					tipoPlano = plano.TipoPlano,
 					nomePlano = plano.NomePlano,
-					statusPlano = plano.StatusPlano
+					statusPlano = plano.StatusPlano,
+					valorPlano = plano.ValorPlano
 				});
 			}
 		}
@@ -106,9 +106,9 @@ namespace EasyPark.Models.Repositorios
 				connection.Open();
 				if (existingPlano != null)
 				{
-					existingPlano.TipoPlano = plano.TipoPlano;
 					existingPlano.NomePlano = plano.NomePlano;
 					existingPlano.StatusPlano = plano.StatusPlano;
+					existingPlano.ValorPlano = plano.ValorPlano;
 				}
 
 				connection.UpdateAsync(existingPlano);

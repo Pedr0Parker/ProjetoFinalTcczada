@@ -70,8 +70,7 @@ namespace EasyPark.Controllers.Empresa
 		/// </summary>
 		/// <param name="funcionario"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastrar-funcionario")]
+		[HttpPost("cadastrar-funcionario")]
 		public IActionResult CadastrarFuncionario(Funcionarios funcionario)
 		{
 			try

@@ -152,8 +152,7 @@ namespace EasyPark.Controllers.SistemaEasyPark
 		/// </summary>
 		/// <param name="estacionamento"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastrar-estacionamento")]
+		[HttpPost("cadastrar-estacionamento")]
 		public IActionResult CadastrarEstacionamento(Estacionamentos estacionamento)
 		{
 			try
