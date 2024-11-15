@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using DapperExtensions;
 using System.Text;
 using XSystem.Security.Cryptography;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -40,6 +41,18 @@ namespace EasyPark.Models.Repositorios
 				var funcionarioId = connection.QuerySingleOrDefault<Funcionarios>(sqlId, new { id });
 
 				return funcionarioId;
+			}
+		}
+
+		public Funcionarios GetFuncionarioByEmail(string login)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlLogin = $"{sql} WHERE f.login = @login";
+				var funcionarioLogin = connection.QuerySingleOrDefault<Funcionarios>(sqlLogin, new { login });
+
+				return funcionarioLogin;
 			}
 		}
 

@@ -2,6 +2,7 @@
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Repositorios;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.RegrasNegocio.Funcionario
 {
@@ -30,15 +31,21 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			return funcionario;
 		}
 
-		//public Funcionarios GetFuncionarioByEmail(string email)
-		//{
+		public Funcionarios GetFuncionarioByEmail(string email)
+		{
+			if (string.IsNullOrEmpty(email))
+			{
+				throw new ArgumentException("E-mail não encontrado", nameof(email));
+			}
 
-		//}
+			var funcionario = _repositorio.GetFuncionarioByEmail(email);
+			return funcionario;
+		}
 
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
-			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
 			//var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
+			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
 
 			//if (funcionario == null)
 			//{

@@ -48,6 +48,21 @@ namespace EasyPark.Controllers.Funcionario
 			return Ok(idFuncionario);
 		}
 
+		/// <summary>
+		/// Realiza a busca do funcionário via Login cadastrado no banco de dados
+		/// </summary>
+		/// <param name="login"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[Route("buscar-funcionario/login/{login}")]
+		public IActionResult BuscarFuncionarioViaEmail(string login)
+		{
+			var loginFuncionario = _businessRule.GetFuncionarioByEmail(login);
+			if (loginFuncionario is null) return NotFound($"Funcionário de login {login} não cadastrado no sistema.");
+
+			return Ok(loginFuncionario);
+		}
+
 		#endregion
 
 		#region Métodos Post

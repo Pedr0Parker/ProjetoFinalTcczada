@@ -43,7 +43,7 @@ namespace EasyPark.Models.RegrasNegocio.Empresa
 
 		public void CadastraFuncionario(Funcionarios funcionario)
 		{
-			var idEmpresa = Convert.ToInt64(funcionario.Id);
+			var idEmpresa = Convert.ToInt64(funcionario.IdEmpresa);
 
 			var empresa = _repositorio.GetEmpresaById(idEmpresa);
 			if (empresa == null)

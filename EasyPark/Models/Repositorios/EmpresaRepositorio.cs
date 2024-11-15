@@ -57,7 +57,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, valor_plano, contato, email, data_cadastro, id_plano) VALUES (@id, @login, @senha, @nome, @cpf, @valorPlano, @contato, @email, @dataCadastro, @idPlano);";
+				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, valor_plano, contato, email, data_cadastro, id_plano, id_empresa) VALUES (@id, @login, @senha, @nome, @cpf, @valorPlano, @contato, @email, @dataCadastro, @idPlano, @idEmpresa);";
 
 				connection.Execute(sql, new
 				{
@@ -69,7 +69,8 @@ namespace EasyPark.Models.Repositorios
 					valorPlano = funcionario.ValorPlano,
 					contato = funcionario.Contato,
 					dataCadastro = funcionario.DataCadastro,
-					idPlano = funcionario.IdPlano
+					idPlano = funcionario.IdPlano,
+					idEmpresa = funcionario.IdEmpresa,
 				});
 			}
 		}
