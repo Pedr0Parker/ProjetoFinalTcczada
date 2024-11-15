@@ -40,15 +40,15 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-        public Empresas GetEmpresaByNome(string nome)
+        public Empresas GetEmpresaByEmail(string login, string senha)
         {
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlNome = $"{sql} WHERE e.nome = @nome";
-				var empresaNome = connection.QuerySingleOrDefault<Empresas>(sqlNome, new { nome });
+				var sqlEmail = $"{sql} WHERE e.login = @login AND e.senha = @senha";
+				var empresaEmail = connection.QuerySingleOrDefault<Empresas>(sqlEmail, new { login, senha });
 
-				return empresaNome;
+				return empresaEmail;
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, valor_plano, contato, email, data_cadastro, id_plano, id_empresa) VALUES (@id, @login, @senha, @nome, @cpf, @valorPlano, @contato, @email, @dataCadastro, @idPlano, @idEmpresa);";
+				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, valor_plano, contato, data_cadastro) VALUES (@id, @login, @senha, @nome, @cpf, @valorPlano, @contato, @dataCadastro);";
 
 				connection.Execute(sql, new
 				{
@@ -69,8 +69,8 @@ namespace EasyPark.Models.Repositorios
 					valorPlano = funcionario.ValorPlano,
 					contato = funcionario.Contato,
 					dataCadastro = funcionario.DataCadastro,
-					idPlano = funcionario.IdPlano,
-					idEmpresa = funcionario.IdEmpresa,
+					/*idPlano = funcionario.IdPlano,
+					idEmpresa = funcionario.IdEmpresa,*/
 				});
 			}
 		}

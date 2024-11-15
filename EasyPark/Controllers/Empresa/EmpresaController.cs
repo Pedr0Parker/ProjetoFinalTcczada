@@ -46,19 +46,19 @@ namespace EasyPark.Controllers.Empresa
 			return Ok(idEmpresa);
 		}
 
-		/// <summary>
-		/// Realiza a busca da empresa via Nome cadastrado no banco de dados
-		/// </summary>
-		/// <param name="nome"></param>
-		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-empresa/nome/{nome}")]
-		public IActionResult BuscarEmpresaViaNome(string nome)
+        /// <summary>
+        /// Realiza a busca da empresa via Nome cadastrado no banco de dados
+        /// </summary>
+        /// <param login="login"></param>
+		/// <param senha="senha"></param>
+        /// <returns></returns>
+        [HttpGet("buscar-empresa/login/{login}/senha/{senha}")]
+		public IActionResult BuscarEmpresaViaNome(string login, string senha)
 		{
-			var nomeEmpresa = _businessRule.GetEmpresaByNome(nome);
-			if (nomeEmpresa is null) return NotFound($"Empresa de nome {nome} não cadastrada no sistema.");
+			var emailEmpresa = _businessRule.GetEmpresaByEmail(login, senha);
+			if (emailEmpresa is null) return NotFound($"Empresa de email {login} não cadastrada no sistema.");
 
-			return Ok(nomeEmpresa);
+			return Ok(emailEmpresa);
 		}
 
 		#endregion

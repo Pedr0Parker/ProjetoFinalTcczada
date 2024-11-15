@@ -30,26 +30,26 @@ namespace EasyPark.Models.RegrasNegocio.Empresa
 			return empresa;
 		}
 
-		public Empresas GetEmpresaByNome(string nome)
+		public Empresas GetEmpresaByEmail(string login, string senha)
 		{
-			if (string.IsNullOrEmpty(nome))
+			if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
 			{
-				throw new ArgumentException("Nome de Empresa inválido", nameof(nome));
+				throw new ArgumentException("Nome de Empresa inválido", nameof(login));
 			}
 
-			var nomeEmpresa = _repositorio.GetEmpresaByNome(nome);
-			return nomeEmpresa;
+			var emailEmpresa = _repositorio.GetEmpresaByEmail(login, senha);
+			return emailEmpresa;
 		}
 
 		public void CadastraFuncionario(Funcionarios funcionario)
 		{
-			var idEmpresa = Convert.ToInt64(funcionario.IdEmpresa);
+			// var idEmpresa = Convert.ToInt64(funcionario.IdEmpresa);
 
-			var empresa = _repositorio.GetEmpresaById(idEmpresa);
+		/*	var empresa = _repositorio.GetEmpresaById(idEmpresa);
 			if (empresa == null)
 			{
 				throw new InvalidOperationException("Empresa não encontrada");
-			}
+			}*/
 
 			if (funcionario == null)
 			{
