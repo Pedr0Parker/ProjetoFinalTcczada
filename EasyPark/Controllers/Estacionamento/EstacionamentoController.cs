@@ -49,16 +49,16 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <summary>
 		/// Realiza a busca do estacionamento via Nome cadastrado no banco de dados
 		/// </summary>
-		/// <param name="nome"></param>
+		/// <param name="login"></param>
+		/// <param name="senha"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-estacionamento/nome/{nome}")]
-		public IActionResult BuscasEstacionamentoViaNome(string nome)
+		[HttpGet("buscar-estacionamento/login/{login}/senha/{senha}")]
+		public IActionResult BuscasEstacionamentoViaEmail(string login, string senha)
 		{
-			var nomeEstacionamento = _businessRule.GetEstacionamentoByNome(nome);
-			if (nomeEstacionamento is null) return NotFound($"Estacionamento de nome {nome} não cadastrado no sistema.");
+			var emailEstacionamento = _businessRule.GetEstacionamentoByEmail(login, senha);
+			if (emailEstacionamento is null) return NotFound($"Estacionamento de email {login} não cadastrado no sistema.");
 
-			return Ok(nomeEstacionamento);
+			return Ok(emailEstacionamento);
 		}
 
 		/// <summary>

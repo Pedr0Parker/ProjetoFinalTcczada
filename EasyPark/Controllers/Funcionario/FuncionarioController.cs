@@ -33,12 +33,28 @@ namespace EasyPark.Controllers.Funcionario
 			return Ok(funcionarios);
 		}
 
-		/// <summary>
-		/// Realiza a busca do funcionário via Id cadastrado no banco de dados
+        /// <summary>
+		/// Realiza a busca de funcionarios cadastrados no banco de dados para o login 
+		///	<param name="login"></param>
+		/// <param name="senha"></param>
 		/// </summary>
-		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
+        [HttpGet("buscar-funcionarios/login/{login}/senha/{senha}")]
+        public IActionResult BuscarFuncionariosLogin(string login, string senha)
+        {
+            var funcionarios = _businessRule.GetFuncionarioByEmail(login, senha);
+            if (funcionarios is null) return BadRequest("Houve um erro ao buscar os funcionários.");
+
+            return Ok(funcionarios);
+        }
+
+
+        /// <summary>
+        /// Realiza a busca do funcionário via Id cadastrado no banco de dados
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
 		[Route("buscar-funcionario/id/{id}")]
 		public IActionResult BuscasFuncionarioViaId(int id)
 		{
@@ -46,21 +62,6 @@ namespace EasyPark.Controllers.Funcionario
 			if (idFuncionario is null) return NotFound($"Funcionário de Id {id} não cadastrado no sistema.");
 
 			return Ok(idFuncionario);
-		}
-
-		/// <summary>
-		/// Realiza a busca do funcionário via Login cadastrado no banco de dados
-		/// </summary>
-		/// <param name="login"></param>
-		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-funcionario/login/{login}")]
-		public IActionResult BuscarFuncionarioViaEmail(string login)
-		{
-			var loginFuncionario = _businessRule.GetFuncionarioByEmail(login);
-			if (loginFuncionario is null) return NotFound($"Funcionário de login {login} não cadastrado no sistema.");
-
-			return Ok(loginFuncionario);
 		}
 
 		#endregion

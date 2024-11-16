@@ -43,15 +43,15 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public Estacionamentos GetEstacionamentoByNome(string nome)
+		public Estacionamentos GetEstacionamentoByEmail(string login, string senha)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlNome = $"{sql} WHERE e.nome = @nome";
-				var estacionamentoNome = connection.QuerySingleOrDefault<Estacionamentos>(sqlNome, new { nome });
+				var sqlNome = $"{sql} WHERE e.login = @login AND e.senha = @senha";
+				var estacionamentoEmail = connection.QuerySingleOrDefault<Estacionamentos>(sqlNome, new { login, senha });
 
-				return estacionamentoNome;
+				return estacionamentoEmail;
 			}
 		}
 

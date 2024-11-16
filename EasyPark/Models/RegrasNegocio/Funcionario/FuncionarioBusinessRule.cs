@@ -1,4 +1,5 @@
 ﻿using EasyPark.Models.Entidades.Dependente;
+using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Repositorios;
@@ -20,7 +21,18 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			return _repositorio.GetAllFuncionarios();
 		}
 
-		public Funcionarios GetFuncionarioById(long id)
+        public Funcionarios GetFuncionarioByEmail(string login, string senha)
+        {
+            if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
+            {
+                throw new ArgumentException("Email funcionário inválido", nameof(login));
+            }
+
+            var loginFuncionario = _repositorio.GetFuncionarioByEmail(login, senha);
+            return loginFuncionario;
+        }
+
+        public Funcionarios GetFuncionarioById(long id)
 		{
 			if (id <= 0)
 			{
@@ -28,17 +40,6 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			}
 
 			var funcionario = _repositorio.GetFuncionarioById(id);
-			return funcionario;
-		}
-
-		public Funcionarios GetFuncionarioByEmail(string email)
-		{
-			if (string.IsNullOrEmpty(email))
-			{
-				throw new ArgumentException("E-mail não encontrado", nameof(email));
-			}
-
-			var funcionario = _repositorio.GetFuncionarioByEmail(email);
 			return funcionario;
 		}
 

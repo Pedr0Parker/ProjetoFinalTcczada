@@ -30,15 +30,15 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return estacionamento;
 		}
 
-		public Estacionamentos GetEstacionamentoByNome(string nome)
+		public Estacionamentos GetEstacionamentoByEmail(string login, string senha)
 		{
-			if (string.IsNullOrEmpty(nome))
+			if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
 			{
-				throw new ArgumentException("Nome de Estacionamento inválido", nameof(nome));
+				throw new ArgumentException("Email de Estacionamento inválido", nameof(login));
 			}
 
-			var nomeEstacionamento = _repositorio.GetEstacionamentoByNome(nome);
-			return nomeEstacionamento;
+			var emailEstacionamento = _repositorio.GetEstacionamentoByEmail(login, senha);
+			return emailEstacionamento;
 		}
 
 		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpf)

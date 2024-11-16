@@ -49,8 +49,8 @@ namespace EasyPark.Controllers.Empresa
         /// <summary>
         /// Realiza a busca da empresa via Nome cadastrado no banco de dados
         /// </summary>
-        /// <param login="login"></param>
-		/// <param senha="senha"></param>
+        /// <param name="login"></param>
+		/// <param name="senha"></param>
         /// <returns></returns>
         [HttpGet("buscar-empresa/login/{login}/senha/{senha}")]
 		public IActionResult BuscarEmpresaViaNome(string login, string senha)
