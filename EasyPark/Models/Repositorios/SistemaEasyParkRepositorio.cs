@@ -39,7 +39,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO empresas (id, login, senha, nome, nome_usual, nome_dono, cnpj, valor_assinatura, endereco, contato, data_cadastro) VALUES (@id, @login, @senha, @nome, @nomeFantasia, @nomeDono, @cnpj, @valorAssinatura, @endereco, @contato, @dataCadastro);";
+				var sql = "INSERT INTO empresas (id, login, senha, nome, nome_usual, nome_dono, cnpj, endereco, contato, data_cadastro, id_plano) VALUES (@id, @login, @senha, @nome, @nomeFantasia, @nomeDono, @cnpj, @endereco, @contato, @dataCadastro, @idPlano);";
 
 				connection.Execute(sql, new
 				{
@@ -50,10 +50,11 @@ namespace EasyPark.Models.Repositorios
 					nomeFantasia = empresa.NomeFantasia,
 					nomeDono = empresa.NomeDono,
 					cnpj = empresa.Cnpj,
-					valorAssinatura = empresa.ValorAssinatura,
+					//valorAssinatura = empresa.ValorAssinatura,
 					endereco = empresa.Endereco,
 					contato = empresa.Contato,
-					dataCadastro = empresa.DataCadastro
+					dataCadastro = empresa.DataCadastro,
+					idPlano = empresa.IdPlano
 				});
 			}
 		}
@@ -129,10 +130,11 @@ namespace EasyPark.Models.Repositorios
 					existingEmpresa.NomeFantasia = empresa.NomeFantasia;
 					existingEmpresa.NomeDono = empresa.NomeDono;
 					existingEmpresa.Cnpj = empresa.Cnpj;
-					existingEmpresa.ValorAssinatura = empresa.ValorAssinatura;
+					//existingEmpresa.ValorAssinatura = empresa.ValorAssinatura;
 					existingEmpresa.Endereco = empresa.Endereco;
 					existingEmpresa.Contato = empresa.Contato;
 					existingEmpresa.DataCadastro = empresa.DataCadastro;
+					existingEmpresa.IdPlano = empresa.IdPlano;
 				}
 
 				connection.UpdateAsync(existingEmpresa);

@@ -25,7 +25,9 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var estacionamentos = connection.Query<Estacionamentos>(sql).AsList();
+                var sqlTudo = "SELECT e.id, e.nome, e.endereco, e.contato, e.data_cadastro FROM estacionamentos e";
+
+                var estacionamentos = connection.Query<Estacionamentos>(sqlTudo).AsList();
 
 				return estacionamentos;
 			}
