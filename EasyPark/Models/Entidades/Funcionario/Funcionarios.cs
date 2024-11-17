@@ -11,10 +11,9 @@ namespace EasyPark.Models.Entidades.Funcionario
         public string Nome { get; set; }
         public string CpfCnpj { get; set; }
         public string Contato { get; set; }
-        public decimal ValorPlano { get; set; }
+        //public decimal ValorPlano { get; set; }
         public DateTime DataCadastro { get; set; }
-
-        //public virtual Planos Plano { get; set; }
-		//public virtual Empresas Empresa { get; set; }
+        public int IdPlano{ get; set; }
+		public int IdEmpresa { get; set; }
 	}
 }

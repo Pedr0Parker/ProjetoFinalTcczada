@@ -53,7 +53,7 @@ namespace EasyPark.Controllers.Empresa
 		/// <param name="senha"></param>
         /// <returns></returns>
         [HttpGet("buscar-empresa/login/{login}/senha/{senha}")]
-		public IActionResult BuscarEmpresaViaNome(string login, string senha)
+		public IActionResult BuscarEmpresaViaEmail(string login, string senha)
 		{
 			var emailEmpresa = _businessRule.GetEmpresaByEmail(login, senha);
 			if (emailEmpresa is null) return NotFound($"Empresa de email {login} não cadastrada no sistema.");
