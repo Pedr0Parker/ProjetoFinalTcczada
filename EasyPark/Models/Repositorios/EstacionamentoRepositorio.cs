@@ -18,8 +18,6 @@ namespace EasyPark.Models.Repositorios
 			sql = "SELECT * FROM estacionamentos e";
 		}
 
-		// To Do: implementar posteriormente, uma possível busca por filtro
-
 		public IEnumerable<Estacionamentos> GetAllEstacionamentos()
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
@@ -57,26 +55,26 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario)
-		{
-			using (MySqlConnection connection = new MySqlConnection(_connectionString))
-			{
-				connection.Open();
-				var sql = "SELECT * FROM funcionarios f WHERE f.cpf = @cpfFuncionario;";
-				var funcionario = connection.Query<Funcionarios>(sql, new { cpfFuncionario }).AsList();
+		//public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario)
+		//{
+		//	using (MySqlConnection connection = new MySqlConnection(_connectionString))
+		//	{
+		//		connection.Open();
+		//		var sql = "SELECT * FROM funcionarios f WHERE f.cpf = @cpfFuncionario;";
+		//		var funcionario = connection.Query<Funcionarios>(sql, new { cpfFuncionario });
 
-				if (funcionario != null)
-				{
-					var status = 1;
-					var estacionamento = new Estacionamentos();
-					RegistraVisitaEstacionamento(estacionamento, funcionario.FirstOrDefault(), status);
-				}
+		//		if (funcionario != null)
+		//		{
+		//			var status = 1;
+		//			var estacionamento = new Estacionamentos();
+		//			RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+		//		}
 
-				return funcionario;
-			}
-		}
+		//		return funcionario;
+		//	}
+		//}
 
-		public void RegistraVisitaEstacionamento(Estacionamentos estacionamento, Funcionarios funcionario, int status)
+		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
 		{
 			VisitasEstacionamento visita = new VisitasEstacionamento();
 
@@ -133,67 +131,67 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
-		{
-			using (MySqlConnection conexao = new MySqlConnection(_connectionString))
-			{
-				conexao.Open();
-				var sql = "SELECT * FROM dependentes WHERE cpf = @cpfDependente;";
-				var dependente = conexao.QuerySingleOrDefault<Dependentes>(sql, new { cpfDependente });
+		//public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
+		//{
+		//	using (MySqlConnection conexao = new MySqlConnection(_connectionString))
+		//	{
+		//		conexao.Open();
+		//		var sql = "SELECT * FROM dependentes WHERE cpf = @cpfDependente;";
+		//		var dependente = conexao.QuerySingleOrDefault<Dependentes>(sql, new { cpfDependente });
 
-				if (dependente != null)
-				{
-					// Verifica se o dependente está vinculado a um funcionário
-					if (dependente.IdFuncionario != null)
-					{
-						// Cria uma nova visita para o dependente
-						VisitasEstacionamento visita = new VisitasEstacionamento();
-						visita.IdEstacionamento = new Estacionamentos { Id = estacionamento.Id };
-						visita.IdFuncionario = new Funcionarios { Id = funcionario.Id };
-						visita.IdDependente = dependente;
-						visita.Status = status;
+		//		if (dependente != null)
+		//		{
+		//			// Verifica se o dependente está vinculado a um funcionário
+		//			if (dependente.IdFuncionario != null)
+		//			{
+		//				// Cria uma nova visita para o dependente
+		//				VisitasEstacionamento visita = new VisitasEstacionamento();
+		//				visita.IdEstacionamento = new Estacionamentos { Id = estacionamento.Id };
+		//				visita.IdFuncionario = funcionario;
+		//				visita.IdDependente = dependente;
+		//				visita.Status = status;
 
-						if (status == 0) // Não chegou
-						{
-							visita.HoraChegada = DateTime.MinValue;
-							visita.HoraSaida = DateTime.MaxValue;
-						}
-						else if (status == 1) // Chegada
-						{
-							visita.HoraChegada = DateTime.Now;
-							visita.HoraSaida = DateTime.MaxValue;
-						}
-						else if (status == 2) // Saída
-						{
-							visita.HoraSaida = DateTime.Now;
-						}
+		//				if (status == 0) // Não chegou
+		//				{
+		//					visita.HoraChegada = DateTime.MinValue;
+		//					visita.HoraSaida = DateTime.MaxValue;
+		//				}
+		//				else if (status == 1) // Chegada
+		//				{
+		//					visita.HoraChegada = DateTime.Now;
+		//					visita.HoraSaida = DateTime.MaxValue;
+		//				}
+		//				else if (status == 2) // Saída
+		//				{
+		//					visita.HoraSaida = DateTime.Now;
+		//				}
 
-						using (MySqlConnection conexao2 = new MySqlConnection(_connectionString))
-						{
-							conexao2.Open();
-							var sql2 = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_dependente) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idDependente);";
-							conexao2.Execute(sql2, new
-							{
-								horaChegada = visita.HoraChegada,
-								horaSaida = visita.HoraSaida,
-								status = visita.Status,
-								idEstacionamento = estacionamento.Id,
-								idFuncionario = dependente.IdFuncionario,
-								idDependente = dependente.Id
-							});
-						}
-					}
-					else
-					{
-						throw new Exception($"Dependente {dependente.Nome} não está vinculado a um funcionário.");
-					}
-				}
-				else
-				{
-					throw new Exception("Dependente não encontrado.");
-				}
-			}
-		}
+		//				using (MySqlConnection conexao2 = new MySqlConnection(_connectionString))
+		//				{
+		//					conexao2.Open();
+		//					var sql2 = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_dependente) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idDependente);";
+		//					conexao2.Execute(sql2, new
+		//					{
+		//						horaChegada = visita.HoraChegada,
+		//						horaSaida = visita.HoraSaida,
+		//						status = visita.Status,
+		//						idEstacionamento = estacionamento.Id,
+		//						idFuncionario = dependente.IdFuncionario,
+		//						idDependente = dependente.Id
+		//					});
+		//				}
+		//			}
+		//			else
+		//			{
+		//				throw new Exception($"Dependente {dependente.Nome} não está vinculado a um funcionário.");
+		//			}
+		//		}
+		//		else
+		//		{
+		//			throw new Exception("Dependente não encontrado.");
+		//		}
+		//	}
+		//}
 
 		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{

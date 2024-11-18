@@ -11,6 +11,6 @@ namespace EasyPark.Models.Entidades.Dependente
 		public string Cpf { get; set; }
 		public string Contato { get; set; }
 		public string Email { get; set; }
-		public Funcionarios IdFuncionario { get; set; }
+		public int IdFuncionario { get; set; }
 	}
 }

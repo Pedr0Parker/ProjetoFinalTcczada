@@ -41,25 +41,25 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return emailEstacionamento;
 		}
 
-		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpf)
-		{
-			if (string.IsNullOrEmpty(cpf))
-			{
-				throw new ArgumentException("CPF de funcionário inválido", nameof(cpf));
-			}
+		//public IEnumerable<Funcionarios> VerificaFuncionarios(string cpf)
+		//{
+		//	if (string.IsNullOrEmpty(cpf))
+		//	{
+		//		throw new ArgumentException("CPF de funcionário inválido", nameof(cpf));
+		//	}
 
-			var cpfFuncionario = _repositorio.VerificaFuncionarios(cpf);
-			return cpfFuncionario;
-		}
+		//	var cpfFuncionario = _repositorio.VerificaFuncionarios(cpf);
+		//	return cpfFuncionario;
+		//}
 
-		public void RegistraVisitaEstacionamento(Estacionamentos estacionamento, Funcionarios funcionario, int status)
+		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
 		{
-			if (estacionamento == null)
+			if (estacionamento == 0)
 			{
 				throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
 			}
 
-			if (funcionario == null)
+			if (funcionario == 0)
 			{
 				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
 			}
@@ -69,7 +69,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 				throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
 			}
 
-			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento.Id);
+			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento);
 			if (estacionamentoExistente == null)
 			{
 				throw new InvalidOperationException("Estacionamento não encontrado");
@@ -78,36 +78,36 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			_repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
 		}
 
-		public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
-		{
-			if (cpfDependente == null)
-			{
-				throw new ArgumentNullException(nameof(cpfDependente), "CPF do dependente inválido");
-			}
+		//public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
+		//{
+		//	if (cpfDependente == null)
+		//	{
+		//		throw new ArgumentNullException(nameof(cpfDependente), "CPF do dependente inválido");
+		//	}
 
-			if (estacionamento == null)
-			{
-				throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
-			}
+		//	if (estacionamento == null)
+		//	{
+		//		throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
+		//	}
 
-			if (funcionario == null)
-			{
-				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
-			}
+		//	if (funcionario == null)
+		//	{
+		//		throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
+		//	}
 
-			if (status > 2)
-			{
-				throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
-			}
+		//	if (status > 2)
+		//	{
+		//		throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
+		//	}
 
-			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento.Id);
-			if (estacionamentoExistente == null)
-			{
-				throw new InvalidOperationException("Estacionamento não encontrado");
-			}
+		//	var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento.Id);
+		//	if (estacionamentoExistente == null)
+		//	{
+		//		throw new InvalidOperationException("Estacionamento não encontrado");
+		//	}
 
-			_repositorio.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
-		}
+		//	_repositorio.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
+		//}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{

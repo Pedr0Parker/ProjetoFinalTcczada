@@ -43,13 +43,13 @@ namespace EasyPark.Models.RegrasNegocio.Empresa
 
 		public void CadastraFuncionario(Funcionarios funcionario)
 		{
-			// var idEmpresa = Convert.ToInt64(funcionario.IdEmpresa);
+			var idEmpresa = funcionario.IdEmpresa;
 
-		/*	var empresa = _repositorio.GetEmpresaById(idEmpresa);
+			var empresa = _repositorio.GetEmpresaById(idEmpresa);
 			if (empresa == null)
 			{
 				throw new InvalidOperationException("Empresa não encontrada");
-			}*/
+			}
 
 			if (funcionario == null)
 			{

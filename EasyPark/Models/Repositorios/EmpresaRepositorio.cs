@@ -66,7 +66,6 @@ namespace EasyPark.Models.Repositorios
 					senha = funcionario.Senha,
 					nome = funcionario.Nome,
 					cpf = funcionario.CpfCnpj,
-					//valorPlano = funcionario.ValorPlano,
 					contato = funcionario.Contato,
 					dataCadastro = funcionario.DataCadastro,
                     idPlano = funcionario.IdPlano,

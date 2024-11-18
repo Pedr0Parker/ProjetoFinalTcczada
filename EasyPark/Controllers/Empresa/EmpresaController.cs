@@ -21,8 +21,7 @@ namespace EasyPark.Controllers.Empresa
 		/// Realiza a busca de todas as empresas cadastradas no banco de dados
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-empresas")]
+		[HttpGet("buscar-empresas")]
 		public IActionResult BuscarEmpresas()
 		{
 			var empresas = _businessRule.GetAllEmpresas();
@@ -36,8 +35,7 @@ namespace EasyPark.Controllers.Empresa
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-empresa/id/{id}")]
+		[HttpGet("buscar-empresa/id/{id}")]
 		public IActionResult BuscarEmpresaViaId(int id)
 		{
 			var idEmpresa = _businessRule.GetEmpresaById(id);

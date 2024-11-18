@@ -21,8 +21,7 @@ namespace EasyPark.Controllers.Estacionamento
 		/// Realiza a busca de todos os estacionamentos cadastrados no banco de dados
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-estacionamentos")]
+		[HttpGet("buscar-estacionamentos")]
 		public IActionResult BuscarEstacionamentos()
 		{
 			var estacionamentos = _businessRule.GetAllEstacionamentos();
@@ -36,8 +35,7 @@ namespace EasyPark.Controllers.Estacionamento
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-estacionamento/id/{id}")]
+		[HttpGet("buscar-estacionamento/id/{id}")]
 		public IActionResult BuscasEstacionamentoViaId(int id)
 		{
 			var idEstacionamento = _businessRule.GetEstacionamentoById(id);
@@ -66,15 +64,14 @@ namespace EasyPark.Controllers.Estacionamento
 		/// </summary>
 		/// <param name="cpf"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("verifica-funcionario/cpf/{cpf}")]
-		public IActionResult VerificarFuncionarios(string cpf)
-		{
-			var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(cpf);
-			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {cpf} não cadastrado no sistema.");
+		//[HttpGet("verifica-funcionario/cpf/{cpf}")]
+		//public IActionResult VerificarFuncionarios(string cpf)
+		//{
+		//	var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(cpf);
+		//	if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {cpf} não cadastrado no sistema.");
 
-			return Ok(buscaFuncionarioCpf);
-		}
+		//	return Ok(buscaFuncionarioCpf);
+		//}
 
 		#endregion
 
@@ -85,8 +82,7 @@ namespace EasyPark.Controllers.Estacionamento
 		/// </summary>
 		/// <param name="visitaEstacionamento"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastra-visita-estacionamento")]
+		[HttpPost("cadastra-visita-estacionamento")]
 		public IActionResult CadastrarVisitaEstacionamento(VisitasEstacionamento visitaEstacionamento)
 		{
 			try
@@ -114,25 +110,24 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <param name="status"></param>
 		/// <param name="idFuncionario"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastrar-visita-dependente")]
-		public IActionResult CadastrarVisitaDependente(string cpfDependente, VisitasEstacionamento visitaEstacionamento)
-		{
-			try
-			{
-				var estacionamento = visitaEstacionamento.IdEstacionamento;
-				var funcionario = visitaEstacionamento.IdFuncionario;
-				var status = visitaEstacionamento.Status;
+		//[HttpPost("cadastrar-visita-dependente")]
+		//public IActionResult CadastrarVisitaDependente(string cpfDependente, VisitasEstacionamento visitaEstacionamento)
+		//{
+		//	try
+		//	{
+		//		var estacionamento = visitaEstacionamento.IdEstacionamento;
+		//		var funcionario = visitaEstacionamento.IdFuncionario;
+		//		var status = visitaEstacionamento.Status;
 
-				_businessRule.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
-				return Ok("Visita estacionamento cadastrada com sucesso.");
-			}
-			catch
-			{
-				return BadRequest("Erro ao cadastrar visita.");
-				throw;
-			}
-		}
+		//		_businessRule.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
+		//		return Ok("Visita estacionamento cadastrada com sucesso.");
+		//	}
+		//	catch
+		//	{
+		//		return BadRequest("Erro ao cadastrar visita.");
+		//		throw;
+		//	}
+		//}
 
 		/// <summary>
 		/// Realiza a aplicação de desconto caso o estacionamento aprovar
@@ -140,8 +135,7 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <param name="visitaEstacionamento"></param>
 		/// <param name="percentualDescontoEstacionamento"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("aplicar-desconto")]
+		[HttpPost("aplicar-desconto")]
 		public IActionResult AplicarDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{
 			try
@@ -162,7 +156,5 @@ namespace EasyPark.Controllers.Estacionamento
 		}
 
 		#endregion
-
-		// To Do: Verificar se haverá tela de busca de estacionamento por filtros
 	}
 }

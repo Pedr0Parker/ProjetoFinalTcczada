@@ -9,7 +9,6 @@
         public string NomeFantasia { get; set; }
         public string NomeDono { get; set; }
         public string Cnpj { get; set; }
-        //public decimal ValorAssinatura { get; set; }
         public string Endereco { get; set; }
         public string Contato { get; set; }
         public DateTime DataCadastro { get; set; }

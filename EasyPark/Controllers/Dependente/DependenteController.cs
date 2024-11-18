@@ -20,8 +20,7 @@ namespace EasyPark.Controllers.Dependente
 		/// Realiza a busca de todos os dependentes cadastrados no banco de dados
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-dependentes")]
+		[HttpGet("buscar-dependentes")]
 		public IActionResult BuscarDependentes()
 		{
 			var dependentes = _businessRule.GetAllDependentes();
@@ -35,8 +34,7 @@ namespace EasyPark.Controllers.Dependente
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-dependente/id/{id}")]
+		[HttpGet("buscar-dependente/id/{id}")]
 		public IActionResult BuscarDependenteViaId(int id)
 		{
 			var idDependente = _businessRule.GetDependenteById(id);
