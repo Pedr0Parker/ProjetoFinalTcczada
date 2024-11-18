@@ -43,7 +43,18 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			return funcionario;
 		}
 
-		public void CadastraVeiculo(Veiculos veiculo)
+        public IEnumerable<Funcionarios> GetFuncionarioByIdEmpresa(int idEmpresa)
+        {
+            if (idEmpresa <= 0)
+            {
+                throw new ArgumentException("Id inválido", nameof(idEmpresa));
+            }
+
+           return _repositorio.GetFuncionarioByIdEmpresa(idEmpresa);
+         
+        }
+
+        public void CadastraVeiculo(Veiculos veiculo)
 		{
 			//var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
 			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);

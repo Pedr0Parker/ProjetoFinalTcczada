@@ -18,7 +18,15 @@ namespace EasyPark.Models.Repositorios
 		public FuncionarioRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
-			sql = "SELECT * FROM funcionarios f";
+			sql = "SELECT f.id AS Id," +
+				"		  f.login AS Login," +
+				"		  f.senha AS Senha," +
+				"		  f.nome AS Nome," +
+				"		  f.cpf AS CpfCnpj," +
+				"		  f.contato AS Contato," +
+				"	      f.data_cadastro AS DataCadastro," +
+				"		  f.id_plano AS IdPlano," +
+				"		  f.id_empresa AS IdEmpresa FROM funcionarios f";
 		}
 
 		public IEnumerable<Funcionarios> GetAllFuncionarios()
@@ -44,7 +52,19 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public Funcionarios GetFuncionarioByEmail(string login, string senha)
+        public IEnumerable<Funcionarios> GetFuncionarioByIdEmpresa(int idEmpresa)
+        {
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sqlIdEmpresa = $"{sql} WHERE f.id_empresa = @idEmpresa";
+                var funcionarioId = connection.Query<Funcionarios>(sqlIdEmpresa, new { idEmpresa }).AsList();
+
+                return funcionarioId;
+            }
+        }
+
+        public Funcionarios GetFuncionarioByEmail(string login, string senha)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
