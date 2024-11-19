@@ -56,7 +56,7 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 
         public void CadastraVeiculo(Veiculos veiculo)
 		{
-			//var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
+			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
 			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
 
 			//if (funcionario == null)

@@ -41,16 +41,16 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return emailEstacionamento;
 		}
 
-		//public IEnumerable<Funcionarios> VerificaFuncionarios(string cpf)
-		//{
-		//	if (string.IsNullOrEmpty(cpf))
-		//	{
-		//		throw new ArgumentException("CPF de funcionário inválido", nameof(cpf));
-		//	}
+		public IEnumerable<VisitasEstacionamento> VerificaFuncionarios(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("CPF de funcionário inválido", nameof(idFuncionario));
+			}
 
-		//	var cpfFuncionario = _repositorio.VerificaFuncionarios(cpf);
-		//	return cpfFuncionario;
-		//}
+			var visitaFuncionario = _repositorio.VerificaFuncionarios(idFuncionario);
+			return visitaFuncionario;
+		}
 
 		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
 		{

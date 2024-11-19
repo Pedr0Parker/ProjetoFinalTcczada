@@ -62,16 +62,16 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <summary>
 		/// Realiza a busca do funcionário que realizou o check-in no estacionamento, via CPF cadastrado no banco de dados
 		/// </summary>
-		/// <param name="cpf"></param>
+		/// <param name="idFuncionario"></param>
 		/// <returns></returns>
-		//[HttpGet("verifica-funcionario/cpf/{cpf}")]
-		//public IActionResult VerificarFuncionarios(string cpf)
-		//{
-		//	var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(cpf);
-		//	if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {cpf} não cadastrado no sistema.");
+		[HttpGet("verifica-visitas-funcionario/idFuncionario/{idFuncionario}")]
+		public IActionResult VerificarFuncionarios(int idFuncionario)
+	{
+			var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(idFuncionario);
+			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {idFuncionario} não cadastrado no sistema.");
 
-		//	return Ok(buscaFuncionarioCpf);
-		//}
+            return Ok(buscaFuncionarioCpf);
+		}
 
 		#endregion
 

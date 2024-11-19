@@ -55,24 +55,30 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		//public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario)
-		//{
-		//	using (MySqlConnection connection = new MySqlConnection(_connectionString))
-		//	{
-		//		connection.Open();
-		//		var sql = "SELECT * FROM funcionarios f WHERE f.cpf = @cpfFuncionario;";
-		//		var funcionario = connection.Query<Funcionarios>(sql, new { cpfFuncionario });
+		public IEnumerable<VisitasEstacionamento> VerificaFuncionarios(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT v.id," +
+					" v.hora_chegada AS HoraChegada," +
+					" v.hora_saida AS HoraSaida," +
+					" v.status AS Status," +
+					" v.id_estacionamento AS IdEstacionamento," +
+					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario;";
 
-		//		if (funcionario != null)
-		//		{
-		//			var status = 1;
-		//			var estacionamento = new Estacionamentos();
-		//			RegistraVisitaEstacionamento(estacionamento, funcionario, status);
-		//		}
+				var visitasFuncionarios = connection.Query<VisitasEstacionamento>(sql, new { idFuncionario }).ToList();
 
-		//		return funcionario;
-		//	}
-		//}
+				//if (funcionario != null)
+				//{
+				//	var status = 1;
+				//	var estacionamento = new Estacionamentos();
+				//	RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+				//}
+
+				return visitasFuncionarios;
+			}
+		}
 
 		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
 		{
