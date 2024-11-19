@@ -45,7 +45,20 @@ namespace EasyPark.Controllers.Funcionario
             var funcionarios = _businessRule.GetFuncionarioByEmail(login, senha);
             if (funcionarios is null) return BadRequest("Houve um erro ao buscar os funcionários.");
 
-            return Ok(funcionarios);
+            var funcionariosFormatados = funcionarios.Select(f => new
+            {
+                f.Id,
+                f.Login,
+                f.Senha,
+                f.Nome,
+                f.CpfCnpj,
+                f.Contato,
+                DataCadastro = f.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+                f.IdPlano,
+                f.IdEmpresa
+            });
+
+            return Ok(funcionariosFormatados);
         }
 
 
@@ -75,7 +88,20 @@ namespace EasyPark.Controllers.Funcionario
             var idFuncionariosEmpresa = _businessRule.GetFuncionarioByIdEmpresa(idEmpresa);
             if (idFuncionariosEmpresa is null) return NotFound($"Empresa de Id {idEmpresa} não cadastrado no sistema.");
 
-            return Ok(idFuncionariosEmpresa);
+            var funcionariosFormatados = idFuncionariosEmpresa.Select(f => new
+            {
+                f.Id,
+                f.Login,
+                f.Senha,
+                f.Nome,
+                f.CpfCnpj,
+                f.Contato,
+                DataCadastro = f.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+                f.IdPlano,
+                f.IdEmpresa
+            });
+
+            return Ok(funcionariosFormatados);
         }
 
         #endregion

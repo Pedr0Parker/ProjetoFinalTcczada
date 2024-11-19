@@ -21,7 +21,7 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			return _repositorio.GetAllFuncionarios();
 		}
 
-        public Funcionarios GetFuncionarioByEmail(string login, string senha)
+        public IEnumerable<Funcionarios> GetFuncionarioByEmail(string login, string senha)
         {
             if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
             {

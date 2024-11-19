@@ -30,7 +30,7 @@ namespace EasyPark.Models.RegrasNegocio.Empresa
 			return empresa;
 		}
 
-		public Empresas GetEmpresaByEmail(string login, string senha)
+		public IEnumerable<Empresas> GetEmpresaByEmail(string login, string senha)
 		{
 			if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
 			{

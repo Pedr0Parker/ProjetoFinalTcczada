@@ -1,4 +1,5 @@
-﻿using EasyPark.Models.Entidades.Funcionario;
+﻿using EasyPark.Models.Entidades.Empresa;
+using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.RegrasNegocio.Empresa;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,7 +57,22 @@ namespace EasyPark.Controllers.Empresa
 			var emailEmpresa = _businessRule.GetEmpresaByEmail(login, senha);
 			if (emailEmpresa is null) return NotFound($"Empresa de email {login} não cadastrada no sistema.");
 
-			return Ok(emailEmpresa);
+			var emailEmpresaFormatada = emailEmpresa.Select(e => new
+			{
+				e.Id,
+				e.Login,
+				e.Senha,
+				e.Nome,
+				e.NomeFantasia,
+				e.NomeDono,
+				e.Cnpj,
+				e.Endereco,
+				e.Contato,
+				DataCadastro = e.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+				e.IdPlano
+			});
+
+			return Ok(emailEmpresaFormatada);
 		}
 
 		#endregion

@@ -30,7 +30,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return estacionamento;
 		}
 
-		public Estacionamentos GetEstacionamentoByEmail(string login, string senha)
+		public IEnumerable<Estacionamentos> GetEstacionamentoByEmail(string login, string senha)
 		{
 			if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
 			{

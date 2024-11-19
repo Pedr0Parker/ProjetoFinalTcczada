@@ -56,7 +56,19 @@ namespace EasyPark.Controllers.Estacionamento
 			var emailEstacionamento = _businessRule.GetEstacionamentoByEmail(login, senha);
 			if (emailEstacionamento is null) return NotFound($"Estacionamento de email {login} não cadastrado no sistema.");
 
-			return Ok(emailEstacionamento);
+            var estacionamentoFormatado = emailEstacionamento.Select(e => new
+            {
+                e.Id,
+				e.Login,
+                e.Senha,
+                e.Nome,
+                e.Cnpj,
+				e.Endereco,
+				e.Contato,
+                 DataCadastro = e.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+            });
+
+            return Ok(estacionamentoFormatado);
 		}
 
 		/// <summary>
@@ -70,7 +82,17 @@ namespace EasyPark.Controllers.Estacionamento
 			var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(idFuncionario);
 			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {idFuncionario} não cadastrado no sistema.");
 
-            return Ok(buscaFuncionarioCpf);
+            var visitasFormatadas = buscaFuncionarioCpf.Select(v => new
+            {
+                v.Id,
+                HoraChegada = v.HoraChegada.ToString("dd/MM/yyyy HH:mm"),
+                HoraSaida = v.HoraSaida.ToString("dd/MM/yyyy HH:mm"),
+                v.Status,
+                v.IdEstacionamento,
+                v.IdFuncionario
+            });
+
+            return Ok(visitasFormatadas);
 		}
 
 		#endregion

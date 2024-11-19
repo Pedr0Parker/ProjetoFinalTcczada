@@ -64,13 +64,13 @@ namespace EasyPark.Models.Repositorios
             }
         }
 
-        public Funcionarios GetFuncionarioByEmail(string login, string senha)
+        public IEnumerable<Funcionarios> GetFuncionarioByEmail(string login, string senha)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
 				var sqlLogin = $"{sql} WHERE f.login = @login AND f.senha = @senha";
-				var funcionarioLogin = connection.QuerySingleOrDefault<Funcionarios>(sqlLogin, new { login, senha });
+				var funcionarioLogin = connection.Query<Funcionarios>(sqlLogin, new { login, senha }).AsList();
 
 				return funcionarioLogin;
 			}
