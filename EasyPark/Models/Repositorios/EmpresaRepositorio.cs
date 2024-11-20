@@ -84,5 +84,15 @@ namespace EasyPark.Models.Repositorios
 				});
 			}
 		}
+
+		public void ExcluirFuncionario(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "DELETE FROM funcionarios WHERE id = @id;";
+				connection.Execute(sql, new { id = idFuncionario });
+			}
+		}
 	}
 }

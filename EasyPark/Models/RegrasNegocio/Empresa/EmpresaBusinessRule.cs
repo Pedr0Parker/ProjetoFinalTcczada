@@ -63,5 +63,15 @@ namespace EasyPark.Models.RegrasNegocio.Empresa
 
 			_repositorio.CadastraFuncionario(funcionario);
 		}
+
+		public void ExcluirFuncionario(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id do funcionário inválido.", nameof(idFuncionario));
+			}
+
+			_repositorio.ExcluirFuncionario(idFuncionario);
+		}
 	}
 }
