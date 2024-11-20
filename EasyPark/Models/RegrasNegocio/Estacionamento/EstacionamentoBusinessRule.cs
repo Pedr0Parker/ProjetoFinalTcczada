@@ -34,7 +34,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 		{
 			if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(senha))
 			{
-				throw new ArgumentException("Email de Estacionamento inválido", nameof(login));
+				throw new ArgumentException("Email de estacionamento inválido", nameof(login));
 			}
 
 			var emailEstacionamento = _repositorio.GetEstacionamentoByEmail(login, senha);
@@ -45,7 +45,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 		{
 			if (idFuncionario <= 0)
 			{
-				throw new ArgumentException("CPF de funcionário inválido", nameof(idFuncionario));
+				throw new ArgumentException("Funcionário inválido", nameof(idFuncionario));
 			}
 
 			var visitaFuncionario = _repositorio.VerificaFuncionarios(idFuncionario);
@@ -77,37 +77,6 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 
 			_repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
 		}
-
-		//public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
-		//{
-		//	if (cpfDependente == null)
-		//	{
-		//		throw new ArgumentNullException(nameof(cpfDependente), "CPF do dependente inválido");
-		//	}
-
-		//	if (estacionamento == null)
-		//	{
-		//		throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
-		//	}
-
-		//	if (funcionario == null)
-		//	{
-		//		throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
-		//	}
-
-		//	if (status > 2)
-		//	{
-		//		throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
-		//	}
-
-		//	var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento.Id);
-		//	if (estacionamentoExistente == null)
-		//	{
-		//		throw new InvalidOperationException("Estacionamento não encontrado");
-		//	}
-
-		//	_repositorio.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
-		//}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{

@@ -15,7 +15,16 @@ namespace EasyPark.Models.Repositorios
 		public EstacionamentoRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
-			sql = "SELECT * FROM estacionamentos e";
+
+			sql = "SELECT e.id," +
+				" e.login AS Login," +
+				" e.senha AS Senha," +
+				" e.nome AS Nome," +
+				" e.cnpj AS Cnpj," +
+				" e.endereco AS Endereco," +
+				" e.contato AS Contato," +
+				" e.data_cadastro AS DataCadastro," +
+				" FROM estacionamentos e";
 		}
 
 		public IEnumerable<Estacionamentos> GetAllEstacionamentos()
@@ -23,9 +32,9 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-                var sqlTudo = "SELECT e.id, e.nome, e.endereco, e.contato, e.data_cadastro FROM estacionamentos e";
+                var sqlEstacionamentos = $"{sql}";
 
-                var estacionamentos = connection.Query<Estacionamentos>(sqlTudo).AsList();
+                var estacionamentos = connection.Query<Estacionamentos>(sql).AsList();
 
 				return estacionamentos;
 			}
@@ -68,13 +77,6 @@ namespace EasyPark.Models.Repositorios
 					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario;";
 
 				var visitasFuncionarios = connection.Query<VisitasEstacionamento>(sql, new { idFuncionario }).ToList();
-
-				//if (funcionario != null)
-				//{
-				//	var status = 1;
-				//	var estacionamento = new Estacionamentos();
-				//	RegistraVisitaEstacionamento(estacionamento, funcionario, status);
-				//}
 
 				return visitasFuncionarios;
 			}
@@ -136,68 +138,6 @@ namespace EasyPark.Models.Repositorios
 				});
 			}
 		}
-
-		//public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario)
-		//{
-		//	using (MySqlConnection conexao = new MySqlConnection(_connectionString))
-		//	{
-		//		conexao.Open();
-		//		var sql = "SELECT * FROM dependentes WHERE cpf = @cpfDependente;";
-		//		var dependente = conexao.QuerySingleOrDefault<Dependentes>(sql, new { cpfDependente });
-
-		//		if (dependente != null)
-		//		{
-		//			// Verifica se o dependente está vinculado a um funcionário
-		//			if (dependente.IdFuncionario != null)
-		//			{
-		//				// Cria uma nova visita para o dependente
-		//				VisitasEstacionamento visita = new VisitasEstacionamento();
-		//				visita.IdEstacionamento = new Estacionamentos { Id = estacionamento.Id };
-		//				visita.IdFuncionario = funcionario;
-		//				visita.IdDependente = dependente;
-		//				visita.Status = status;
-
-		//				if (status == 0) // Não chegou
-		//				{
-		//					visita.HoraChegada = DateTime.MinValue;
-		//					visita.HoraSaida = DateTime.MaxValue;
-		//				}
-		//				else if (status == 1) // Chegada
-		//				{
-		//					visita.HoraChegada = DateTime.Now;
-		//					visita.HoraSaida = DateTime.MaxValue;
-		//				}
-		//				else if (status == 2) // Saída
-		//				{
-		//					visita.HoraSaida = DateTime.Now;
-		//				}
-
-		//				using (MySqlConnection conexao2 = new MySqlConnection(_connectionString))
-		//				{
-		//					conexao2.Open();
-		//					var sql2 = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_dependente) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idDependente);";
-		//					conexao2.Execute(sql2, new
-		//					{
-		//						horaChegada = visita.HoraChegada,
-		//						horaSaida = visita.HoraSaida,
-		//						status = visita.Status,
-		//						idEstacionamento = estacionamento.Id,
-		//						idFuncionario = dependente.IdFuncionario,
-		//						idDependente = dependente.Id
-		//					});
-		//				}
-		//			}
-		//			else
-		//			{
-		//				throw new Exception($"Dependente {dependente.Nome} não está vinculado a um funcionário.");
-		//			}
-		//		}
-		//		else
-		//		{
-		//			throw new Exception("Dependente não encontrado.");
-		//		}
-		//	}
-		//}
 
 		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{

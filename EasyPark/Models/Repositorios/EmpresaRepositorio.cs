@@ -14,6 +14,7 @@ namespace EasyPark.Models.Repositorios
 		public EmpresaRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+
 			sql = "SELECT e.id," +
 				" e.login AS Login," +
 				" e.senha AS Senha," +

@@ -79,10 +79,10 @@ namespace EasyPark.Controllers.Estacionamento
 		[HttpGet("verifica-visitas-funcionario/idFuncionario/{idFuncionario}")]
 		public IActionResult VerificarFuncionarios(int idFuncionario)
 	{
-			var buscaFuncionarioCpf = _businessRule.VerificaFuncionarios(idFuncionario);
-			if (buscaFuncionarioCpf is null) return NotFound($"Funcionário de CPF {idFuncionario} não cadastrado no sistema.");
+			var buscaVisitasFuncionario = _businessRule.VerificaFuncionarios(idFuncionario);
+			if (buscaVisitasFuncionario is null) return NotFound($"Visitas de funcionário de não encontrado.");
 
-            var visitasFormatadas = buscaFuncionarioCpf.Select(v => new
+            var visitasFormatadas = buscaVisitasFuncionario.Select(v => new
             {
                 v.Id,
                 HoraChegada = v.HoraChegada.ToString("dd/MM/yyyy HH:mm"),
@@ -123,33 +123,6 @@ namespace EasyPark.Controllers.Estacionamento
 				throw;
 			}
 		}
-
-		/// <summary>
-		/// Realiza o cadastro de visita do dependente
-		/// </summary>
-		/// <param name="cpfDependente"></param>
-		/// <param name="idEstacionamento"></param>
-		/// <param name="status"></param>
-		/// <param name="idFuncionario"></param>
-		/// <returns></returns>
-		//[HttpPost("cadastrar-visita-dependente")]
-		//public IActionResult CadastrarVisitaDependente(string cpfDependente, VisitasEstacionamento visitaEstacionamento)
-		//{
-		//	try
-		//	{
-		//		var estacionamento = visitaEstacionamento.IdEstacionamento;
-		//		var funcionario = visitaEstacionamento.IdFuncionario;
-		//		var status = visitaEstacionamento.Status;
-
-		//		_businessRule.CriarVisitaDependente(cpfDependente, estacionamento, status, funcionario);
-		//		return Ok("Visita estacionamento cadastrada com sucesso.");
-		//	}
-		//	catch
-		//	{
-		//		return BadRequest("Erro ao cadastrar visita.");
-		//		throw;
-		//	}
-		//}
 
 		/// <summary>
 		/// Realiza a aplicação de desconto caso o estacionamento aprovar

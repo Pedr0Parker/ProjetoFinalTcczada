@@ -13,7 +13,15 @@ namespace EasyPark.Models.Repositorios
 		public VisitaEstacionamentoRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
-			sql = "SELECT * FROM visitas_estacionamento v";
+
+			sql = "SELECT v.id," +
+				" v.hora_chegada AS HoraChegada," +
+				" v.hora_saida AS HoraSaida," +
+				" v.status AS Status," +
+				" v.id_estacionamento AS IdEstacionamento," +
+				" v.id_funcionario AS IdFuncionario," +
+				" v.id_dependente AS IdDependente," +
+				" FROM visitas_estacionamento v";
 		}
 
 		public IEnumerable<VisitasEstacionamento> GetAllVisitas(Estacionamentos estacionamento)
@@ -47,7 +55,16 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "SELECT * FROM estacionamentos e WHERE e.id = @id;";
+				var sql = "SELECT e.id," +
+				" e.login AS Login," +
+				" e.senha AS Senha," +
+				" e.nome AS Nome," +
+				" e.cnpj AS Cnpj," +
+				" e.endereco AS Endereco," +
+				" e.contato AS Contato," +
+				" e.data_cadastro AS DataCadastro," +
+				" FROM estacionamentos e";
+
 				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sql, new { id });
 
 				return estacionamentoId;

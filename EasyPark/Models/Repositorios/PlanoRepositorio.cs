@@ -12,7 +12,12 @@ namespace EasyPark.Models.Repositorios
 		public PlanoRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
-			sql = "SELECT * FROM planos p";
+
+			sql = "SELECT p.id," +
+				" p.nome AS Nome," +
+				" p.status AS StatusPlano," +
+				" p.valor AS ValorPlano," +
+				" FROM planos p";
 		}
 
 		public IEnumerable<Planos> GetAllPlanos()
@@ -20,9 +25,9 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlTudo = "SELECT p.Id, p.Nome AS NomePlano, p.Status AS StatusPlano, p.Valor AS ValorPlano FROM planos p";
+				var sqlPlanos = $"{sql}";
 
-                var planos = connection.Query<Planos>(sqlTudo).AsList();
+                var planos = connection.Query<Planos>(sqlPlanos).AsList();
 
 				return planos;
 			}

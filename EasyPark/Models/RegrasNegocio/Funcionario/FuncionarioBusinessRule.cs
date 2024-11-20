@@ -1,9 +1,6 @@
-﻿using EasyPark.Models.Entidades.Dependente;
-using EasyPark.Models.Entidades.Empresa;
-using EasyPark.Models.Entidades.Funcionario;
+﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Repositorios;
-using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.RegrasNegocio.Funcionario
 {
@@ -57,12 +54,12 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
         public void CadastraVeiculo(Veiculos veiculo)
 		{
 			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
-			//var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
+			var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
 
-			//if (funcionario == null)
-			//{
-			//	throw new InvalidOperationException("Funcionário não encontrado");
-			//}
+			if (funcionario == null)
+			{
+				throw new InvalidOperationException("Funcionário não encontrado");
+			}
 
 			if (veiculo == null)
 			{
@@ -75,32 +72,6 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			}
 
 			_repositorio.CadastraVeiculo(veiculo);
-		}
-
-		public void CadastraDependente(Funcionarios funcionario, Dependentes dependente)
-		{
-			if (funcionario == null)
-			{
-				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
-			}
-
-			if (dependente == null)
-			{
-				throw new ArgumentNullException(nameof(dependente), "Dependente inválido");
-			}
-
-			var funcionarioExistente = _repositorio.GetFuncionarioById(funcionario.Id);
-			if (funcionarioExistente == null)
-			{
-				throw new InvalidOperationException("Funcionário não encontrado");
-			}
-
-			if (string.IsNullOrEmpty(dependente.Nome))
-			{
-				throw new ArgumentException("Nome do dependente é obrigatório", nameof(dependente));
-			}
-
-			_repositorio.CadastraDependente(funcionario, dependente);
 		}
 
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)

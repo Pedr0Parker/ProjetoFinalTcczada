@@ -18,6 +18,7 @@ namespace EasyPark.Models.Repositorios
 		public FuncionarioRepositorio(IConfiguration configuration)
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+
 			sql = "SELECT f.id AS Id," +
 				"		  f.login AS Login," +
 				"		  f.senha AS Senha," +
@@ -91,37 +92,6 @@ namespace EasyPark.Models.Repositorios
 					cor = veiculo.Cor,
 					marca = veiculo.Marca,
 					idFuncionario = veiculo.IdFuncionario
-				});
-			}
-		}
-
-		public void CadastraDependente(Funcionarios funcionario, Dependentes dependente)
-		{
-			using (MySqlConnection connection = new MySqlConnection(_connectionString))
-			{
-				connection.Open();
-				var sql = "SELECT COUNT(*) FROM dependentes WHERE id_funcionario = @idFuncionario;";
-				var countDependentes = connection.QuerySingleOrDefault<int>(sql, new { idFuncionario = funcionario.Id });
-
-				if (countDependentes >= 4)
-				{
-					throw new Exception("Funcionário já possui 4 dependentes cadastrados.");
-				}
-			}
-
-			using (MySqlConnection connection = new MySqlConnection(_connectionString))
-			{
-				connection.Open();
-				var sql = "INSERT INTO dependentes (login, senha, nome, cpf, contato, email, id_funcionario) VALUES (@login, @senha, @nome, @cpf, @contato, @email, @idFuncionario);";
-				connection.Execute(sql, new
-				{
-					login = dependente.Login,
-					senha = dependente.Senha,
-					nome = dependente.Nome,
-					cpf = dependente.Cpf,
-					contato = dependente.Contato,
-					email = dependente.Email,
-					idFuncionario = funcionario.Id
 				});
 			}
 		}

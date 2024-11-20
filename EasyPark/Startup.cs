@@ -1,23 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using EasyPark.Models.Data;
-using EasyPark.Models.Repositorios;
-using EasyPark.Controllers.Plano;
-using EasyPark.Models.RegrasNegocio.Plano;
-using EasyPark.Controllers.Usuario;
-using EasyPark.Models.RegrasNegocio.Usuario;
-using EasyPark.Controllers.VisitaEstacionamento;
-using EasyPark.Models.RegrasNegocio.VisitaEstacionamento;
-using EasyPark.Controllers.Dependente;
-using EasyPark.Models.RegrasNegocio.Dependente;
-using EasyPark.Controllers.Funcionario;
-using EasyPark.Models.RegrasNegocio.Funcionario;
-using EasyPark.Models.RegrasNegocio.Empresa;
+﻿using EasyPark.Controllers.Dependente;
 using EasyPark.Controllers.Empresa;
 using EasyPark.Controllers.Estacionamento;
-using EasyPark.Models.RegrasNegocio.Estacionamento;
-using EasyPark.Models.RegrasNegocio.SistemaEasyPark;
+using EasyPark.Controllers.Funcionario;
+using EasyPark.Controllers.Plano;
 using EasyPark.Controllers.SistemaEasyPark;
+using EasyPark.Controllers.VisitaEstacionamento;
+using EasyPark.Models.Data;
+using EasyPark.Models.RegrasNegocio.Dependente;
+using EasyPark.Models.RegrasNegocio.Empresa;
+using EasyPark.Models.RegrasNegocio.Estacionamento;
+using EasyPark.Models.RegrasNegocio.Funcionario;
+using EasyPark.Models.RegrasNegocio.Plano;
+using EasyPark.Models.RegrasNegocio.SistemaEasyPark;
+using EasyPark.Models.RegrasNegocio.VisitaEstacionamento;
+using EasyPark.Models.Repositorios;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace EasyPark
 {
@@ -55,10 +53,6 @@ namespace EasyPark
 			services.AddTransient<SistemaEasyParkRepositorio>();
 			services.AddTransient<SistemaEasyParkBusinessRule>();
 			services.AddTransient<SistemaEasyParkController>();
-
-			services.AddTransient<UsuarioRepositorio>();
-			services.AddTransient<UsuarioBusinessRule>();
-			services.AddTransient<UsuarioController>();
 
 			services.AddTransient<VisitaEstacionamentoRepositorio>();
 			services.AddTransient<VisitaEstacionamentoBusinessRule>();
@@ -128,18 +122,6 @@ namespace EasyPark
 			{
 				endpoints.MapControllers();
 			});
-
-			//app.UseHttpsRedirection();
-			//app.UseRouting();
-
-			//app.UseAuthorization();
-
-			//// Mapear as rotas para os controllers
-			//app.UseEndpoints(endpoints =>
-			//{
-			//	endpoints.MapControllers();
-			//});
 		}
 	}
 }
-	

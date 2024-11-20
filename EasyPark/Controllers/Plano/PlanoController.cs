@@ -20,8 +20,7 @@ namespace EasyPark.Controllers.Plano
 		/// Realiza a busca de todos os planos cadastrados no banco de dados
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-planos")]
+		[HttpGet("buscar-planos")]
 		public IActionResult BuscarPlanos()
 		{
 			var planos = _businessRule.GetAllPlanos();
@@ -35,8 +34,7 @@ namespace EasyPark.Controllers.Plano
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-plano/id/{id}")]
+		[HttpGet("buscar-plano/id/{id}")]
 		public IActionResult BuscarPlanoViaId(int id)
 		{
 			var idPlano = _businessRule.GetPlanoById(id);

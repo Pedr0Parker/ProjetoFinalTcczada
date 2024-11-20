@@ -1,5 +1,4 @@
-﻿using EasyPark.Models.Entidades.CadastroDependente;
-using EasyPark.Models.Entidades.Funcionario;
+﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.RegrasNegocio.Funcionario;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +22,7 @@ namespace EasyPark.Controllers.Funcionario
 		/// Realiza a busca de todos os funcionários cadastrados no banco de dados
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-funcionarios")]
+		[HttpGet("buscar-funcionarios")]
 		public IActionResult BuscarFuncionarios()
 		{
 			var funcionarios = _businessRule.GetAllFuncionarios();
@@ -61,14 +59,12 @@ namespace EasyPark.Controllers.Funcionario
             return Ok(funcionariosFormatados);
         }
 
-
         /// <summary>
         /// Realiza a busca do funcionário via Id cadastrado no banco de dados
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-		[Route("buscar-funcionario/id/{id}")]
+		[HttpGet("buscar-funcionario/id/{id}")]
 		public IActionResult BuscasFuncionarioViaId(int id)
 		{
 			var idFuncionario = _businessRule.GetFuncionarioById(id);
@@ -128,31 +124,6 @@ namespace EasyPark.Controllers.Funcionario
 			}
 		}
 
-		/// <summary>
-		/// Realiza o cadastro dos dependentes do funcionário
-		/// </summary>
-		/// <param name="funcionario"></param>
-		/// <param name="dependente"></param>
-		/// <returns></returns>
-		[HttpPost]
-		[Route("cadastrar-dependente")]
-		public IActionResult CadastrarDependente(CadastrarDependenteRequest request)
-		{
-			try
-			{
-				var funcionario = request.Funcionario;
-				var dependente = request.Dependente;
-
-				_businessRule.CadastraDependente(funcionario, dependente);
-				return Ok("Dependente cadastrado com sucesso!");
-			}
-			catch
-			{
-				return BadRequest("Erro ao cadastrar dependente.");
-				throw;
-			}
-		}
-
 		#endregion
 
 		#region Métodos Put
@@ -163,8 +134,7 @@ namespace EasyPark.Controllers.Funcionario
 		/// <param name="funcionario"></param>
 		/// <param name="novaSenha"></param>
 		/// <returns></returns>
-		[HttpPut]
-		[Route("atualizar-senha-funcionario")]
+		[HttpPut("atualizar-senha-funcionario")]
 		public IActionResult AtualizarSenhaFuncionario(Funcionarios funcionario, string novaSenha)
 		{
 			try

@@ -22,8 +22,7 @@ namespace EasyPark.Controllers.VisitaEstacionamento
 		/// </summary>
 		/// <param name="estacionamento"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-visitas-estacionamento")]
+		[HttpGet("buscar-visitas-estacionamento")]
 		public IActionResult BuscarVisitasEstacionamento(Estacionamentos estacionamento)
 		{
 			var visitas = _businessRule.GetAllVisitas(estacionamento);
@@ -37,8 +36,7 @@ namespace EasyPark.Controllers.VisitaEstacionamento
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet]
-		[Route("buscar-visita-estacionamento/id/{id}")]
+		[HttpGet("buscar-visita-estacionamento/id/{id}")]
 		public IActionResult BuscarVisitasEstacionamentoViaId(int id)
 		{
 			var idVisita = _businessRule.GetVisitaById(id);
