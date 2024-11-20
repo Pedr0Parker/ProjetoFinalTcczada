@@ -1,7 +1,5 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
-using EasyPark.Models.Entidades.Plano;
-using EasyPark.Models.Entidades.Usuario;
 using EasyPark.Models.Repositorios;
 
 namespace EasyPark.Models.RegrasNegocio.SistemaEasyPark
