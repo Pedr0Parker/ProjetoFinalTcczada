@@ -1,6 +1,7 @@
 ﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Repositorios;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.RegrasNegocio.Funcionario
 {
@@ -51,7 +52,18 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
          
         }
 
-        public void CadastraVeiculo(Veiculos veiculo)
+		public IEnumerable<Veiculos> GetVeiculoByIdFuncionario(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(idFuncionario));
+			}
+
+			var veiculoFuncionario = _repositorio.GetVeiculoByIdFuncionario(idFuncionario);
+			return veiculoFuncionario;
+		}
+
+		public void CadastraVeiculo(Veiculos veiculo)
 		{
 			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
 			var funcionario = _repositorio.GetFuncionarioById(idFuncionario);

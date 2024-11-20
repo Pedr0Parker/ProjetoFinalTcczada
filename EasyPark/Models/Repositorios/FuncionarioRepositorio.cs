@@ -77,6 +77,26 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public IEnumerable<Veiculos> GetVeiculoByIdFuncionario(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlVeiculo = "SELECT V.id AS Id," +
+				                 "v.placa AS Placa," +
+				                 "v.modelo AS Modelo," +
+				                 "v.cor AS Cor," +
+				                 "v.marca AS Marca," +
+				                 "v.id_funcionario AS IdFuncionario," +
+				                 "FROM veiculos v" +
+								 "WHERE id_funcionario = @idfuncionario";
+
+				var funcionarioId = connection.Query<Veiculos>(sqlVeiculo, new { idFuncionario }).AsList();
+
+				return funcionarioId;
+			}
+		}
+
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))

@@ -100,16 +100,30 @@ namespace EasyPark.Controllers.Funcionario
             return Ok(funcionariosFormatados);
         }
 
-        #endregion
+		/// <summary>
+		/// Realiza a busca do veiculo via Id do funcionário cadastrado no banco de dados
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet("buscar-veiculo-funcionario/id/{id}")]
+		public IActionResult BuscarVeiculoViaIdFuncionario(int id)
+		{
+			var idFuncionario = _businessRule.GetVeiculoByIdFuncionario(id);
+			if (idFuncionario is null) return NotFound($"Veículo não cadastrado no sistema.");
 
-        #region Métodos Post
+			return Ok(idFuncionario);
+		}
 
-        /// <summary>
-        /// Realiza o cadastro de veículo do funcionário
-        /// </summary>
-        /// <param name="veiculo"></param>
-        /// <returns></returns>
-        [HttpPost("cadastrar-veiculo-funcionario")]
+		#endregion
+
+		#region Métodos Post
+
+		/// <summary>
+		/// Realiza o cadastro de veículo do funcionário
+		/// </summary>
+		/// <param name="veiculo"></param>
+		/// <returns></returns>
+		[HttpPost("cadastrar-veiculo-funcionario")]
 		public IActionResult CadastrarVeiculoFuncionario(Veiculos veiculo)
 		{
 			try
