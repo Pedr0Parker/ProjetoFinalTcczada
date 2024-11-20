@@ -45,7 +45,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlId = $"{sql} WHERE e.id = @id";
+				var sqlId = $"{sql} WHERE e.id = @id ORDER BY e.id DESC";
 				var estacionamentoId = connection.QuerySingleOrDefault<Estacionamentos>(sqlId, new { id });
 
 				return estacionamentoId;
@@ -74,7 +74,7 @@ namespace EasyPark.Models.Repositorios
 					" v.hora_saida AS HoraSaida," +
 					" v.status AS Status," +
 					" v.id_estacionamento AS IdEstacionamento," +
-					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario ORDER BY id DESC;";
+					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario ORDER BY e.id DESC;";
 
 				var visitasFuncionarios = connection.Query<VisitasEstacionamento>(sql, new { idFuncionario }).ToList();
 
