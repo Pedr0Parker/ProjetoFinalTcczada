@@ -96,7 +96,7 @@ namespace EasyPark.Controllers.Estacionamento
 		}
 
 		/// <summary>
-		/// Realiza a busca do funcionário que realizou o check-in no estacionamento, via CPF cadastrado no banco de dados
+		/// Realiza a busca da última visita cadastrada no banco de dados do funcionário
 		/// </summary>
 		/// <param name="idFuncionario"></param>
 		/// <returns></returns>
