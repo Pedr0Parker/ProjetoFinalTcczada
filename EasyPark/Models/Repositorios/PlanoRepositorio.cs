@@ -27,7 +27,7 @@ namespace EasyPark.Models.Repositorios
 				connection.Open();
 				var sqlPlanos = $"{sql}";
 
-                var planos = connection.Query<Planos>(sqlPlanos).AsList();
+                var planos = connection.Query<Planos>(sql).AsList();
 
 				return planos;
 			}
