@@ -95,6 +95,20 @@ namespace EasyPark.Controllers.Estacionamento
             return Ok(visitasFormatadas);
 		}
 
+		/// <summary>
+		/// Realiza a busca do funcionário que realizou o check-in no estacionamento, via CPF cadastrado no banco de dados
+		/// </summary>
+		/// <param name="idFuncionario"></param>
+		/// <returns></returns>
+		[HttpGet("verifica-ultima-visita/idFuncionario/{idFuncionario}")]
+		public IActionResult VerificarUltimaVisita(int idFuncionario)
+		{
+			var buscaUltimaVisita = _businessRule.VerificaUltimaVisita(idFuncionario);
+			if (buscaUltimaVisita is null) return NotFound($"Visitas de funcionário de não encontrado.");
+
+			return Ok(buscaUltimaVisita);
+		}
+
 		#endregion
 
 		#region Métodos Post
