@@ -23,7 +23,7 @@ namespace EasyPark.Models.Repositorios
 				" e.cnpj AS Cnpj," +
 				" e.endereco AS Endereco," +
 				" e.contato AS Contato," +
-				" e.data_cadastro AS DataCadastro," +
+				" e.data_cadastro AS DataCadastro" +
 				" FROM estacionamentos e";
 		}
 

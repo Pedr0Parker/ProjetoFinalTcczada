@@ -20,14 +20,14 @@ namespace EasyPark.Models.Repositorios
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
 
 			sql = "SELECT f.id AS Id," +
-				"		  f.login AS Login," +
-				"		  f.senha AS Senha," +
-				"		  f.nome AS Nome," +
-				"		  f.cpf AS CpfCnpj," +
-				"		  f.contato AS Contato," +
-				"	      f.data_cadastro AS DataCadastro," +
-				"		  f.id_plano AS IdPlano," +
-				"		  f.id_empresa AS IdEmpresa FROM funcionarios f";
+				" f.login AS Login," +
+				" f.senha AS Senha," +
+				" f.nome AS Nome," +
+				" f.cpf AS CpfCnpj," +
+				" f.contato AS Contato," +
+				" f.data_cadastro AS DataCadastro," +
+				" f.id_plano AS IdPlano," +
+				" f.id_empresa AS IdEmpresa FROM funcionarios f";
 		}
 
 		public IEnumerable<Funcionarios> GetAllFuncionarios()
@@ -82,14 +82,14 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlVeiculo = "SELECT V.id AS Id," +
-				                 "v.placa AS Placa," +
-				                 "v.modelo AS Modelo," +
-				                 "v.cor AS Cor," +
-				                 "v.marca AS Marca," +
-				                 "v.id_funcionario AS IdFuncionario," +
-				                 "FROM veiculos v" +
-								 "WHERE id_funcionario = @idfuncionario";
+				var sqlVeiculo = "SELECT v.id AS Id," +
+				                 " v.placa AS Placa," +
+				                 " v.modelo AS Modelo," +
+				                 " v.cor AS Cor," +
+				                 " v.marca AS Marca," +
+				                 " v.id_funcionario AS IdFuncionario" +
+				                 " FROM veiculos v" +
+								 " WHERE id_funcionario = @idFuncionario";
 
 				var funcionarioId = connection.Query<Veiculos>(sqlVeiculo, new { idFuncionario }).AsList();
 

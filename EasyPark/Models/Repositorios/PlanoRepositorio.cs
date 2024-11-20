@@ -13,10 +13,10 @@ namespace EasyPark.Models.Repositorios
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
 
-			sql = "SELECT p.id," +
+			sql = "SELECT p.id as Id," +
 				" p.nome AS Nome," +
 				" p.status AS StatusPlano," +
-				" p.valor AS ValorPlano," +
+				" p.valor AS ValorPlano" +
 				" FROM planos p";
 		}
 
