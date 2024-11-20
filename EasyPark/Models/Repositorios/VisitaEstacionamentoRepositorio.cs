@@ -43,7 +43,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlId = $"{sql} WHERE v.id = @id";
+				var sqlId = $"{sql} WHERE v.id = @id ORDER BY v.id DESC";
 				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sqlId, new { id });
 
 				return visitasId;
