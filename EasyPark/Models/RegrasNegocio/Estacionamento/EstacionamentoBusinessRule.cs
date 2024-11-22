@@ -63,35 +63,35 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return visitaFuncionario;
 		}
 
-		public void RegistraVisitaEstacionamento(DateTime horaChegada, DateTime horaSaida, int estacionamento, int funcionario, int status, int veiculo)
+		public void RegistraVisitaEstacionamento(VisitasEstacionamento visitasEstacionamento)
 		{
-			if (estacionamento == 0)
-			{
-				throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
-			}
+			//if (estacionamento == 0)
+			//{
+			//	throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
+			//}
 
-			if (funcionario == 0)
-			{
-				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
-			}
+			//if (funcionario == 0)
+			//{
+			//	throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
+			//}
 
-			if (veiculo == 0)
-			{
-				throw new ArgumentNullException(nameof(funcionario), "Veículo inválido");
-			}
+			//if (veiculo == 0)
+			//{
+			//	throw new ArgumentNullException(nameof(funcionario), "Veículo inválido");
+			//}
 
-			if (status > 2)
-			{
-				throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
-			}
+			//if (status > 2)
+			//{
+			//	throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
+			//}
 
-			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento);
-			if (estacionamentoExistente == null)
-			{
-				throw new InvalidOperationException("Estacionamento não encontrado");
-			}
+			//var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento);
+			//if (estacionamentoExistente == null)
+			//{
+			//	throw new InvalidOperationException("Estacionamento não encontrado");
+			//}
 
-			_repositorio.RegistraVisitaEstacionamento(horaChegada, horaSaida, estacionamento, funcionario, status, veiculo);
+			_repositorio.RegistraVisitaEstacionamento(visitasEstacionamento);
 		}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)

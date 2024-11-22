@@ -100,30 +100,30 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void RegistraVisitaEstacionamento(DateTime horaChegada, DateTime horaSaida, int estacionamento, int funcionario, int status, int veiculo)
+		public void RegistraVisitaEstacionamento(VisitasEstacionamento visitasEstacionamento)
 		{
-			VisitasEstacionamento visita = new VisitasEstacionamento();
+			//VisitasEstacionamento visita = new VisitasEstacionamento();
 
-			visita.IdEstacionamento = estacionamento;
-			visita.IdFuncionario = funcionario;
-			visita.IdVeiculo = veiculo;
+			//visitasEstacionamento.IdEstacionamento = estacionamento;
+			//visitasEstacionamento.IdFuncionario = funcionario;
+			//visitasEstacionamento.IdVeiculo = veiculo;
 
-			if (status == 0) // Não chegou
+			if (visitasEstacionamento.Status == 0) // Não chegou
 			{
-				visita.HoraChegada = DateTime.MinValue;
-				visita.HoraSaida = DateTime.MaxValue;
-				visita.Status = 0;
+				visitasEstacionamento.HoraChegada = DateTime.MinValue;
+				visitasEstacionamento.HoraSaida = DateTime.MaxValue;
+				visitasEstacionamento.Status = 0;
 			}
-			else if (status == 1) // Chegada
+			else if (visitasEstacionamento.Status == 1) // Chegada
 			{
-				visita.HoraChegada = DateTime.Now;
-				visita.HoraSaida = DateTime.MaxValue;
-				visita.Status = 1;
+				visitasEstacionamento.HoraChegada = DateTime.Now;
+				visitasEstacionamento.HoraSaida = DateTime.MaxValue;
+				visitasEstacionamento.Status = 1;
 			}
-			else if (status == 2) // Saída
+			else if (visitasEstacionamento.Status == 2) // Saída
 			{
-				visita.HoraSaida = DateTime.Now;
-				visita.Status = 2;
+				visitasEstacionamento.HoraSaida = DateTime.Now;
+				visitasEstacionamento.Status = 2;
 
 				// Agende uma tarefa para trocar o status para 0 após 5 minutos
 				Task.Delay(TimeSpan.FromMinutes(5)).ContinueWith(t =>
@@ -134,8 +134,8 @@ namespace EasyPark.Models.Repositorios
 						var sql = "UPDATE visitas_estacionamento SET status = 0 WHERE id_funcionario = @idFuncionario AND id_estacionamento = @idEstacionamento;";
 						connection.Execute(sql, new
 						{
-							idFuncionario = visita.IdFuncionario,
-							idEstacionamento = visita.IdEstacionamento
+							idFuncionario = visitasEstacionamento.IdFuncionario,
+							idEstacionamento = visitasEstacionamento.IdEstacionamento
 						});
 					}
 				});
@@ -148,13 +148,13 @@ namespace EasyPark.Models.Repositorios
 
 				connection.Execute(sql, new
 				{
-					id = visita.Id,
-					horaChegada = visita.HoraChegada,
-					horaSaida = visita.HoraSaida,
-					status = visita.Status,
-					idEstacionamento = visita.IdEstacionamento,
-					idFuncionario = visita.IdFuncionario,
-					idVeiculo = visita.IdVeiculo,
+					id = visitasEstacionamento.Id,
+					horaChegada = visitasEstacionamento.HoraChegada,
+					horaSaida = visitasEstacionamento.HoraSaida,
+					status = visitasEstacionamento.Status,
+					idEstacionamento = visitasEstacionamento.IdEstacionamento,
+					idFuncionario = visitasEstacionamento.IdFuncionario,
+					idVeiculo = visitasEstacionamento.IdVeiculo,
 				});
 			}
 		}
