@@ -63,7 +63,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return visitaFuncionario;
 		}
 
-		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status, int veiculo)
+		public void RegistraVisitaEstacionamento(DateTime horaChegada, DateTime horaSaida, int estacionamento, int funcionario, int status, int veiculo)
 		{
 			if (estacionamento == 0)
 			{
@@ -91,7 +91,7 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 				throw new InvalidOperationException("Estacionamento não encontrado");
 			}
 
-			_repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status, veiculo);
+			_repositorio.RegistraVisitaEstacionamento(horaChegada, horaSaida, estacionamento, funcionario, status, veiculo);
 		}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)

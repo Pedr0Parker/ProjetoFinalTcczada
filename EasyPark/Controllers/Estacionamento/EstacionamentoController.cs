@@ -119,16 +119,11 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <param name="visitaEstacionamento"></param>
 		/// <returns></returns>
 		[HttpPost("cadastra-visita-estacionamento")]
-		public IActionResult CadastrarVisitaEstacionamento(VisitasEstacionamento visitaEstacionamento)
+		public IActionResult CadastrarVisitaEstacionamento(DateTime horaChegada, DateTime horaSaida, int estacionamento, int funcionario, int status, int veiculo)
 		{
 			try
 			{
-				var estacionamento = visitaEstacionamento.IdEstacionamento;
-				var funcionario = visitaEstacionamento.IdFuncionario;
-				var veiculo = visitaEstacionamento.IdVeiculo;
-				var status = visitaEstacionamento.Status;
-
-				_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status, veiculo);
+				_businessRule.RegistraVisitaEstacionamento(horaChegada, horaSaida, estacionamento, funcionario, status, veiculo);
 
 				return Ok("Visita estacionamento cadastrada com sucesso.");
 			}

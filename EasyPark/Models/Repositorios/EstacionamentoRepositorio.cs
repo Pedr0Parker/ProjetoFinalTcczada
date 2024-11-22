@@ -100,7 +100,7 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status, int veiculo)
+		public void RegistraVisitaEstacionamento(DateTime horaChegada, DateTime horaSaida, int estacionamento, int funcionario, int status, int veiculo)
 		{
 			VisitasEstacionamento visita = new VisitasEstacionamento();
 
