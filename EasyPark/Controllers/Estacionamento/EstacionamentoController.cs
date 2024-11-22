@@ -128,7 +128,7 @@ namespace EasyPark.Controllers.Estacionamento
 				var veiculo = visitaEstacionamento.IdVeiculo;
 				var status = visitaEstacionamento.Status;
 
-				_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+				_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status, veiculo);
 
 				return Ok("Visita estacionamento cadastrada com sucesso.");
 			}

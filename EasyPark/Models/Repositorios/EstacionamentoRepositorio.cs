@@ -100,12 +100,13 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
+		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status, int veiculo)
 		{
 			VisitasEstacionamento visita = new VisitasEstacionamento();
 
 			visita.IdEstacionamento = estacionamento;
 			visita.IdFuncionario = funcionario;
+			visita.IdVeiculo = veiculo;
 
 			if (status == 0) // Não chegou
 			{
@@ -143,7 +144,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario);";
+				var sql = "INSERT INTO visitas_estacionamento (hora_chegada, hora_saida, status, id_estacionamento, id_funcionario, id_veiculo) VALUES (@horaChegada, @horaSaida, @status, @idEstacionamento, @idFuncionario, @idVeiculo);";
 
 				connection.Execute(sql, new
 				{
@@ -152,7 +153,8 @@ namespace EasyPark.Models.Repositorios
 					horaSaida = visita.HoraSaida,
 					status = visita.Status,
 					idEstacionamento = visita.IdEstacionamento,
-					idFuncionario = visita.IdFuncionario
+					idFuncionario = visita.IdFuncionario,
+					idVeiculo = visita.IdVeiculo,
 				});
 			}
 		}
