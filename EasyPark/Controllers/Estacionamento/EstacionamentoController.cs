@@ -125,6 +125,7 @@ namespace EasyPark.Controllers.Estacionamento
 			{
 				var estacionamento = visitaEstacionamento.IdEstacionamento;
 				var funcionario = visitaEstacionamento.IdFuncionario;
+				var veiculo = visitaEstacionamento.IdVeiculo;
 				var status = visitaEstacionamento.Status;
 
 				_businessRule.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
