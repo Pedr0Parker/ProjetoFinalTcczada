@@ -106,9 +106,9 @@ namespace EasyPark.Controllers.Empresa
 		/// <summary>
 		/// Realiza a exclusão do funcionário pela empresa
 		/// </summary>
-		/// <param name="funcionario"></param>
+		/// <param name="idFuncionario"></param>
 		/// <returns></returns>
-		[HttpDelete("excluir-funcionario")]
+		[HttpDelete("excluir-funcionario/idFuncionario/{idFuncionario}")]
 		public IActionResult ExcluirFuncionario(int idFuncionario)
 		{
 			try
