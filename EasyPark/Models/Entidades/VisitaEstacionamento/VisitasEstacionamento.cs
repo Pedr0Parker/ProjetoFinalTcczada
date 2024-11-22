@@ -8,6 +8,5 @@
 		public int Status { get; set; }
 		public int IdEstacionamento { get; set; }
 		public int IdFuncionario { get; set; }
-		public int IdDependente { get; set; }
 	}
 }

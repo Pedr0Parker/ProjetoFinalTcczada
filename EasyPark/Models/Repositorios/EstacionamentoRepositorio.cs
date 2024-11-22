@@ -164,7 +164,7 @@ namespace EasyPark.Models.Repositorios
 			decimal valorTarifa = CalculaValorTarifa(duracaoVisita, taxaHorariaEstacionamento);
 
 			// Verifica se o funcionário ou dependente é elegível para um desconto
-			if ((visita.IdFuncionario != null || visita.IdDependente != null) && visita.Status == 2) // Saída
+			if ((visita.IdFuncionario != null) && visita.Status == 2) // Saída
 			{
 				// Aplica o desconto configurado pelo estacionamento
 				decimal valorDesconto = valorTarifa * percentualDescontoEstacionamento;
