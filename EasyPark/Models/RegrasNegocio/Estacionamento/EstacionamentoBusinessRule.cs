@@ -1,5 +1,4 @@
 ﻿using EasyPark.Models.Entidades.Estacionamento;
-using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
 
@@ -65,31 +64,25 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 
 		public void RegistraVisitaEstacionamento(VisitasEstacionamento visitasEstacionamento)
 		{
-			//if (estacionamento == 0)
-			//{
-			//	throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
-			//}
+			if (visitasEstacionamento.IdEstacionamento == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdEstacionamento), "Estacionamento inválido");
+			}
 
-			//if (funcionario == 0)
-			//{
-			//	throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
-			//}
+			if (visitasEstacionamento.IdFuncionario == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdFuncionario), "Funcionário inválido");
+			}
 
-			//if (veiculo == 0)
-			//{
-			//	throw new ArgumentNullException(nameof(funcionario), "Veículo inválido");
-			//}
+			if (visitasEstacionamento.IdVeiculo == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdVeiculo), "Veículo inválido");
+			}
 
-			//if (status > 2)
-			//{
-			//	throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
-			//}
-
-			//var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento);
-			//if (estacionamentoExistente == null)
-			//{
-			//	throw new InvalidOperationException("Estacionamento não encontrado");
-			//}
+			if (visitasEstacionamento.Status > 2)
+			{
+				throw new ArgumentException(nameof(visitasEstacionamento.Status), "O Status não pode ser maior que 2");
+			}
 
 			_repositorio.RegistraVisitaEstacionamento(visitasEstacionamento);
 		}

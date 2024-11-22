@@ -101,7 +101,7 @@ namespace EasyPark.Controllers.Empresa
 
 		#endregion
 
-		#region Métodos Post
+		#region Métodos Delete
 
 		/// <summary>
 		/// Realiza a exclusão do funcionário pela empresa

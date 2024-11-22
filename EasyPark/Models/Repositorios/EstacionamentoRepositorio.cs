@@ -74,7 +74,7 @@ namespace EasyPark.Models.Repositorios
 					" v.hora_saida AS HoraSaida," +
 					" v.status AS Status," +
 					" v.id_estacionamento AS IdEstacionamento," +
-					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario ORDER BY v.id DESC;";
+					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario AND v.status = 2 ORDER BY v.id DESC;";
 
 				var visitasFuncionarios = connection.Query<VisitasEstacionamento>(sql, new { idFuncionario }).ToList();
 
@@ -102,22 +102,16 @@ namespace EasyPark.Models.Repositorios
 
 		public void RegistraVisitaEstacionamento(VisitasEstacionamento visitasEstacionamento)
 		{
-			//VisitasEstacionamento visita = new VisitasEstacionamento();
-
-			//visitasEstacionamento.IdEstacionamento = estacionamento;
-			//visitasEstacionamento.IdFuncionario = funcionario;
-			//visitasEstacionamento.IdVeiculo = veiculo;
-
 			if (visitasEstacionamento.Status == 0) // Não chegou
 			{
 				visitasEstacionamento.HoraChegada = DateTime.MinValue;
-				visitasEstacionamento.HoraSaida = DateTime.MaxValue;
+				visitasEstacionamento.HoraSaida = DateTime.MinValue;
 				visitasEstacionamento.Status = 0;
 			}
 			else if (visitasEstacionamento.Status == 1) // Chegada
 			{
 				visitasEstacionamento.HoraChegada = DateTime.Now;
-				visitasEstacionamento.HoraSaida = DateTime.MaxValue;
+				visitasEstacionamento.HoraSaida = DateTime.MinValue;
 				visitasEstacionamento.Status = 1;
 			}
 			else if (visitasEstacionamento.Status == 2) // Saída
