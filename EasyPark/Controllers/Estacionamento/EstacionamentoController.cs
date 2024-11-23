@@ -218,5 +218,29 @@ namespace EasyPark.Controllers.Estacionamento
 		}
 
 		#endregion
+
+		#region Métodos Delete
+
+		/// <summary>
+		/// Realiza a rejeição e exclusão de uma visita ao estacionamento
+		/// </summary>
+		/// <param name="idVista"></param>
+		/// <returns></returns>
+		[HttpDelete("rejeitar-excluir-solicitacao/idVisita/{idVista}")]
+		public IActionResult RejeitarExcluirSolicitacaoVisita(int idVista)
+		{
+			try
+			{
+				_businessRule.ExcluirSolicitacaoVisita(idVista);
+				return Ok($"Rejeição de visita ao estacionamento realizada com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao rejeitar uma solicitação de visita ao estacionamento.");
+				throw;
+			}
+		}
+
+		#endregion
 	}
 }

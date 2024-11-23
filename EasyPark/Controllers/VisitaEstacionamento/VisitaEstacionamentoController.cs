@@ -45,6 +45,20 @@ namespace EasyPark.Controllers.VisitaEstacionamento
 			return Ok(idVisita);
 		}
 
+		/// <summary>
+		/// Realiza a busca das visitas pelo funcionário id
+		/// </summary>
+		/// <param name="idFuncionario"></param>
+		/// <returns></returns>
+		[HttpGet("buscar-visitas-funcionario/idFuncionario/{idFuncionario}")]
+		public IActionResult BuscarVisitasViaIdFuncionario(int idFuncionario)
+		{
+			var idVisitaFuncionario = _businessRule.GetVisitaByIdFuncionario(idFuncionario);
+			if (idVisitaFuncionario is null) return NotFound($"Não foi possível realizar a busca das visitas.");
+
+			return Ok(idVisitaFuncionario);
+		}
+
 		#endregion
 	}
 }

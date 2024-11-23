@@ -1,6 +1,7 @@
 ﻿using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.RegrasNegocio.VisitaEstacionamento
 {
@@ -27,6 +28,17 @@ namespace EasyPark.Models.RegrasNegocio.VisitaEstacionamento
 
 			var visita = _repositorio.GetVisitaById(id);
 			return visita;
+		}
+
+		public IEnumerable<VisitasEstacionamento> GetVisitaByIdFuncionario(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(idFuncionario));
+			}
+
+			var visitasIdFuncionario = _repositorio.GetVisitaByIdFuncionario(idFuncionario);
+			return visitasIdFuncionario;
 		}
 	}
 }

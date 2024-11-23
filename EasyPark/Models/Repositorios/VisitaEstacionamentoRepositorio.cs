@@ -2,6 +2,7 @@
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
 using MySql.Data.MySqlClient;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -43,10 +44,22 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlId = $"{sql} WHERE v.id = @id ORDER BY v.id DESC";
+				var sqlId = $"{sql} WHERE v.id = @id ORDER BY v.id DESC;";
 				var visitasId = connection.QuerySingleOrDefault<VisitasEstacionamento>(sqlId, new { id });
 
 				return visitasId;
+			}
+		}
+
+		public IEnumerable<VisitasEstacionamento> GetVisitaByIdFuncionario(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlId = $"{sql} WHERE v.id_funcionario = @idFuncionario;";
+				var visitasIdFuncionario = connection.Query<VisitasEstacionamento>(sqlId, new { idFuncionario }).ToList();
+
+				return visitasIdFuncionario;
 			}
 		}
 

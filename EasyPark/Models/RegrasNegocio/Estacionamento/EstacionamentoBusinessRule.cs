@@ -138,5 +138,15 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 
 			_repositorio.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
 		}
+
+		public void ExcluirSolicitacaoVisita(int idVisita)
+		{
+			if (idVisita <= 0)
+			{
+				throw new ArgumentException("Id da visita inválido", nameof(idVisita));
+			}
+
+			_repositorio.ExcluirSolicitacaoVisita(idVisita);
+		}
 	}
 }

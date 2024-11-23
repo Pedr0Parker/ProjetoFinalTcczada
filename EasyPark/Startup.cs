@@ -4,6 +4,7 @@ using EasyPark.Controllers.Estacionamento;
 using EasyPark.Controllers.Funcionario;
 using EasyPark.Controllers.Plano;
 using EasyPark.Controllers.SistemaEasyPark;
+using EasyPark.Controllers.Veiculo;
 using EasyPark.Controllers.VisitaEstacionamento;
 using EasyPark.Models.Data;
 using EasyPark.Models.RegrasNegocio.Dependente;
@@ -12,6 +13,7 @@ using EasyPark.Models.RegrasNegocio.Estacionamento;
 using EasyPark.Models.RegrasNegocio.Funcionario;
 using EasyPark.Models.RegrasNegocio.Plano;
 using EasyPark.Models.RegrasNegocio.SistemaEasyPark;
+using EasyPark.Models.RegrasNegocio.Veiculo;
 using EasyPark.Models.RegrasNegocio.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +55,10 @@ namespace EasyPark
 			services.AddTransient<SistemaEasyParkRepositorio>();
 			services.AddTransient<SistemaEasyParkBusinessRule>();
 			services.AddTransient<SistemaEasyParkController>();
+
+			services.AddTransient<VeiculoRepositorio>();
+			services.AddTransient<VeiculoBusinessRule>();
+			services.AddTransient<VeiculoController>();
 
 			services.AddTransient<VisitaEstacionamentoRepositorio>();
 			services.AddTransient<VisitaEstacionamentoBusinessRule>();

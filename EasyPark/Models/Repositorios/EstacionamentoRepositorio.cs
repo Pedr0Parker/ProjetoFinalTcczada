@@ -2,6 +2,7 @@
 using EasyPark.Models.Entidades.Dependente;
 using EasyPark.Models.Entidades.Estacionamento;
 using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.Veiculo;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
 using MySql.Data.MySqlClient;
 
@@ -224,6 +225,16 @@ namespace EasyPark.Models.Repositorios
 					valorPago = valorTarifa,
 					idVisita = visita.Id
 				});
+			}
+		}
+
+		public void ExcluirSolicitacaoVisita(int idVisita)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "DELETE FROM visitas_estacionamento WHERE id = @idVisita;";
+				connection.Execute(sql, new { id = idVisita });
 			}
 		}
 
