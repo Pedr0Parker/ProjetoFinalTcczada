@@ -120,6 +120,20 @@ namespace EasyPark.Controllers.Estacionamento
 		}
 
 		/// <summary>
+		/// Realiza a busca das solicitações de novas visitas ao estacionamento
+		/// </summary>
+		/// <param name="idEstacionamento"></param>
+		/// <returns></returns>
+		[HttpGet("verifica-solicitacao-visitas/idEstacionamento/{idEstacionamento}")]
+		public IActionResult VerificarSolicitacaoVisitas(int idEstacionamento)
+		{
+			var solicitacaoVisita = _businessRule.VerificaSolicitacaoVisitas(idEstacionamento);
+			if (solicitacaoVisita is null) return NotFound($"Não foi possível realizar a busca de solicitações de novas visitas.");
+
+			return Ok(solicitacaoVisita);
+		}
+
+		/// <summary>
 		/// Realiza a busca da última visita cadastrada no banco de dados do funcionário
 		/// </summary>
 		/// <param name="idFuncionario"></param>
