@@ -82,6 +82,24 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "SELECT v.id," +
+					" v.hora_chegada AS HoraChegada," +
+					" v.hora_saida AS HoraSaida," +
+					" v.status AS Status," +
+					" v.id_estacionamento AS IdEstacionamento," +
+					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_estacionamento = @idEstacionamento AND v.status > 0 ORDER BY v.id DESC;";
+
+				var visitasEstacionamento = connection.Query<VisitasEstacionamento>(sql, new { idEstacionamento }).ToList();
+
+				return visitasEstacionamento;
+			}
+		}
+
 		public VisitasEstacionamento VerificaUltimaVisita(int idFuncionario)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))

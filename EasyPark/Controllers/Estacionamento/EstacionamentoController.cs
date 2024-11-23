@@ -78,7 +78,7 @@ namespace EasyPark.Controllers.Estacionamento
 		/// <returns></returns>
 		[HttpGet("verifica-visitas-funcionario/idFuncionario/{idFuncionario}")]
 		public IActionResult VerificarFuncionarios(int idFuncionario)
-	{
+	    {
 			var buscaVisitasFuncionario = _businessRule.VerificaFuncionarios(idFuncionario);
 			if (buscaVisitasFuncionario is null) return NotFound($"Visitas de funcionário de não encontrado.");
 
@@ -93,6 +93,30 @@ namespace EasyPark.Controllers.Estacionamento
             });
 
             return Ok(visitasFormatadas);
+		}
+
+		/// <summary>
+		/// Realiza a busca das visitas feitas no estacionamento
+		/// </summary>
+		/// <param name="idEstacionamento"></param>
+		/// <returns></returns>
+		[HttpGet("verifica-visitas-estacionamento/idEstacionamento/{idEstacionamento}")]
+		public IActionResult VerificarVisitasEstacionamento(int idEstacionamento)
+		{
+			var buscaVisitasEstacionamento = _businessRule.VerificaVisitasEstacionamento(idEstacionamento);
+			if (buscaVisitasEstacionamento is null) return NotFound($"Visitas de estacionamento não encontrado.");
+
+			var visitasFormatadas = buscaVisitasEstacionamento.Select(v => new
+			{
+				v.Id,
+				HoraChegada = v.HoraChegada.ToString("dd/MM/yyyy HH:mm"),
+				HoraSaida = v.HoraSaida.ToString("dd/MM/yyyy HH:mm"),
+				v.Status,
+				v.IdEstacionamento,
+				v.IdFuncionario
+			});
+
+			return Ok(visitasFormatadas);
 		}
 
 		/// <summary>

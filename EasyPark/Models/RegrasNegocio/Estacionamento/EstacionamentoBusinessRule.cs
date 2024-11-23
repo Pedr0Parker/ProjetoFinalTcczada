@@ -51,6 +51,17 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return visitaFuncionario;
 		}
 
+		public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
+		{
+			if (idEstacionamento <= 0)
+			{
+				throw new ArgumentException("Estacionamento inválido", nameof(idEstacionamento));
+			}
+
+			var visitaEstacionamento = _repositorio.VerificaVisitasEstacionamento(idEstacionamento);
+			return visitaEstacionamento;
+		}
+
 		public VisitasEstacionamento VerificaUltimaVisita(int idFuncionario)
 		{
 			if (idFuncionario <= 0)
