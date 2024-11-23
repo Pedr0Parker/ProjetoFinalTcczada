@@ -97,6 +97,18 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public IEnumerable<Funcionarios> GetFuncionariosAtivos(int idEmpresa)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlIdEmpresa = $"{sql} WHERE f.id_empresa = @idEmpresa AND f.id_plano < 1000";
+				var funcionarioId = connection.Query<Funcionarios>(sqlIdEmpresa, new { idEmpresa }).AsList();
+
+				return funcionarioId;
+			}
+		}
+
 		public void CadastraVeiculo(Veiculos veiculo)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))

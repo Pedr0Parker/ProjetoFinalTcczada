@@ -114,6 +114,33 @@ namespace EasyPark.Controllers.Funcionario
 			return Ok(idFuncionario);
 		}
 
+		/// <summary>
+		/// Realiza a busca dos funcionários ativos pelo Id da Empresa
+		/// </summary>
+		/// <param name="idEmpresa"></param>
+		/// <returns></returns>
+		[HttpGet("buscar-funcionarios-ativos/idEmpresa/{idEmpresa}")]
+		public IActionResult BuscarFuncionariosAtivos(int idEmpresa)
+		{
+			var idFuncionariosEmpresa = _businessRule.GetFuncionariosAtivos(idEmpresa);
+			if (idFuncionariosEmpresa is null) return NotFound($"Erro ao buscar os funcionários ativos.");
+
+			var funcionariosFormatados = idFuncionariosEmpresa.Select(f => new
+			{
+				f.Id,
+				f.Login,
+				f.Senha,
+				f.Nome,
+				f.CpfCnpj,
+				f.Contato,
+				DataCadastro = f.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+				f.IdPlano,
+				f.IdEmpresa
+			});
+
+			return Ok(funcionariosFormatados);
+		}
+
 		#endregion
 
 		#region Métodos Post
