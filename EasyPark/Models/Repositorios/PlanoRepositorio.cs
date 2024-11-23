@@ -25,9 +25,9 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlPlanos = $"{sql} WHERE p.id < 1000";
+				var sqlPlanos = $"{sql} WHERE id < 1000";
 
-                var planos = connection.Query<Planos>(sql).AsList();
+                var planos = connection.Query<Planos>(sqlPlanos).AsList();
 
 				return planos;
 			}
