@@ -133,6 +133,16 @@ namespace EasyPark.Controllers.Estacionamento
 			return Ok(solicitacaoVisita);
 		}
 
+
+		[HttpGet("verifica-vagas-ocupadas/idEstacionamento/{idEstacionamento}")]
+		public IActionResult VerificarVagasOcupadas(int idEstacionamento)
+		{
+			var vagasOcupadas = _businessRule.VerificaVagasOcupadas(idEstacionamento);
+			if (vagasOcupadas is null) return NotFound($"Não foi possível realizar a busca de vagas ocupadas.");
+
+			return Ok(vagasOcupadas);
+		}
+
 		/// <summary>
 		/// Realiza a busca da última visita cadastrada no banco de dados do funcionário
 		/// </summary>
