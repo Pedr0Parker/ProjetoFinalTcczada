@@ -234,7 +234,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "DELETE FROM visitas_estacionamento WHERE id = @idVisita;";
+				var sql = "DELETE FROM visitas_estacionamento WHERE id = @id;";
 				connection.Execute(sql, new { id = idVisita });
 			}
 		}
