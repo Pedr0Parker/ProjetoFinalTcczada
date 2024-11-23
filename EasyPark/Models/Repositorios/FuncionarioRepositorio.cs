@@ -128,6 +128,16 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void RegistraSaidaEstacionamento(int idVisita)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "UPDATE visitas_estacionamento SET status = 2 WHERE id = @idVisita;";
+				connection.Execute(sql, new { idVisita });
+			}
+		}
+
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)
 		{
 			var existingFuncionario = GetFuncionarioById(funcionario.Id);

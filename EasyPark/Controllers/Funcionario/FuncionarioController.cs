@@ -165,6 +165,26 @@ namespace EasyPark.Controllers.Funcionario
 			}
 		}
 
+		/// <summary>
+		/// Realiza o cadastro da saída do funcionário ao estacionamento
+		/// </summary>
+		/// <param name="idVisita"></param>
+		/// <returns></returns>
+		[HttpPost("cadastrar-saida-estacionamento/idVisita/{idVisita}")]
+		public IActionResult CadastraSaidaEstacionamento(int idVisita)
+		{
+			try
+			{
+				_businessRule.RegistraSaidaEstacionamento(idVisita);
+				return Ok("Saída ao estacionamento realizada com sucesso.");
+			}
+			catch
+			{
+				return BadRequest("Erro ao realizar a saída do estacionamento.");
+				throw;
+			}
+		}
+
 		#endregion
 
 		#region Métodos Put

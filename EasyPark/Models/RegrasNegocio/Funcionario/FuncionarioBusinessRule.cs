@@ -95,6 +95,16 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			_repositorio.CadastraVeiculo(veiculo);
 		}
 
+		public void RegistraSaidaEstacionamento(int idVisita)
+		{
+			if (idVisita <= 0)
+			{
+				throw new ArgumentException("Id visita inválido", nameof(idVisita));
+			}
+
+			_repositorio.RegistraSaidaEstacionamento(idVisita);
+		}
+
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)
 		{
 			if (funcionario == null)

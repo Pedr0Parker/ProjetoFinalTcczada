@@ -172,6 +172,26 @@ namespace EasyPark.Controllers.Estacionamento
 		}
 
 		/// <summary>
+		/// Realiza a aceitação de uma visita pelo estacionamento
+		/// </summary>
+		/// <param name="idVisita"></param>
+		/// <returns></returns>
+		[HttpPost("aceitar-solicitacao-visita/idVisita/{idVisita}")]
+		public IActionResult AceitarSolicitacaoVisita(int idVisita)
+		{
+			try
+			{
+				_businessRule.RegistraSolicitacaoVisitaEstacionamento(idVisita);
+				return Ok("Visita estacionamento aceita com sucesso.");
+			}
+			catch
+			{
+				return BadRequest("Erro ao aceitar uma visita.");
+				throw;
+			}
+		}
+
+		/// <summary>
 		/// Realiza a aplicação de desconto caso o estacionamento aprovar
 		/// </summary>
 		/// <param name="visitaEstacionamento"></param>

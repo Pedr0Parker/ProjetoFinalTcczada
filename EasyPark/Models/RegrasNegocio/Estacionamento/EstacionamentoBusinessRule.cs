@@ -109,6 +109,16 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			_repositorio.RegistraVisitaEstacionamento(visitasEstacionamento);
 		}
 
+		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita)
+		{
+			if (idVisita <= 0)
+			{
+				throw new ArgumentException("Esta visita não é inválida", nameof(idVisita));
+			}
+
+			_repositorio.RegistraSolicitacaoVisitaEstacionamento(idVisita);
+		}
+
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{
 			if (visitaEstacionamento == null)

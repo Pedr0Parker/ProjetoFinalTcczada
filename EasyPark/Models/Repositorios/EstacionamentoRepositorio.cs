@@ -189,6 +189,16 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "UPDATE visitas_estacionamento SET status = 1 WHERE id = @idVisita;";
+				connection.Execute(sql, new { idVisita });
+			}
+		}
+
 		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
 		{
 			// Calcula a duração da visita
