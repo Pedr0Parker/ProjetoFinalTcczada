@@ -149,7 +149,7 @@ namespace EasyPark.Models.Repositorios
 					" v.hora_saida AS HoraSaida," +
 					" v.status AS Status," +
 					" v.id_estacionamento AS IdEstacionamento," +
-					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario ORDER BY v.id DESC LIMIT 1;";
+					" v.id_funcionario AS IdFuncionario FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario AND v.status = 2 ORDER BY v.id DESC LIMIT 1;";
 
 				var visitasFuncionarios = connection.QuerySingleOrDefault<VisitasEstacionamento>(sql, new { idFuncionario });
 
