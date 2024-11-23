@@ -38,7 +38,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlPlanoId = $"{sql} WHERE p.id = @id AND p.id < 1000";
+				var sqlPlanoId = $"{sql} WHERE p.id = @id";
 				var planoId = connection.QuerySingleOrDefault<Planos>(sqlPlanoId, new { id });
 
 				return planoId;
