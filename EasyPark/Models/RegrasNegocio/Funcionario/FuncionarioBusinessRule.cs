@@ -1,5 +1,6 @@
 ﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
 using static Slapper.AutoMapper;
 
@@ -91,18 +92,17 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			{
 				throw new ArgumentException("Placa do veículo é obrigatória", nameof(veiculo));
 			}
+            _repositorio.CadastraVeiculo(veiculo);
+        }
 
-			_repositorio.CadastraVeiculo(veiculo);
-		}
-
-		public void RegistraSaidaEstacionamento(int idVisita)
+		public void RegistraSaidaEstacionamento(int id, DateTime horaSaida)
 		{
-			if (idVisita <= 0)
+			if (id <= 0)
 			{
-				throw new ArgumentException("Id visita inválido", nameof(idVisita));
+				throw new ArgumentException("Id visita inválido", nameof(id));
 			}
 
-			_repositorio.RegistraSaidaEstacionamento(idVisita);
+			_repositorio.RegistraSaidaEstacionamento(id, horaSaida);
 		}
 
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)

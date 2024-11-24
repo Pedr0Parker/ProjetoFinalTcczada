@@ -7,6 +7,7 @@ using DapperExtensions;
 using System.Text;
 using XSystem.Security.Cryptography;
 using static Slapper.AutoMapper;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -128,13 +129,14 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void RegistraSaidaEstacionamento(int idVisita)
+		public void RegistraSaidaEstacionamento(int id, DateTime horaSaida)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
-				connection.Open();
-				var sql = "UPDATE visitas_estacionamento SET status = 2 WHERE id = @idVisita;";
-				connection.Execute(sql, new { idVisita });
+
+                connection.Open();
+				var sql = "UPDATE visitas_estacionamento SET status = 2, hora_saida = @horaSaida WHERE id = @id;";
+				connection.Execute(sql, new { id, horaSaida });
 			}
 		}
 

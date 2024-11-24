@@ -51,7 +51,18 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return visitaFuncionario;
 		}
 
-		public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
+        public VisitasEstacionamento VisitasPendentesFuncionarios(int idFuncionario)
+        {
+            if (idFuncionario <= 0)
+            {
+                throw new ArgumentException("Funcionário inválido", nameof(idFuncionario));
+            }
+
+            var visitaPendenteFuncionario = _repositorio.VisitasPendentesFuncionarios(idFuncionario);
+            return visitaPendenteFuncionario;
+        }
+
+        public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
 		{
 			if (idEstacionamento <= 0)
 			{
@@ -120,14 +131,14 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			_repositorio.RegistraVisitaEstacionamento(visitasEstacionamento);
 		}
 
-		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita)
+		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita, DateTime horaChegada)
 		{
 			if (idVisita <= 0)
 			{
 				throw new ArgumentException("Esta visita não é inválida", nameof(idVisita));
 			}
 
-			_repositorio.RegistraSolicitacaoVisitaEstacionamento(idVisita);
+			_repositorio.RegistraSolicitacaoVisitaEstacionamento(idVisita, horaChegada);
 		}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)

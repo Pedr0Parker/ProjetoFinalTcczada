@@ -83,7 +83,26 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
+        public VisitasEstacionamento VisitasPendentesFuncionarios(int idFuncionario)
+        {
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sql = "SELECT v.id," +
+                    " v.hora_chegada AS HoraChegada," +
+                    " v.hora_saida AS HoraSaida," +
+                    " v.status AS Status," +
+                    " v.id_estacionamento AS IdEstacionamento," +
+                    " v.id_funcionario AS IdFuncionario," +
+					" v.id_veiculo AS IdVeiculo FROM visitas_estacionamento v WHERE v.id_funcionario = @idFuncionario AND v.status < 2";
+
+                var visitasPendentesFuncionarios = connection.QuerySingleOrDefault<VisitasEstacionamento>(sql, new { idFuncionario });
+
+                return visitasPendentesFuncionarios;
+            }
+        }
+
+        public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
@@ -210,13 +229,13 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita)
+		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita, DateTime horaChegada)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sql = "UPDATE visitas_estacionamento SET status = 1 WHERE id = @idVisita;";
-				connection.Execute(sql, new { idVisita });
+				var sql = "UPDATE visitas_estacionamento SET status = 1, hora_chegada = @horaChegada WHERE id = @idVisita;";
+				connection.Execute(sql, new { idVisita, horaChegada });
 			}
 		}
 

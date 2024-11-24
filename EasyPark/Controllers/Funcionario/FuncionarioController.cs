@@ -1,5 +1,6 @@
 ﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.RegrasNegocio.Funcionario;
 using Microsoft.AspNetCore.Mvc;
 
@@ -170,12 +171,12 @@ namespace EasyPark.Controllers.Funcionario
 		/// </summary>
 		/// <param name="idVisita"></param>
 		/// <returns></returns>
-		[HttpPost("cadastrar-saida-estacionamento/idVisita/{idVisita}")]
-		public IActionResult CadastraSaidaEstacionamento(int idVisita)
+		[HttpPost("cadastrar-saida-estacionamento/id/{id}/horaSaida/{horaSaida}")]
+		public IActionResult CadastraSaidaEstacionamento(int id, DateTime horaSaida)
 		{
 			try
 			{
-				_businessRule.RegistraSaidaEstacionamento(idVisita);
+				_businessRule.RegistraSaidaEstacionamento(id, horaSaida);
 				return Ok("Saída ao estacionamento realizada com sucesso.");
 			}
 			catch
