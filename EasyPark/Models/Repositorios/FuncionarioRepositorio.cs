@@ -168,6 +168,16 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void ExcluirVeiculo(int idVeiculo)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "DELETE FROM veiculos WHERE id = @id;";
+				connection.Execute(sql, new { id = idVeiculo });
+			}
+		}
+
 		private bool VerificaSenha(string senhaAtual, string senhaInformada)
 		{
 			string hashedSenhaInformada = HashSenha(senhaInformada);

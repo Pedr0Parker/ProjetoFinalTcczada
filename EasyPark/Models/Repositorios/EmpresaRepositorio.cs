@@ -102,6 +102,9 @@ namespace EasyPark.Models.Repositorios
 					connection.Execute(sqlVeiculo, new { id = idFuncionario });
 				}
 
+				var sqlVisitas = "DELETE FROM visitas_estacionamento WHERE id_funcionario = @id;";
+				connection.Execute(sqlVisitas, new { id = idFuncionario });
+
 				var sql = "DELETE FROM funcionarios WHERE id = @id;";
 				connection.Execute(sql, new { id = idFuncionario });
 			}

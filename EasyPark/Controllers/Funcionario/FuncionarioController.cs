@@ -212,5 +212,29 @@ namespace EasyPark.Controllers.Funcionario
 		}
 
 		#endregion
+
+		#region Métodos Delete
+
+		/// <summary>
+		/// Realiza a exclusão do veículo do funcionário
+		/// </summary>
+		/// <param name="idVeiculo"></param>
+		/// <returns></returns>
+		[HttpDelete("excluir-veiculo/idVeiculo/{idVeiculo}")]
+		public IActionResult ExcluirVeiculo(int idVeiculo)
+		{
+			try
+			{
+				_businessRule.ExcluirVeiculo(idVeiculo);
+				return Ok("Veículo excluído com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao excluir veículo.");
+				throw;
+			}
+		}
+
+		#endregion
 	}
 }

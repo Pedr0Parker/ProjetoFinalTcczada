@@ -125,5 +125,15 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 
 			_repositorio.UpdateSenhaFuncionario(funcionario, novaSenha);
 		}
+
+		public void ExcluirVeiculo(int idVeiculo)
+		{
+			if (idVeiculo <= 0)
+			{
+				throw new ArgumentException("Id do veículo inválido", nameof(idVeiculo));
+			}
+
+			_repositorio.ExcluirVeiculo(idVeiculo);
+		}
 	}
 }
