@@ -1,14 +1,11 @@
 ﻿using Dapper;
+using DapperExtensions;
 using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
-using EasyPark.Models.Entidades.Dependente;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 using MySql.Data.MySqlClient;
-using DapperExtensions;
 using System.Text;
 using XSystem.Security.Cryptography;
-using static Slapper.AutoMapper;
-using EasyPark.Models.Entidades.VisitaEstacionamento;
-using EasyPark.Models.RegrasNegocio.VisitaEstacionamento;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -55,19 +52,19 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
-        public IEnumerable<Funcionarios> GetFuncionarioByIdEmpresa(int idEmpresa)
-        {
-            using (MySqlConnection connection = new MySqlConnection(_connectionString))
-            {
-                connection.Open();
-                var sqlIdEmpresa = $"{sql} WHERE f.id_empresa = @idEmpresa";
-                var funcionarioId = connection.Query<Funcionarios>(sqlIdEmpresa, new { idEmpresa }).AsList();
+		public IEnumerable<Funcionarios> GetFuncionarioByIdEmpresa(int idEmpresa)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlIdEmpresa = $"{sql} WHERE f.id_empresa = @idEmpresa";
+				var funcionarioId = connection.Query<Funcionarios>(sqlIdEmpresa, new { idEmpresa }).AsList();
 
-                return funcionarioId;
-            }
-        }
+				return funcionarioId;
+			}
+		}
 
-        public IEnumerable<Funcionarios> GetFuncionarioByEmail(string login, string senha)
+		public IEnumerable<Funcionarios> GetFuncionarioByEmail(string login, string senha)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
@@ -85,12 +82,12 @@ namespace EasyPark.Models.Repositorios
 			{
 				connection.Open();
 				var sqlVeiculo = "SELECT v.id AS Id," +
-				                 " v.placa AS Placa," +
-				                 " v.modelo AS Modelo," +
-				                 " v.cor AS Cor," +
-				                 " v.marca AS Marca," +
-				                 " v.id_funcionario AS IdFuncionario" +
-				                 " FROM veiculos v" +
+								 " v.placa AS Placa," +
+								 " v.modelo AS Modelo," +
+								 " v.cor AS Cor," +
+								 " v.marca AS Marca," +
+								 " v.id_funcionario AS IdFuncionario" +
+								 " FROM veiculos v" +
 								 " WHERE id_funcionario = @idFuncionario";
 
 				var funcionarioId = connection.Query<Veiculos>(sqlVeiculo, new { idFuncionario }).AsList();
@@ -135,7 +132,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 
-                connection.Open();
+				connection.Open();
 				var sql = "UPDATE visitas_estacionamento SET status = 2, hora_saida = @horaSaida WHERE id = @id;";
 				connection.Execute(sql, new { id, horaSaida });
 			}
