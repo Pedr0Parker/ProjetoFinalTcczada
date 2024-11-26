@@ -186,6 +186,27 @@ namespace EasyPark.Controllers.Funcionario
 			}
 		}
 
+		/// <summary>
+		/// Realiza a atualização do plano pelo id do funcionário
+		/// </summary>
+		/// <param name="idFuncionario"></param>
+		/// <param name="idPlano"></param>
+		/// <returns></returns>
+		[HttpPost("atualizar-plano-funcionario/idFuncionario/{idFuncionario}/idPlano/{idPlano}")]
+		public IActionResult AtualizarPlanoFuncionario(int idFuncionario, int idPlano)
+		{
+			try
+			{
+				_businessRule.UpdatePlanoFuncionario(idFuncionario, idPlano);
+				return Ok("Plano atualizado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao atualizar plano.");
+				throw;
+			}
+		}
+
 		#endregion
 
 		#region Métodos Put
@@ -207,21 +228,6 @@ namespace EasyPark.Controllers.Funcionario
 			catch
 			{
 				return BadRequest("Erro ao atualizar senha.");
-				throw;
-			}
-		}
-
-		[HttpPut("atualizar-plano-funcionario/idFuncionario/{idFuncionario}/idPlano/{idPlano}")]
-		public IActionResult AtualizarPlanoFuncionario(int idFuncionario, int idPlano)
-		{
-			try
-			{
-				_businessRule.UpdatePlanoFuncionario(idFuncionario, idPlano);
-				return Ok("Plano atualizado com sucesso!");
-			}
-			catch
-			{
-				return BadRequest("Erro ao atualizar plano.");
 				throw;
 			}
 		}
