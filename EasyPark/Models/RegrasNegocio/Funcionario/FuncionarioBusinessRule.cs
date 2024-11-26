@@ -126,6 +126,21 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			_repositorio.UpdateSenhaFuncionario(funcionario, novaSenha);
 		}
 
+		public void UpdatePlanoFuncionario(int idFuncionario, int idPlano)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id funcionário inválido", nameof(idFuncionario));
+			}
+
+			if (idPlano <= 0)
+			{
+				throw new ArgumentException("Id plano inválido", nameof(idPlano));
+			}
+
+			_repositorio.UpdatePlanoFuncionario(idFuncionario, idPlano);
+		}
+
 		public void ExcluirVeiculo(int idVeiculo)
 		{
 			if (idVeiculo <= 0)

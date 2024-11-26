@@ -166,6 +166,16 @@ namespace EasyPark.Models.Repositorios
 			}
 		}
 
+		public void UpdatePlanoFuncionario(int idFuncionario, int idPlano)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "UPDATE funcionarios SET id_plano = @idPlano WHERE id = @idFuncionario;";
+				connection.Execute(sql, new { idPlano, idFuncionario });
+			}
+		}
+
 		public void ExcluirVeiculo(int idVeiculo)
 		{
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))

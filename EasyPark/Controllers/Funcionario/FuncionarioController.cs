@@ -202,6 +202,21 @@ namespace EasyPark.Controllers.Funcionario
 			try
 			{
 				_businessRule.UpdateSenhaFuncionario(funcionario, novaSenha);
+				return Ok("Senha atualizada com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao atualizar senha.");
+				throw;
+			}
+		}
+
+		[HttpPut("atualizar-plano-funcionario/idFuncionario/{idFuncionario}/idPlano/{idPlano}")]
+		public IActionResult AtualizarPlanoFuncionario(int idFuncionario, int idPlano)
+		{
+			try
+			{
+				_businessRule.UpdatePlanoFuncionario(idFuncionario, idPlano);
 				return Ok("Plano atualizado com sucesso!");
 			}
 			catch
