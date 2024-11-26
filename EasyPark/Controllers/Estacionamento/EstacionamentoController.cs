@@ -167,7 +167,7 @@ namespace EasyPark.Controllers.Estacionamento
         public IActionResult VerificarUltimaVisita(int idFuncionario)
         {
             var buscaUltimaVisita = _businessRule.VerificaUltimaVisita(idFuncionario);
-            if (buscaUltimaVisita is null) return NotFound($"Visitas de funcionário de não encontrado.");
+            if (buscaUltimaVisita is null) return NotFound(false);
 
             return Ok(buscaUltimaVisita);
         }
