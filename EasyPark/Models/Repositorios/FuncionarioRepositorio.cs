@@ -181,7 +181,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlSelect = "SELECT v.id as Id, v.hora_chegada AS HoraChegada, v.hora_saida AS HoraSaida, v.status AS Status, v.id_estacionamento AS IdEstacionamento, v.id_funcionario AS IdFuncionario, v.id_dependente AS IdDependente, v.id_veiculo as IdVeiculo FROM visitas_estacionamento v;";
+				var sqlSelect = "SELECT v.id as Id, v.hora_chegada AS HoraChegada, v.hora_saida AS HoraSaida, v.status AS Status, v.id_estacionamento AS IdEstacionamento, v.id_funcionario AS IdFuncionario, v.id_veiculo as IdVeiculo FROM visitas_estacionamento v;";
 				var visitasVeiculo = connection.Query<VisitasEstacionamento>(sqlSelect, new { idVeiculo }).ToList();
 
 				if (visitasVeiculo != null)

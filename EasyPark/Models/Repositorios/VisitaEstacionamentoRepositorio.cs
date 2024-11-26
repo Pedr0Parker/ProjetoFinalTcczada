@@ -20,8 +20,7 @@ namespace EasyPark.Models.Repositorios
 				" v.hora_saida AS HoraSaida," +
 				" v.status AS Status," +
 				" v.id_estacionamento AS IdEstacionamento," +
-				" v.id_funcionario AS IdFuncionario," +
-				" v.id_dependente AS IdDependente" +
+				" v.id_funcionario AS IdFuncionario" +
 				" FROM visitas_estacionamento v";
 		}
 
