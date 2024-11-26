@@ -100,5 +100,29 @@ namespace EasyPark.Controllers.Empresa
 		}
 
 		#endregion
+
+		#region Métodos Delete
+
+		/// <summary>
+		/// Realiza a exclusão do funcionário pela empresa
+		/// </summary>
+		/// <param name="idFuncionario"></param>
+		/// <returns></returns>
+		[HttpDelete("excluir-funcionario/idFuncionario/{idFuncionario}")]
+		public IActionResult ExcluirFuncionario(int idFuncionario)
+		{
+			try
+			{
+				_businessRule.ExcluirFuncionario(idFuncionario);
+				return Ok($"Exclusão do funcionário realizada com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao excluir um funcionário da empresa.");
+				throw;
+			}
+		}
+
+		#endregion
 	}
 }

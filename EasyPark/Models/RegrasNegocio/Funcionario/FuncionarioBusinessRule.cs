@@ -1,6 +1,8 @@
 ﻿using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.Veiculo;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.RegrasNegocio.Funcionario
 {
@@ -48,10 +50,30 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
             }
 
            return _repositorio.GetFuncionarioByIdEmpresa(idEmpresa);
-         
         }
 
-        public void CadastraVeiculo(Veiculos veiculo)
+		public IEnumerable<Veiculos> GetVeiculoByIdFuncionario(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(idFuncionario));
+			}
+
+			var veiculoFuncionario = _repositorio.GetVeiculoByIdFuncionario(idFuncionario);
+			return veiculoFuncionario;
+		}
+
+		public IEnumerable<Funcionarios> GetFuncionariosAtivos(int idEmpresa)
+		{
+			if (idEmpresa <= 0)
+			{
+				throw new ArgumentException("Id inválido", nameof(idEmpresa));
+			}
+
+			return _repositorio.GetFuncionariosAtivos(idEmpresa);
+		}
+
+		public void CadastraVeiculo(Veiculos veiculo)
 		{
 			var idFuncionario = Convert.ToInt64(veiculo.IdFuncionario);
 			var funcionario = _repositorio.GetFuncionarioById(idFuncionario);
@@ -70,8 +92,17 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			{
 				throw new ArgumentException("Placa do veículo é obrigatória", nameof(veiculo));
 			}
+            _repositorio.CadastraVeiculo(veiculo);
+        }
 
-			_repositorio.CadastraVeiculo(veiculo);
+		public void RegistraSaidaEstacionamento(int id, DateTime horaSaida)
+		{
+			if (id <= 0)
+			{
+				throw new ArgumentException("Id visita inválido", nameof(id));
+			}
+
+			_repositorio.RegistraSaidaEstacionamento(id, horaSaida);
 		}
 
 		public void UpdateSenhaFuncionario(Funcionarios funcionario, string novaSenha)
@@ -93,6 +124,31 @@ namespace EasyPark.Models.RegrasNegocio.Funcionario
 			}
 
 			_repositorio.UpdateSenhaFuncionario(funcionario, novaSenha);
+		}
+
+		public void UpdatePlanoFuncionario(int idFuncionario, int idPlano)
+		{
+			if (idFuncionario <= 0)
+			{
+				throw new ArgumentException("Id funcionário inválido", nameof(idFuncionario));
+			}
+
+			if (idPlano <= 0)
+			{
+				throw new ArgumentException("Id plano inválido", nameof(idPlano));
+			}
+
+			_repositorio.UpdatePlanoFuncionario(idFuncionario, idPlano);
+		}
+
+		public void ExcluirVeiculo(int idVeiculo)
+		{
+			if (idVeiculo <= 0)
+			{
+				throw new ArgumentException("Id do veículo inválido", nameof(idVeiculo));
+			}
+
+			_repositorio.ExcluirVeiculo(idVeiculo);
 		}
 	}
 }

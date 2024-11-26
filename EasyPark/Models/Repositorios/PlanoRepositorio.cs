@@ -13,10 +13,10 @@ namespace EasyPark.Models.Repositorios
 		{
 			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
 
-			sql = "SELECT p.id," +
-				" p.nome AS Nome," +
+			sql = "SELECT p.id as Id," +
+				" p.nome AS NomePlano," +
 				" p.status AS StatusPlano," +
-				" p.valor AS ValorPlano," +
+				" p.valor AS ValorPlano" +
 				" FROM planos p";
 		}
 
@@ -25,7 +25,7 @@ namespace EasyPark.Models.Repositorios
 			using (MySqlConnection connection = new MySqlConnection(_connectionString))
 			{
 				connection.Open();
-				var sqlPlanos = $"{sql}";
+				var sqlPlanos = $"{sql} WHERE id < 1000";
 
                 var planos = connection.Query<Planos>(sqlPlanos).AsList();
 

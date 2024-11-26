@@ -1,5 +1,4 @@
 ﻿using EasyPark.Models.Entidades.Estacionamento;
-using EasyPark.Models.Entidades.Funcionario;
 using EasyPark.Models.Entidades.VisitaEstacionamento;
 using EasyPark.Models.Repositorios;
 
@@ -52,30 +51,94 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			return visitaFuncionario;
 		}
 
-		public void RegistraVisitaEstacionamento(int estacionamento, int funcionario, int status)
+        public VisitasEstacionamento VisitasPendentesFuncionarios(int idFuncionario)
+        {
+            if (idFuncionario <= 0)
+            {
+                throw new ArgumentException("Funcionário inválido", nameof(idFuncionario));
+            }
+
+            var visitaPendenteFuncionario = _repositorio.VisitasPendentesFuncionarios(idFuncionario);
+            return visitaPendenteFuncionario;
+        }
+
+        public IEnumerable<VisitasEstacionamento> VerificaVisitasEstacionamento(int idEstacionamento)
 		{
-			if (estacionamento == 0)
+			if (idEstacionamento <= 0)
 			{
-				throw new ArgumentNullException(nameof(estacionamento), "Estacionamento inválido");
+				throw new ArgumentException("Estacionamento inválido", nameof(idEstacionamento));
 			}
 
-			if (funcionario == 0)
+			var visitaEstacionamento = _repositorio.VerificaVisitasEstacionamento(idEstacionamento);
+			return visitaEstacionamento;
+		}
+
+		public IEnumerable<VisitasEstacionamento> VerificaSolicitacaoVisitas(int idEstacionamento)
+		{
+			if (idEstacionamento <= 0)
 			{
-				throw new ArgumentNullException(nameof(funcionario), "Funcionário inválido");
+				throw new ArgumentException("Estacionamento inválido", nameof(idEstacionamento));
 			}
 
-			if (status > 2)
+			var solicitacaoVisitaEstacionamento = _repositorio.VerificaSolicitacaoVisitas(idEstacionamento);
+			return solicitacaoVisitaEstacionamento;
+		}
+
+		public IEnumerable<VisitasEstacionamento> VerificaVagasOcupadas(int idEstacionamento)
+		{
+			if (idEstacionamento <= 0)
 			{
-				throw new ArgumentException(nameof(status), "O Status não pode ser maior que 2");
+				throw new ArgumentException("Estacionamento inválido", nameof(idEstacionamento));
 			}
 
-			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento);
-			if (estacionamentoExistente == null)
+			var vagasOcupadas = _repositorio.VerificaVagasOcupadas(idEstacionamento);
+			return vagasOcupadas;
+		}
+
+		public VisitasEstacionamento VerificaUltimaVisita(int idFuncionario)
+		{
+			if (idFuncionario <= 0)
 			{
-				throw new InvalidOperationException("Estacionamento não encontrado");
+				throw new ArgumentException("Funcionário inválido", nameof(idFuncionario));
 			}
 
-			_repositorio.RegistraVisitaEstacionamento(estacionamento, funcionario, status);
+			var visitaFuncionario = _repositorio.VerificaUltimaVisita(idFuncionario);
+			return visitaFuncionario;
+		}
+
+		public void RegistraVisitaEstacionamento(VisitasEstacionamento visitasEstacionamento)
+		{
+			if (visitasEstacionamento.IdEstacionamento == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdEstacionamento), "Estacionamento inválido");
+			}
+
+			if (visitasEstacionamento.IdFuncionario == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdFuncionario), "Funcionário inválido");
+			}
+
+			if (visitasEstacionamento.IdVeiculo == 0)
+			{
+				throw new ArgumentNullException(nameof(visitasEstacionamento.IdVeiculo), "Veículo inválido");
+			}
+
+			if (visitasEstacionamento.Status > 2)
+			{
+				throw new ArgumentException(nameof(visitasEstacionamento.Status), "O Status não pode ser maior que 2");
+			}
+
+			_repositorio.RegistraVisitaEstacionamento(visitasEstacionamento);
+		}
+
+		public void RegistraSolicitacaoVisitaEstacionamento(int idVisita, DateTime horaChegada)
+		{
+			if (idVisita <= 0)
+			{
+				throw new ArgumentException("Esta visita não é inválida", nameof(idVisita));
+			}
+
+			_repositorio.RegistraSolicitacaoVisitaEstacionamento(idVisita, horaChegada);
 		}
 
 		public void AplicaDesconto(VisitasEstacionamento visitaEstacionamento, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento)
@@ -96,6 +159,16 @@ namespace EasyPark.Models.RegrasNegocio.Estacionamento
 			}
 
 			_repositorio.AplicaDesconto(visitaEstacionamento, percentualDescontoEstacionamento, taxaHorariaEstacionamento);
+		}
+
+		public void ExcluirSolicitacaoVisita(int idVisita)
+		{
+			if (idVisita <= 0)
+			{
+				throw new ArgumentException("Id da visita inválido", nameof(idVisita));
+			}
+
+			_repositorio.ExcluirSolicitacaoVisita(idVisita);
 		}
 	}
 }

@@ -1,7 +1,5 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Estacionamento;
-using EasyPark.Models.Entidades.Plano;
-using EasyPark.Models.Entidades.Usuario;
 using EasyPark.Models.Repositorios;
 
 namespace EasyPark.Models.RegrasNegocio.SistemaEasyPark
@@ -25,12 +23,6 @@ namespace EasyPark.Models.RegrasNegocio.SistemaEasyPark
 			if (string.IsNullOrEmpty(empresa.Nome))
 			{
 				throw new ArgumentException("Nome da empresa é obrigatório", nameof(empresa));
-			}
-
-			var empresaExistente = _repositorio.GetEmpresaById(empresa.Id);
-			if (empresaExistente != null)
-			{
-				throw new InvalidOperationException("Empresa já existe");
 			}
 
 			_repositorio.CadastraEmpresa(empresa);
@@ -67,12 +59,6 @@ namespace EasyPark.Models.RegrasNegocio.SistemaEasyPark
 			if (string.IsNullOrEmpty(estacionamento.Nome))
 			{
 				throw new ArgumentException("Nome do estacionamento é obrigatório", nameof(estacionamento));
-			}
-
-			var estacionamentoExistente = _repositorio.GetEstacionamentoById(estacionamento.Id);
-			if (estacionamentoExistente != null)
-			{
-				throw new InvalidOperationException("Estacionamento já existe");
 			}
 
 			_repositorio.CadastraEstacionamento(estacionamento);

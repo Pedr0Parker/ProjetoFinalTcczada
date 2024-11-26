@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using EasyPark.Models.Entidades.Empresa;
 using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.Veiculo;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
@@ -82,6 +84,29 @@ namespace EasyPark.Models.Repositorios
                     idPlano = funcionario.IdPlano,
                     idEmpresa = funcionario.IdEmpresa,
 				});
+			}
+		}
+
+		public void ExcluirFuncionario(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+
+				var sqlSelect = "SELECT v.id, v.placa, v.modelo, v.cor, v.marca, v.id_funcionario FROM veiculos v WHERE id_funcionario = @idFuncionario;";
+				var funcionarioVeiculo = connection.Query<Veiculos>(sqlSelect, new { idFuncionario }).ToList();
+
+				if (funcionarioVeiculo != null)
+				{
+					var sqlVeiculo = "DELETE FROM veiculos WHERE id_funcionario = @id;";
+					connection.Execute(sqlVeiculo, new { id = idFuncionario });
+				}
+
+				var sqlVisitas = "DELETE FROM visitas_estacionamento WHERE id_funcionario = @id;";
+				connection.Execute(sqlVisitas, new { id = idFuncionario });
+
+				var sql = "DELETE FROM funcionarios WHERE id = @id;";
+				connection.Execute(sql, new { id = idFuncionario });
 			}
 		}
 	}
