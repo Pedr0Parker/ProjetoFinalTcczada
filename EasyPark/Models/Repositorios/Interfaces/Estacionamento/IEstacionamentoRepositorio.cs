@@ -1,15 +1,24 @@
 ﻿using EasyPark.Models.Entidades.Estacionamento;
+using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.VisitaEstacionamento;
 
 namespace EasyPark.Models.Repositorios.Interfaces.Estacionamento
 {
     public interface IEstacionamentoRepositorio
     {
-        // To Do: Verificar funcionalidades da Interface do Estacionamento
+		public IEnumerable<Estacionamentos> GetAllEstacionamentos();
 
-        IEnumerable<Estacionamentos> GetEstacionamentos();
-        Estacionamentos GetEstacionamentoById(long id);
-        void AdicionarEstacionamento(Estacionamentos estacionamento);
-        void UpdateEstacionamento(Estacionamentos estacionamento);
-        void DeleteEstacionamento(long id);
-    }
+		public Estacionamentos GetEstacionamentoById(long id);
+
+		public Estacionamentos GetEstacionamentoByNome(string nome);
+
+		public IEnumerable<Funcionarios> VerificaFuncionarios(string cpfFuncionario);
+
+		public void RegistraVisitaEstacionamento(Estacionamentos estacionamento, Funcionarios funcionario, int status);
+
+		public void CriarVisitaDependente(string cpfDependente, Estacionamentos estacionamento, int status, Funcionarios funcionario);
+
+		public void AplicaDesconto(VisitasEstacionamento visita, decimal percentualDescontoEstacionamento, decimal taxaHorariaEstacionamento);
+
+	}
 }

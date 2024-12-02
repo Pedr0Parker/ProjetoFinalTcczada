@@ -1,98 +1,113 @@
-﻿using EasyPark.Models.Entidades.Empresa;
-using Microsoft.AspNetCore.Mvc;
+﻿using Dapper;
+using EasyPark.Models.Entidades.Empresa;
+using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.Entidades.Veiculo;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using static Slapper.AutoMapper;
 
 namespace EasyPark.Models.Repositorios
 {
     public class EmpresaRepositorio
     {
-        private List<Empresas> empresas;
+		private readonly string _connectionString;
+		private readonly string sql;
 
-        public EmpresaRepositorio()
+		public EmpresaRepositorio(IConfiguration configuration)
+		{
+			_connectionString = configuration.GetConnectionString("DbEasyParkConnection");
+
+			sql = "SELECT e.id," +
+				" e.login AS Login," +
+				" e.senha AS Senha," +
+				" e.nome AS Nome," +
+				" e.nome_usual AS NomeFantasia," +
+				" e.nome_dono AS NomeDono," +
+				" e.cnpj AS Cnpj," +
+				" e.endereco AS Endereco," +
+				" e.contato AS Contato," +
+				" e.data_cadastro AS DataCadastro," +
+				" e.id_plano AS IdPlano FROM empresas e";
+		}
+
+		public IEnumerable<Empresas> GetAllEmpresas()
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var empresas = connection.Query<Empresas>(sql).AsList();
+
+				return empresas;
+			}
+		}
+
+		public Empresas GetEmpresaById(long id)
         {
-            empresas = new List<Empresas>
-            {
-                new Empresas { Id = 1, Login = "abc@gmail.com", Senha = "123456", Nome = "EmpresaX", NomeFantasia = "X",
-                NomeDono = "Paulo", Cnpj = "11111111111111", ValorAssinatura = 100, Endereco = "Av. Paraná, 10", Contato = "(99)99999-9999", DataCadastro = DateTime.Now },
-            };
-        }
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlId = $"{sql} WHERE e.id = @id";
+				var empresaId = connection.QuerySingleOrDefault<Empresas>(sqlId, new { id });
 
-        #region Métodos Get
+				return empresaId;
+			}
+		}
 
-        /// <summary>
-        /// Realiza a busca de todas as empresas cadastradas no banco de dados
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Empresas> GetAllEmpresas()
+        public IEnumerable<Empresas> GetEmpresaByEmail(string login, string senha)
         {
-            return empresas;
-        }
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sqlEmail = $"{sql} WHERE e.login = @login AND e.senha = @senha";
+				var empresaEmail = connection.Query<Empresas>(sqlEmail, new { login, senha }).AsList();
 
-        /// <summary>
-        /// Realiza a busca da empresa via Id cadastrado no banco de dados
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Empresas GetEmpresaById(long id)
-        {
-            return empresas.FirstOrDefault(p => p.Id == id);
-        }
+				return empresaEmail;
+			}
+		}
 
-        /// <summary>
-        /// Realiza a busca da empresa via Nome cadastrado no banco de dados
-        /// </summary>
-        /// <param name="nome"></param>
-        /// <returns></returns>
-        public Empresas GetEmpresaByNome(string nome)
-        {
-            return empresas.FirstOrDefault(p => p.Nome == nome);
-        }
+		public void CadastraFuncionario(Funcionarios funcionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
+				var sql = "INSERT INTO funcionarios (id, login, senha, nome, cpf, contato, data_cadastro, id_plano, id_empresa) VALUES (@id, @login, @senha, @nome, @cpf, @contato, @dataCadastro, @idPlano, @idEmpresa);";
 
-        #endregion
+				connection.Execute(sql, new
+				{
+					id = funcionario.Id,
+					login = funcionario.Login,
+					senha = funcionario.Senha,
+					nome = funcionario.Nome,
+					cpf = funcionario.CpfCnpj,
+					contato = funcionario.Contato,
+					dataCadastro = funcionario.DataCadastro,
+                    idPlano = funcionario.IdPlano,
+                    idEmpresa = funcionario.IdEmpresa,
+				});
+			}
+		}
 
-        /// <summary>
-        /// Adiciona uma nova empresa
-        /// </summary>
-        /// <param name="empresa"></param>
-        public void AddEmpresa(Empresas empresa)
-        {
-            empresa.Id = empresas.Max(p => p.Id) + 1;
-            empresas.Add(empresa);
-        }
+		public void ExcluirFuncionario(int idFuncionario)
+		{
+			using (MySqlConnection connection = new MySqlConnection(_connectionString))
+			{
+				connection.Open();
 
-        /// <summary>
-        /// Atualiza uma empresa de acordo com o seu Id
-        /// </summary>
-        /// <param name="empresa"></param>
-        public void UpdateEmpresa(Empresas empresa)
-        {
-            var existingEmpresa = GetEmpresaById(empresa.Id);
-            if (existingEmpresa != null)
-            {
-                // To Do: Implementar update para os parâmetros da empresa
+				var sqlSelect = "SELECT v.id, v.placa, v.modelo, v.cor, v.marca, v.id_funcionario FROM veiculos v WHERE id_funcionario = @idFuncionario;";
+				var funcionarioVeiculo = connection.Query<Veiculos>(sqlSelect, new { idFuncionario }).ToList();
 
-                //existingEmpresa.Nome = usuario.Nome;
-                //existingEmpresa.Cpf = usuario.Cpf;
-                //existingEmpresa.NomeInstituicao = usuario.NomeInstituicao;
-            }
-        }
+				if (funcionarioVeiculo != null)
+				{
+					var sqlVeiculo = "DELETE FROM veiculos WHERE id_funcionario = @id;";
+					connection.Execute(sqlVeiculo, new { id = idFuncionario });
+				}
 
-        /// <summary>
-        /// Deleta a empresa desejada de acordo com seu Id
-        /// </summary>
-        /// <param name="id"></param>
-        public void DeleteEmpresa(long id)
-        {
-            var empresa = GetEmpresaById(id);
-            if (empresa != null)
-            {
-                empresas.Remove(empresa);
-            }
-        }
+				var sqlVisitas = "DELETE FROM visitas_estacionamento WHERE id_funcionario = @id;";
+				connection.Execute(sqlVisitas, new { id = idFuncionario });
 
-        // To Do: Verificar método de cadastro de funcionários da empresa
-        public void CadastraFuncionario()
-        {
-
-        }
-    }
+				var sql = "DELETE FROM funcionarios WHERE id = @id;";
+				connection.Execute(sql, new { id = idFuncionario });
+			}
+		}
+	}
 }

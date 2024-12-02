@@ -1,32 +1,37 @@
-using EasyPark.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
-namespace EasyPark.Controllers.Home
+namespace EasyPark.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+	[ApiController]
+	[Route("home")]
+	public class HomeController : ControllerBase
+	{
+		#region Métodos Get
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		[HttpGet]
+		public IActionResult Index()
+		{
+			return Ok("Bem-vindo à API do EasyPark");
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		[HttpGet("para-empresas")]
+		public IActionResult ParaEmpresas()
+		{
+			return Ok("Redirecionando para a tela de empresas...");
+		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+		[HttpGet("para-estacionamentos")]
+		public IActionResult ParaEstacionamentos()
+		{
+			return Ok("Redirecionando para a tela de estacionamentos...");
+		}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+		[HttpGet("login")]
+		public IActionResult Login()
+		{
+			return Ok("Redirecionando para a tela de login...");
+		}
+
+		#endregion
+	}
 }

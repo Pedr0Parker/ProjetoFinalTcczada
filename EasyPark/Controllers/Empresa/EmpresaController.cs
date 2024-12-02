@@ -1,102 +1,128 @@
 ﻿using EasyPark.Models.Entidades.Empresa;
-using EasyPark.Models.Entidades.Usuario;
-using EasyPark.Models.Repositorios;
+using EasyPark.Models.Entidades.Funcionario;
+using EasyPark.Models.RegrasNegocio.Empresa;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyPark.Controllers.Empresa
 {
-    public class EmpresaController
-    {
-        private EmpresaRepositorio repositorio = new EmpresaRepositorio();
+	[ApiController]
+	[Route("empresa")]
+	public class EmpresaController : ControllerBase
+	{
+		private readonly EmpresaBusinessRule _businessRule;
 
-        #region Métodos Get
+		public EmpresaController(EmpresaBusinessRule businessRule)
+		{
+			_businessRule = businessRule;
+		}
 
-        //[HttpGet]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+		#region Métodos Get
 
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    var empresas = repositorio.GetAllEmpresas();
-        //    return View(empresas);
-        //}
+		/// <summary>
+		/// Realiza a busca de todas as empresas cadastradas no banco de dados
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet("buscar-empresas")]
+		public IActionResult BuscarEmpresas()
+		{
+			var empresas = _businessRule.GetAllEmpresas();
+			if (empresas is null) return BadRequest("Houve um erro ao buscar as empresas.");
 
-        //[HttpGet]
-        //public ActionResult Details(int id)
-        //{
-        //    try
-        //    {
-        //        var empresa = repositorio.GetEmpresaById(id);
-        //        if (empresa == null)
-        //        {
-        //            throw new Exception();
-        //        }
+			return Ok(empresas);
+		}
 
-        //        return View(empresa);
-        //    }
-        //    catch
-        //    {
-        //        return View("Error", model: "Empresa não localizada!");
-        //    }
-        //}
+		/// <summary>
+		/// Realiza a busca da empresa via Id cadastrado no banco de dados
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet("buscar-empresa/id/{id}")]
+		public IActionResult BuscarEmpresaViaId(int id)
+		{
+			var idEmpresa = _businessRule.GetEmpresaById(id);
+			if (idEmpresa is null) return NotFound($"Empresa de Id {id} não cadastrado no sistema.");
 
-        #endregion
+			return Ok(idEmpresa);
+		}
 
-        #region Métodos Post
+        /// <summary>
+        /// Realiza a busca da empresa via Nome cadastrado no banco de dados
+        /// </summary>
+        /// <param name="login"></param>
+		/// <param name="senha"></param>
+        /// <returns></returns>
+        [HttpGet("buscar-empresa/login/{login}/senha/{senha}")]
+		public IActionResult BuscarEmpresaViaEmail(string login, string senha)
+		{
+			var emailEmpresa = _businessRule.GetEmpresaByEmail(login, senha);
+			if (emailEmpresa is null) return NotFound($"Empresa de email {login} não cadastrada no sistema.");
 
-        //[HttpPost]
-        //public ActionResult Create(Empresas empresa)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.AddEmpresa(empresa);
-        //        return RedirectToAction("Index");
-        //    }
+			var emailEmpresaFormatada = emailEmpresa.Select(e => new
+			{
+				e.Id,
+				e.Login,
+				e.Senha,
+				e.Nome,
+				e.NomeFantasia,
+				e.NomeDono,
+				e.Cnpj,
+				e.Endereco,
+				e.Contato,
+				DataCadastro = e.DataCadastro.ToString("dd/MM/yyyy HH:mm"),
+				e.IdPlano
+			});
 
-        //    return View(empresa);
-        //}
+			return Ok(emailEmpresaFormatada);
+		}
 
-        //[HttpPost]
-        //public ActionResult CadastrarFuncionario(Funcionario funcionario)
-        //{
-            
-        //}
+		#endregion
 
-        #endregion
+		#region Métodos Post
 
-        #region Métodos Put
+		/// <summary>
+		/// Realiza o cadastro do funcionário pela empresa
+		/// </summary>
+		/// <param name="funcionario"></param>
+		/// <returns></returns>
+		[HttpPost("cadastrar-funcionario")]
+		public IActionResult CadastrarFuncionario(Funcionarios funcionario)
+		{
+			try
+			{
+				_businessRule.CadastraFuncionario(funcionario);
+				return Ok($"Cadastro do funcionário {funcionario.Nome} realizado com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao cadastrar um funcionário da empresa.");
+				throw;
+			}
+		}
 
-        //[HttpPut]
-        //public ActionResult Update(Empresas empresa)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.UpdateEmpresa(empresa);
-        //        return RedirectToAction("Index");
-        //    }
+		#endregion
 
-        //    return View(empresa);
-        //}
+		#region Métodos Delete
 
-        #endregion
+		/// <summary>
+		/// Realiza a exclusão do funcionário pela empresa
+		/// </summary>
+		/// <param name="idFuncionario"></param>
+		/// <returns></returns>
+		[HttpDelete("excluir-funcionario/idFuncionario/{idFuncionario}")]
+		public IActionResult ExcluirFuncionario(int idFuncionario)
+		{
+			try
+			{
+				_businessRule.ExcluirFuncionario(idFuncionario);
+				return Ok($"Exclusão do funcionário realizada com sucesso!");
+			}
+			catch
+			{
+				return BadRequest("Erro ao excluir um funcionário da empresa.");
+				throw;
+			}
+		}
 
-        #region Métodos Delete
-
-        //[HttpDelete]
-        //public ActionResult Delete(long id)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repositorio.DeleteEmpresa(id);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(id);
-        //}
-
-        #endregion
-    }
+		#endregion
+	}
 }
